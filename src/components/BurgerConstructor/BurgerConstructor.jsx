@@ -5,7 +5,7 @@ import {
   CurrencyIcon,
   Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
-// import Ingredient from "../Ingredient/Ingredient";
+import { ingredient } from "../../consts/consts";
 import styles from "./BurgerConstructor.module.scss";
 import PropTypes from 'prop-types';
 
@@ -117,7 +117,7 @@ const BurgerConstructor = (props) => {
           <p className="text text_type_digits-medium mr-2">7628</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="large">
+        <Button htmlType="button" type="primary" size="large">
           Оформить заказ
         </Button>
       </div>
@@ -125,8 +125,9 @@ const BurgerConstructor = (props) => {
   );
 };
 
-BurgerConstructor.prototype = {
-    ingredients: PropTypes.object
+BurgerConstructor.propTypes = {
+  ingredients: PropTypes.arrayOf(ingredient).isRequired
 }
+
 
 export default BurgerConstructor;
