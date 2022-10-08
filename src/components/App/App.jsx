@@ -1,26 +1,35 @@
-import React from 'react';
-import AppHeader from '../AppHeader/AppHeader';
-import BurgerIngredients from '../BurgerIngredients/BurgerIngredients';
-import BurgerConstructor from '../BurgerConstructor/BurgerConstructor';
-import { currentIngredients } from '../../consts/consts';
-import styles from './App.module.css';
+import { useState, useEffect } from "react";
+import AppHeader from "../AppHeader/AppHeader";
+import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
+import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
+import { currentApi } from "../../utils/Api";
+import { selectedIngredientIds } from "../../utils/consts";
+import styles from "./App.module.css";
 
-class App extends React.Component {
-  state = {
-    ingredients: currentIngredients
-  }
+const App = () => {
+  const [ingredients, setIngredients] = useState([]);
 
-  render() {
-    return (
-      <>
-        <AppHeader />
+  const getIngredientsFromApi = () => {
+    currentApi.getIngredients().then((res) => {
+      setIngredients(res.data);
+    });
+  };
+
+  useEffect(() => {
+    getIngredientsFromApi();
+  }, []);
+
+  return (
+    <>
+      <AppHeader />
+      {ingredients.length && (
         <main className={styles.main}>
-        <BurgerIngredients ingredients={this.state.ingredients}/>
-        <BurgerConstructor ingredients={this.state.ingredients}/>
+          <BurgerIngredients ingredients={ingredients} selectedIngredientIds={selectedIngredientIds}/>
+          <BurgerConstructor ingredients={ingredients} selectedIngredientIds={selectedIngredientIds} />
         </main>
-      </>
-    );
-  }
-}
+      )}
+    </>
+  );
+};
 
 export default App;
