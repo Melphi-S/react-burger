@@ -24,8 +24,14 @@ const App = () => {
       <AppHeader />
       {ingredients.length && (
         <main className={styles.main}>
-          <BurgerIngredients ingredients={ingredients} selectedIngredientIds={selectedIngredientIds}/>
-          <BurgerConstructor ingredients={ingredients} selectedIngredientIds={selectedIngredientIds} />
+          <BurgerIngredients
+            ingredients={ingredients}
+            selectedIngredientIds={selectedIngredientIds}
+          />
+          <BurgerConstructor
+            ingredients={ingredients}
+            selectedIngredientIds={selectedIngredientIds}
+          />
         </main>
       )}
     </>

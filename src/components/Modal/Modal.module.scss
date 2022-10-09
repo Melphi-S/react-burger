@@ -2,6 +2,8 @@
     position: fixed;
     top: 50%;
     left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 720px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,4 +12,13 @@
     box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
     border-radius: 40px;
     z-index: 2;
+
+    &__closeButton {
+        position: absolute;
+        top: 65px;
+        right: 35px;
+        background-color: transparent;
+        border: 0;
+        cursor: pointer;
+    }
 }
