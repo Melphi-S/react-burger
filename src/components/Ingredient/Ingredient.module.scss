@@ -1,0 +1,22 @@
+.ingredient {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    max-width: 272px;
+    cursor: pointer;
+
+    &__image {
+        width: 240px;
+        height: 120px;
+    }
+
+    &__price {
+        display: flex;
+        justify-content: center;
+        gap: 9px;
+    }
+
+    &__name {
+        text-align: center;
+    }
+}
