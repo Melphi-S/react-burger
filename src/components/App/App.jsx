@@ -4,6 +4,7 @@ import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import { currentApi } from "../../utils/Api";
 import { selectedIngredientIds } from "../../utils/consts";
+import IngredientsContext from "../../context/ingredientsContext";
 import styles from "./App.module.css";
 
 const App = () => {
@@ -24,14 +25,13 @@ const App = () => {
       <AppHeader />
       {ingredients.length && (
         <main className={styles.main}>
-          <BurgerIngredients
-            ingredients={ingredients}
-            selectedIngredientIds={selectedIngredientIds}
-          />
-          <BurgerConstructor
-            ingredients={ingredients}
-            selectedIngredientIds={selectedIngredientIds}
-          />
+          <IngredientsContext.Provider value={ingredients}>
+            <BurgerIngredients selectedIngredientIds={selectedIngredientIds} />
+            <BurgerConstructor
+              ingredients={ingredients}
+              selectedIngredientIds={selectedIngredientIds}
+            />
+          </IngredientsContext.Provider>
         </main>
       )}
     </>
