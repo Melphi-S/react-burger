@@ -5,9 +5,9 @@ import {
 import styles from "./Ingredient.module.scss";
 import PropTypes from "prop-types";
 
-const Ingredient = ({ ingredient, count, onIngredientClick }) => {
+const Ingredient = ({ ingredient, count, onLeftClick, onRightClick }) => {
   return (
-    <li className={styles.ingredient} onClick={onIngredientClick}>
+    <li className={styles.ingredient} onClick={onLeftClick} onContextMenu={onRightClick}>
       <img
         className={`${styles.ingredient__image} mr-4 ml-4`}
         src={ingredient.image}
@@ -30,7 +30,8 @@ const Ingredient = ({ ingredient, count, onIngredientClick }) => {
 Ingredient.propTypes = {
   ingredient: PropTypes.object.isRequired,
   count: PropTypes.number,
-  onIngredientClick: PropTypes.func.isRequired,
+  onLeftClick: PropTypes.func.isRequired,
+  onRightClick: PropTypes.func.isRequired,
 };
 
 export default Ingredient;

@@ -3,18 +3,20 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../Ingredient/Ingredient";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import { ingredientTypes, ingredient } from "../../utils/consts";
+import { ingredientTypes } from "../../utils/consts";
 import IngredientsContext from "../../context/ingredientsContext";
-import PropTypes from "prop-types";
+import ConstructorContext from "../../context/constructorContext";
 import styles from "./BurgerIngredients.module.scss";
 
-const BurgerIngredients = ({ selectedIngredientIds }) => {
+const BurgerIngredients = () => {
   const bun = ingredientTypes.bun;
   const sauce = ingredientTypes.sauce;
   const main = ingredientTypes.main;
   const [current, setCurrent] = useState(bun);
   const [ingredientInfo, setIngredeintInfo] = useState(null);
   const [isIngredientInfoOpened, setisIngredientInfoOpened] = useState(false);
+
+  const {constructorState, constructorDispatcher} = useContext(ConstructorContext);
 
   const ingredients = useContext(IngredientsContext);
 
@@ -32,14 +34,18 @@ const BurgerIngredients = ({ selectedIngredientIds }) => {
     event.key === "Escape" && closeModal();
   };
 
+  const addIngredient = (ingredient) => {
+    constructorDispatcher({type: "add", ingredient: ingredient} )
+  }
+
   const countNumber = (ingredient) => {
     if (ingredient.type !== bun) {
-      const sameIngredients = selectedIngredientIds.toppingIds.filter(
+      const sameIngredients = constructorState.toppingIds.filter(
         (id) => id === ingredient._id
       );
       return sameIngredients.length;
     }
-    return selectedIngredientIds.bunId === ingredient._id ? 2 : 0;
+    return constructorState.bunId === ingredient._id ? 2 : 0;
   };
 
   return (
@@ -75,7 +81,11 @@ const BurgerIngredients = ({ selectedIngredientIds }) => {
                     key={ingredient._id}
                     ingredient={ingredient}
                     count={countNumber(ingredient)}
-                    onIngredientClick={() => openModal(ingredient)}
+                    onLeftClick={() => openModal(ingredient)}
+                    onRightClick={(evt) => {
+                      evt.preventDefault();
+                      addIngredient(ingredient);
+                    }}
                   />
                 )
             )}
@@ -91,7 +101,11 @@ const BurgerIngredients = ({ selectedIngredientIds }) => {
                     key={ingredient._id}
                     ingredient={ingredient}
                     count={countNumber(ingredient)}
-                    onIngredientClick={() => openModal(ingredient)}
+                    onLeftClick={() => openModal(ingredient)}
+                    onRightClick={(evt) => {
+                      evt.preventDefault();
+                      addIngredient(ingredient);
+                    }}
                   />
                 )
             )}
@@ -107,7 +121,11 @@ const BurgerIngredients = ({ selectedIngredientIds }) => {
                     key={ingredient._id}
                     ingredient={ingredient}
                     count={countNumber(ingredient)}
-                    onIngredientClick={() => openModal(ingredient)}
+                    onLeftClick={() => openModal(ingredient)}
+                    onRightClick={(evt) => {
+                      evt.preventDefault();
+                      addIngredient(ingredient);
+                    }}
                   />
                 )
             )}
@@ -124,11 +142,5 @@ const BurgerIngredients = ({ selectedIngredientIds }) => {
   );
 };
 
-BurgerIngredients.propTypes = {
-  selectedIngredientIds: PropTypes.shape({
-    bunId: PropTypes.string,
-    toppingIds: PropTypes.arrayOf(PropTypes.string)
-  }),
-};
 
 export default BurgerIngredients;
