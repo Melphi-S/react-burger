@@ -8,8 +8,6 @@ import IngredientsContext from "../../context/ingredientsContext";
 import ConstructorContext from "../../context/constructorContext";
 import styles from "./App.module.css";
 
-// я уже добавил логику добавления ингредиентов в констуктор правым кликом по ним, поэтому начальное состояние оставил пустым
-// на всякий случай добавил пару id в начальное состояние
 const emptyConstructor = { bunId: '60d3b41abdacab0026a733c7', toppingIds: ['60d3b41abdacab0026a733cd'] };
 
 const reducer = (state, action) => {
@@ -39,6 +37,7 @@ const App = () => {
     currentApi
       .getIngredients()
       .then((res) => {
+        console.log(res.data);
         setIngredients(res.data);
       })
       .catch((err) => console.log(err));
