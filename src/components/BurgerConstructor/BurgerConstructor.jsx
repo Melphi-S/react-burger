@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useDrop } from "react-dnd";
 import {
   ConstructorElement,
   DragIcon,
@@ -8,7 +9,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import { deleteIngredient, resetConstructor } from "../../services/actions/constructor";
+import { addIngredient, deleteIngredient, resetConstructor } from "../../services/actions/constructor";
 import { postOrder, closeOrderInfo } from "../../services/actions/order";
 import styles from "./BurgerConstructor.module.scss";
 
@@ -59,9 +60,24 @@ const BurgerConstructor = () => {
     dispatch(postOrder(order));
   };
 
+  const handleDrop = (ingredient) => {
+    dispatch(addIngredient(ingredient));
+  };
+
+
+  const [{ isHover }, dropTarget] = useDrop({
+    accept: 'ingredients',
+    collect: monitor => ({
+      isHover: monitor.isOver()
+    }),
+    drop(ingredient) {
+      handleDrop(ingredient);
+    }
+  });
+
   return (
     <>
-      <div className={`${styles.burgerConstructor} mt-25`}>
+      <div className={`${styles.burgerConstructor} mt-25 ${isHover && styles.dropHover}`} ref={dropTarget}>
         {selectedBun ? (
           <div className="pr-5">
             <ConstructorElement
@@ -80,7 +96,7 @@ const BurgerConstructor = () => {
         {selectedToppings.length ? (
           <ul className={`${styles.burgerConstructor__list} pl-1 pr-4`}>
             {selectedToppings.map((ingredient, index) => (
-              <li className={styles.burgerConstructor__item} key={index}>
+              <li className={styles.burgerConstructor__item} key={index} draggable>
                 <DragIcon type="primary" />
                 <ConstructorElement
                   text={ingredient.info.name}
