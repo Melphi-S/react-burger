@@ -1,4 +1,5 @@
 import { useState, useContext, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   ConstructorElement,
   DragIcon,
@@ -7,120 +8,130 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import IngredientsContext from "../../context/ingredientsContext";
-import ConstructorContext from "../../context/constructorContext";
-import { currentApi } from "../../utils/Api";
+import { deleteIngredient, resetConstructor } from "../../services/actions/constructor";
+import { postOrder, closeOrderInfo } from "../../services/actions/order";
 import styles from "./BurgerConstructor.module.scss";
 
 const BurgerConstructor = () => {
-  const [isOrderDetailsOpened, setIsOrderDetailsOpened] = useState(false);
-  const [orderNumber, setOrderNumber] = useState(null);
+  const dispatch = useDispatch();
 
-  const { constructorState } =
-    useContext(ConstructorContext);
-  const ingredients = useContext(IngredientsContext);
-
-  const bun = ingredients.find(
-    (ingredient) => ingredient._id === constructorState.bunId
+  const { selectedToppings, selectedBun } = useSelector(
+    (state) => state.burgerConstructor
   );
-  const selectedIngredients = constructorState.toppingIds.map((id) =>
-    ingredients.find((ingredient) => ingredient._id === id)
+
+  const { isOrderInfoOpened, orderNumber, orderFailed } = useSelector(
+    (state) => state.order
   );
 
   const countTotalPrice = () => {
-    const bunsPrice = bun ? bun.price * 2 : 0;
-    const toppingPrice = selectedIngredients.reduce((sum, ingredient) => sum + ingredient.price, 0);
+    const bunsPrice = selectedBun ? selectedBun.info.price * 2 : 0;
+    const toppingPrice = selectedToppings.reduce(
+      (sum, ingredient) => sum + ingredient.info.price,
+      0
+    );
     return bunsPrice + toppingPrice;
-  }
-
-
-  const openModal = () => {
-    setIsOrderDetailsOpened(true);
   };
 
   const closeModal = () => {
-    setIsOrderDetailsOpened(false);
+    !orderFailed && dispatch(resetConstructor());
+    dispatch(closeOrderInfo());
   };
 
   const handleEscKeydown = (event) => {
     event.key === "Escape" && closeModal();
   };
 
-  const newOrder = {
-    ingredients: [...constructorState.toppingIds, constructorState.bunId],
+  const handleDeleteButton = (ingredient) => {
+    dispatch(deleteIngredient(ingredient));
   };
 
-  const makeNewOrder = () => {
-    currentApi
-      .postOrder(newOrder)
-      .then((res) => {
-        setOrderNumber(res.order.number);
-        openModal();
-      })
-      .catch((err) => console.log(err));
+  const newOrder =
+    selectedToppings.length && selectedBun
+      ? {
+          ingredients: [
+            ...selectedToppings.map((topping) => topping.info._id),
+            selectedBun.info._id,
+          ],
+        }
+      : null;
+
+  const makeNewOrder = (order) => {
+    dispatch(postOrder(order));
   };
 
   return (
     <>
       <div className={`${styles.burgerConstructor} mt-25`}>
-        {bun && (
+        {selectedBun ? (
           <div className="pr-5">
             <ConstructorElement
               type="top"
               isLocked={true}
-              text={`${bun.name} (верх)`}
-              price={bun.price}
-              thumbnail={bun.image}
+              text={`${selectedBun.info.name} (верх)`}
+              price={selectedBun.info.price}
+              thumbnail={selectedBun.info.image}
             />
           </div>
-        )}
-        {selectedIngredients.length && (
+        ) : 
+        <h1 className="text text_type_main-large mt-5 mb-5 pr-5">
+        Выберите булку
+      </h1>
+        }
+        {selectedToppings.length ? (
           <ul className={`${styles.burgerConstructor__list} pl-1 pr-4`}>
-            {selectedIngredients.map((ingredient, index) => (
+            {selectedToppings.map((ingredient, index) => (
               <li className={styles.burgerConstructor__item} key={index}>
                 <DragIcon type="primary" />
                 <ConstructorElement
-                  text={ingredient.name}
-                  price={ingredient.price}
-                  thumbnail={ingredient.image}
+                  text={ingredient.info.name}
+                  price={ingredient.info.price}
+                  thumbnail={ingredient.info.image}
+                  handleClose={() => handleDeleteButton(ingredient)}
                 />
               </li>
             ))}
           </ul>
-        )}
-        {bun && (
-        <div className="pr-5">
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={`${bun.name} (низ)`}
-            price={bun.price}
-            thumbnail={bun.image}
-          />
-        </div>
+        ) :
+        <h1 className="text text_type_main-large mt-5 mb-5 pr-5">
+        Выберите начинки
+      </h1>
+        }
+        {!!selectedBun && (
+          <div className="pr-5">
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={`${selectedBun.info.name} (низ)`}
+              price={selectedBun.info.price}
+              thumbnail={selectedBun.info.image}
+            />
+          </div>
         )}
 
         <div
           className={`${styles.burgerConstructor__buttonContainer} mt-6 pr-4`}
         >
           <div className={`${styles.burgerConstructor__totalPrice} mr-10`}>
-            <p className="text text_type_digits-medium mr-2">{countTotalPrice()}</p>
+            <p className="text text_type_digits-medium mr-2">
+              {countTotalPrice()}
+            </p>
             <CurrencyIcon type="primary" />
           </div>
           <Button
             htmlType="button"
             type="primary"
             size="large"
-            onClick={makeNewOrder}
+            onClick={() => makeNewOrder(newOrder)}
+            disabled = {!selectedToppings.length || !selectedBun}
           >
             Оформить заказ
           </Button>
         </div>
       </div>
 
-      {isOrderDetailsOpened && (
+      {isOrderInfoOpened && (
         <Modal closeModal={closeModal} onEscKeydown={handleEscKeydown}>
-          <OrderDetails number={orderNumber}/>
+          <OrderDetails number={orderNumber} />
         </Modal>
       )}
     </>

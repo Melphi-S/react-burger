@@ -1,65 +1,41 @@
-import { useState, useEffect, useReducer } from "react";
+import { useEffect } from "react";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import { currentApi } from "../../utils/Api";
-import { ingredientTypes } from "../../utils/consts";
-import IngredientsContext from "../../context/ingredientsContext";
-import ConstructorContext from "../../context/constructorContext";
+import { useDispatch, useSelector } from "react-redux";
+import { getIngredients } from "../../services/actions/ingredients";
 import styles from "./App.module.css";
 
-const emptyConstructor = { bunId: '60d3b41abdacab0026a733c7', toppingIds: ['60d3b41abdacab0026a733cd'] };
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "add":
-      return action.ingredient.type === ingredientTypes.bun
-        ? { ...state, bunId: action.ingredient._id }
-        : {
-            ...state,
-            toppingIds: [...state.toppingIds, action.ingredient._id],
-          };
-    default:
-      throw new Error(`Wrong type of action: ${action.type}`);
-  }
-};
-
 const App = () => {
-  const [ingredients, setIngredients] = useState([]);
+  const dispatch = useDispatch();
 
-  const [constructorState, constructorDispatcher] = useReducer(
-    reducer,
-    emptyConstructor,
-    undefined
+  const { ingredientsRequest, ingredientsFailed } = useSelector(
+    (store) => store.ingredients
   );
 
-  const getIngredientsFromApi = () => {
-    currentApi
-      .getIngredients()
-      .then((res) => {
-        console.log(res.data);
-        setIngredients(res.data);
-      })
-      .catch((err) => console.log(err));
-  };
-
   useEffect(() => {
-    getIngredientsFromApi();
-  }, []);
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
     <>
       <AppHeader />
-      {ingredients.length && (
+      {ingredientsRequest ? (
+        <div className={styles.spinner}></div>
+      ) : ingredientsFailed ? (
+        <div>
+          <h1 className="text text_type_main-large mt-30">
+            Что-то пошло не так...
+          </h1>
+          <h1 className="text text_type_main-large mt-15">
+            Попробуйте обновить страницу или свяжитесь с нами по телефону
+          </h1>
+          <h1 className="text text_type_main-large mt-15">322-22-32-22</h1>
+        </div>
+      ) : (
         <main className={styles.main}>
-          <IngredientsContext.Provider value={ingredients}>
-            <ConstructorContext.Provider
-              value={{ constructorState, constructorDispatcher }}
-            >
-              <BurgerIngredients />
-              <BurgerConstructor />
-            </ConstructorContext.Provider>
-          </IngredientsContext.Provider>
+          <BurgerIngredients />
+          <BurgerConstructor />
         </main>
       )}
     </>

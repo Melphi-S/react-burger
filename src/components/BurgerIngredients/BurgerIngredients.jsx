@@ -1,11 +1,12 @@
-import { useState, useContext, useMemo } from "react";
+import { useState, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import Ingredient from "../Ingredient/Ingredient";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { ingredientTypes } from "../../utils/consts";
-import IngredientsContext from "../../context/ingredientsContext";
-import ConstructorContext from "../../context/constructorContext";
+import { addIngredient } from "../../services/actions/constructor";
+import { openInfo, closeInfo } from "../../services/actions/ingredientInfo";
 import styles from "./BurgerIngredients.module.scss";
 
 const BurgerIngredients = () => {
@@ -13,39 +14,37 @@ const BurgerIngredients = () => {
   const sauce = ingredientTypes.sauce;
   const main = ingredientTypes.main;
   const [current, setCurrent] = useState(bun);
-  const [ingredientInfo, setIngredeintInfo] = useState(null);
-  const [isIngredientInfoOpened, setisIngredientInfoOpened] = useState(false);
 
-  const {constructorState, constructorDispatcher} = useContext(ConstructorContext);
+  const { ingredients } = useSelector(state => state.ingredients);
+  const { selectedToppings, selectedBun } = useSelector(state => state.burgerConstructor)
+  const { isViewedIngredient, viewedIngredient} = useSelector(state => state.ingredientInfo)
 
-  const ingredients = useContext(IngredientsContext);
+  const dispatch = useDispatch();
 
   const openModal = (ingredient) => {
-    setIngredeintInfo(ingredient);
-    setisIngredientInfoOpened(true);
+    dispatch(openInfo(ingredient))
   };
 
   const closeModal = () => {
-    setisIngredientInfoOpened(false);
-    setIngredeintInfo(null);
+    dispatch(closeInfo())
   };
 
   const handleEscKeydown = (event) => {
     event.key === "Escape" && closeModal();
   };
 
-  const addIngredient = (ingredient) => {
-    constructorDispatcher({type: "add", ingredient: ingredient} )
+  const handleRightClick = (ingredient) => {
+    dispatch(addIngredient(ingredient))
   }
 
   const countNumber = (ingredient) => {
     if (ingredient.type !== bun) {
-      const sameIngredients = constructorState.toppingIds.filter(
-        (id) => id === ingredient._id
+      const sameIngredients = selectedToppings.filter(
+        (topping) => topping.info._id === ingredient._id
       );
       return sameIngredients.length;
     }
-    return constructorState.bunId === ingredient._id ? 2 : 0;
+    return selectedBun ? (selectedBun.info._id === ingredient._id ? 2 : 0) : 0;
   };
 
   return (
@@ -84,7 +83,7 @@ const BurgerIngredients = () => {
                     onLeftClick={() => openModal(ingredient)}
                     onRightClick={(evt) => {
                       evt.preventDefault();
-                      addIngredient(ingredient);
+                      handleRightClick(ingredient);
                     }}
                   />
                 )
@@ -104,7 +103,7 @@ const BurgerIngredients = () => {
                     onLeftClick={() => openModal(ingredient)}
                     onRightClick={(evt) => {
                       evt.preventDefault();
-                      addIngredient(ingredient);
+                      handleRightClick(ingredient);
                     }}
                   />
                 )
@@ -124,7 +123,7 @@ const BurgerIngredients = () => {
                     onLeftClick={() => openModal(ingredient)}
                     onRightClick={(evt) => {
                       evt.preventDefault();
-                      addIngredient(ingredient);
+                      handleRightClick(ingredient);
                     }}
                   />
                 )
@@ -133,9 +132,9 @@ const BurgerIngredients = () => {
         </div>
       </div>
 
-      {isIngredientInfoOpened && (
+      {isViewedIngredient && (
         <Modal closeModal={closeModal} onEscKeydown={handleEscKeydown}>
-          <IngredientDetails ingredient={ingredientInfo} />
+          <IngredientDetails ingredient={viewedIngredient} />
         </Modal>
       )}
     </>
