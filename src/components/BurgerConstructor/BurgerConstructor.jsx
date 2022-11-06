@@ -1,15 +1,19 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import {
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
-  Button,
+  Button
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import { addIngredient, deleteIngredient, resetConstructor } from "../../services/actions/constructor";
+import Topping from "../Topping/Topping";
+import {
+  addIngredient,
+  deleteIngredient,
+  resetConstructor
+} from "../../services/actions/constructor";
 import { postOrder, closeOrderInfo } from "../../services/actions/order";
 import styles from "./BurgerConstructor.module.scss";
 
@@ -64,20 +68,35 @@ const BurgerConstructor = () => {
     dispatch(addIngredient(ingredient));
   };
 
-
   const [{ isHover }, dropTarget] = useDrop({
-    accept: 'ingredients',
-    collect: monitor => ({
-      isHover: monitor.isOver()
+    accept: "ingredients",
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
     }),
     drop(ingredient) {
       handleDrop(ingredient);
-    }
+    },
   });
+
+  const renderCard = useCallback((ingredient, index) => {
+    return (
+      <Topping
+        ingredient={ingredient}
+        key={ingredient.id}
+        index={index}
+        handleClose={() => handleDeleteButton(ingredient)}
+      ></Topping>
+    );
+  }, []);
 
   return (
     <>
-      <div className={`${styles.burgerConstructor} mt-25 ${isHover && styles.dropHover}`} ref={dropTarget}>
+      <div
+        className={`${styles.burgerConstructor} mt-25 ${
+          isHover && styles.dropHover
+        }`}
+        ref={dropTarget}
+      >
         {selectedBun ? (
           <div className="pr-5">
             <ConstructorElement
@@ -88,30 +107,22 @@ const BurgerConstructor = () => {
               thumbnail={selectedBun.info.image}
             />
           </div>
-        ) : 
-        <h1 className="text text_type_main-large mt-5 mb-5 pr-5">
-        Выберите булку
-      </h1>
-        }
+        ) : (
+          <h1 className="text text_type_main-large mt-5 mb-5 pr-5">
+            Выберите булку
+          </h1>
+        )}
         {selectedToppings.length ? (
           <ul className={`${styles.burgerConstructor__list} pl-1 pr-4`}>
-            {selectedToppings.map((ingredient, index) => (
-              <li className={styles.burgerConstructor__item} key={index} draggable>
-                <DragIcon type="primary" />
-                <ConstructorElement
-                  text={ingredient.info.name}
-                  price={ingredient.info.price}
-                  thumbnail={ingredient.info.image}
-                  handleClose={() => handleDeleteButton(ingredient)}
-                />
-              </li>
-            ))}
+            {selectedToppings.map((ingredient, index) =>
+              renderCard(ingredient, index)
+            )}
           </ul>
-        ) :
-        <h1 className="text text_type_main-large mt-5 mb-5 pr-5">
-        Выберите начинки
-      </h1>
-        }
+        ) : (
+          <h1 className="text text_type_main-large mt-5 mb-5 pr-5">
+            Выберите начинки
+          </h1>
+        )}
         {!!selectedBun && (
           <div className="pr-5">
             <ConstructorElement
@@ -138,7 +149,7 @@ const BurgerConstructor = () => {
             type="primary"
             size="large"
             onClick={() => makeNewOrder(newOrder)}
-            disabled = {!selectedToppings.length || !selectedBun}
+            disabled={!selectedToppings.length || !selectedBun}
           >
             Оформить заказ
           </Button>

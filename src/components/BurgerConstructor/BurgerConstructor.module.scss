@@ -33,14 +33,6 @@
         }
     }
 
-    &__item {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 8px;
-        cursor: grab;
-    }
-
     &__totalPrice {
         display: flex;
         align-items: center;

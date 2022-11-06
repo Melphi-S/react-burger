@@ -4,6 +4,7 @@ import {
   ADD_INGREDIENT,
   DELETE_INGREDIENT,
   RESET_CONSTRUCTOR,
+  SORT_CONSTRUCTOR
 } from "../actions/constructor";
 
 const constructorInitialState = {
@@ -33,6 +34,11 @@ export const constructorReducer = (state = constructorInitialState, action) => {
           }
     case RESET_CONSTRUCTOR:
       return constructorInitialState;
+    case SORT_CONSTRUCTOR:
+      return {
+        ...state,
+        selectedToppings: action.payload
+      }
     default:
       return state;
   }
