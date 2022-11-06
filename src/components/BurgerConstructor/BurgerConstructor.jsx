@@ -4,7 +4,7 @@ import { useDrop } from "react-dnd";
 import {
   ConstructorElement,
   CurrencyIcon,
-  Button
+  Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
@@ -12,7 +12,7 @@ import Topping from "../Topping/Topping";
 import {
   addIngredient,
   deleteIngredient,
-  resetConstructor
+  resetConstructor,
 } from "../../services/actions/constructor";
 import { postOrder, closeOrderInfo } from "../../services/actions/order";
 import styles from "./BurgerConstructor.module.scss";
@@ -108,20 +108,22 @@ const BurgerConstructor = () => {
             />
           </div>
         ) : (
-          <h1 className="text text_type_main-large mt-5 mb-5 pr-5">
+          <p className="text text_type_main-large mt-5 mb-5 pr-5">
             Выберите булку
-          </h1>
+          </p>
         )}
         {selectedToppings.length ? (
-          <ul className={`${styles.burgerConstructor__list} pl-1 pr-4`}>
+          <ul
+            className={`${styles.burgerConstructor__list} pl-1 pr-4`}
+          >
             {selectedToppings.map((ingredient, index) =>
               renderCard(ingredient, index)
             )}
           </ul>
         ) : (
-          <h1 className="text text_type_main-large mt-5 mb-5 pr-5">
+          <p className="text text_type_main-large mt-5 mb-5 pr-5">
             Выберите начинки
-          </h1>
+          </p>
         )}
         {!!selectedBun && (
           <div className="pr-5">
