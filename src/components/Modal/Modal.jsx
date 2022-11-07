@@ -7,12 +7,16 @@ import PropTypes from "prop-types";
 
 const modalsContainer = document.querySelector("#modals");
 
-const Modal = ({ closeModal, onEscKeydown, children }) => {
+const Modal = ({ closeModal, children }) => {
   useEffect(() => {
-    document.addEventListener("keydown", onEscKeydown);
+    const handleEscKeydown = (event) => {
+      event.key === "Escape" && closeModal();
+    };
+
+    document.addEventListener("keydown", handleEscKeydown);
 
     return () => {
-      document.removeEventListener("keydown", onEscKeydown);
+      document.removeEventListener("keydown", handleEscKeydown);
     };
   }, []);
 

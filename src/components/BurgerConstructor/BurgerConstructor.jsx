@@ -44,10 +44,6 @@ const BurgerConstructor = () => {
     dispatch(closeOrderInfo());
   };
 
-  const handleEscKeydown = (event) => {
-    event.key === "Escape" && closeModal();
-  };
-
   const handleDeleteButton = (ingredient) => {
     dispatch(deleteIngredient(ingredient));
   };
@@ -162,7 +158,7 @@ const BurgerConstructor = () => {
       </div>
 
       {isOrderInfoOpened && (
-        <Modal closeModal={closeModal} onEscKeydown={handleEscKeydown}>
+        <Modal closeModal={closeModal}>
           <OrderDetails number={orderNumber} />
         </Modal>
       )}

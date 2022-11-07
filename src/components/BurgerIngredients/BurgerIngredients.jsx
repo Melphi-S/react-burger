@@ -34,10 +34,6 @@ const BurgerIngredients = () => {
     dispatch(closeInfo());
   };
 
-  const handleEscKeydown = (event) => {
-    event.key === "Escape" && closeModal();
-  };
-
   const handleRightClick = (ingredient) => {
     dispatch(addIngredient(ingredient));
   };
@@ -180,7 +176,7 @@ const BurgerIngredients = () => {
       </div>
 
       {isViewedIngredient && (
-        <Modal closeModal={closeModal} onEscKeydown={handleEscKeydown}>
+        <Modal closeModal={closeModal}>
           <IngredientDetails ingredient={viewedIngredient} />
         </Modal>
       )}
