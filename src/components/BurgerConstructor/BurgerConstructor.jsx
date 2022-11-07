@@ -67,10 +67,11 @@ const BurgerConstructor = () => {
     dispatch(addIngredient(ingredient));
   };
 
-  const [{ isHover }, dropTarget] = useDrop({
+  const [{ isHover, canDrop }, dropTarget] = useDrop({
     accept: "ingredients",
     collect: (monitor) => ({
       isHover: monitor.isOver(),
+      canDrop: monitor.canDrop()
     }),
     drop(ingredient) {
       handleDrop(ingredient);
@@ -90,10 +91,14 @@ const BurgerConstructor = () => {
     [selectedToppings]
   );
 
+  // const dropStatus = isHover ? hover 
+
   return (
     <>
       <div
         className={`${styles.burgerConstructor} mt-25 ${
+          canDrop & !isHover && styles.dropActive
+        } ${
           isHover && styles.dropHover
         }`}
         ref={dropTarget}
