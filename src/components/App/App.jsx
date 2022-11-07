@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions/ingredients";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import styles from "./App.module.css";
+import styles from "./App.module.scss";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -26,13 +26,13 @@ const App = () => {
         <div className={styles.spinner}></div>
       ) : ingredientsFailed ? (
         <div>
-          <h1 className="text text_type_main-large mt-30">
+          <p className="text text_type_main-large mt-30">
             Что-то пошло не так...
-          </h1>
-          <h1 className="text text_type_main-large mt-15">
+          </p>
+          <p className="text text_type_main-large mt-15">
             Попробуйте обновить страницу или свяжитесь с нами по телефону
-          </h1>
-          <h1 className="text text_type_main-large mt-15">322-22-32-22</h1>
+          </p>
+          <p className="text text_type_main-large mt-15">322-22-32-22</p>
         </div>
       ) : (
         <main className={styles.main}>

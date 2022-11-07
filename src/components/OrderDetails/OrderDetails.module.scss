@@ -17,7 +17,6 @@
     -webkit-mask: linear-gradient(rgba(0, 0, 0, 0.1), #000000 90%);
     transform-origin: 50% 60%;
     transform: perspective(300px) rotateX(66deg);
-    animation: spinner-wiggle 1.2s infinite;
 }
 
 .spinner:before,

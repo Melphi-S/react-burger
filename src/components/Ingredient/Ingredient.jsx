@@ -59,9 +59,8 @@ const Ingredient = ({ ingredient, onLeftClick, onRightClick }) => {
 
 Ingredient.propTypes = {
   ingredient: PropTypes.object.isRequired,
-  count: PropTypes.number,
   onLeftClick: PropTypes.func.isRequired,
-  onRightClick: PropTypes.func.isRequired,
+  onRightClick: PropTypes.func.isRequired
 };
 
 export default Ingredient;

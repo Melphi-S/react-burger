@@ -18,7 +18,7 @@ const Modal = ({ closeModal, children }) => {
     return () => {
       document.removeEventListener("keydown", handleEscKeydown);
     };
-  }, []);
+  }, [closeModal]);
 
   return createPortal(
     <>
@@ -40,8 +40,7 @@ const Modal = ({ closeModal, children }) => {
 
 Modal.propTypes = {
   closeModal: PropTypes.func.isRequired,
-  onEscKeydown: PropTypes.func.isRequired,
-  children: PropTypes.element.isRequired,
+  children: PropTypes.element.isRequired
 };
 
 export default Modal;

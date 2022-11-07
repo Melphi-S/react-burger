@@ -10,11 +10,11 @@ const OrderDetails = ({ number }) => {
     <div className={styles.spinner}></div>
   ) : orderFailed ? (
     <div className={`${styles.container} mt-30 mb-30`}>
-      <h1 className="text text_type_main-default">Что-то пошло не так...</h1>
-      <h1 className="text text_type_main-default mt-8">
+      <p className="text text_type_main-default">Что-то пошло не так...</p>
+      <p className="text text_type_main-default mt-8">
         Попробуйте оформить заказ повторно или свяжитесь с нами по телефону
-      </h1>
-      <h1 className="text text_type_main-large mt-8">322-22-32-22</h1>
+      </p>
+      <p className="text text_type_main-large mt-8">322-22-32-22</p>
     </div>
   ) : (
     <div className={`${styles.container} mt-30 mb-30`}>

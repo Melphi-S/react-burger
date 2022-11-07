@@ -7,6 +7,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./Topping.module.scss";
 import { sortConstructor } from "../../services/actions/constructor";
+import PropTypes from "prop-types";
 
 const Topping = ({ index, handleClose, ingredient }) => {
   const { selectedToppings } = useSelector((state) => state.burgerConstructor);
@@ -79,5 +80,12 @@ const Topping = ({ index, handleClose, ingredient }) => {
     </li>
   );
 };
+
+Topping.propTypes = {
+  ingredient: PropTypes.object.isRequired,
+  index: PropTypes.number.isRequired,
+  handleClose: PropTypes.func.isRequired
+};
+
 
 export default Topping;

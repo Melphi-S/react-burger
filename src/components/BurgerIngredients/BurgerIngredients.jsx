@@ -17,9 +17,7 @@ const BurgerIngredients = () => {
   const [current, setCurrent] = useState(bun);
 
   const { ingredients } = useSelector((state) => state.ingredients);
-  const { selectedToppings, selectedBun } = useSelector(
-    (state) => state.burgerConstructor
-  );
+
   const { isViewedIngredient, viewedIngredient } = useSelector(
     (state) => state.ingredientInfo
   );
