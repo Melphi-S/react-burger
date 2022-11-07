@@ -30,11 +30,11 @@ const BurgerConstructor = () => {
 
   const countTotalPrice = useMemo(() => {
     const bunsPrice = selectedBun ? selectedBun.info.price * 2 : 0;
-    const toppingPrice = selectedToppings.reduce(
+    const totalPrice = selectedToppings.reduce(
       (sum, ingredient) => sum + ingredient.info.price,
-      0
+      bunsPrice
     );
-    return bunsPrice + toppingPrice;
+    return totalPrice;
   }, [selectedBun, selectedToppings]);
 
 
@@ -52,7 +52,7 @@ const BurgerConstructor = () => {
   selectedToppings.length && selectedBun
   ? {
       ingredients: [
-        ...selectedToppings.map((topping) => topping.info._id),
+        selectedBun.info._id, ...selectedToppings.map((topping) => topping.info._id),
         selectedBun.info._id,
       ],
     }
@@ -87,7 +87,7 @@ const BurgerConstructor = () => {
           handleClose={() => handleDeleteButton(ingredient)}
         ></Topping>
       )),
-    [selectedToppings, handleDeleteButton]
+    [selectedToppings]
   );
 
   return (

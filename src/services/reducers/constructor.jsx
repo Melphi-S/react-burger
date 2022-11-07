@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import {
   ADD_INGREDIENT,
   DELETE_INGREDIENT,
@@ -17,17 +16,17 @@ const bun = ingredientTypes.bun
 export const constructorReducer = (state = constructorInitialState, action) => {
   switch (action.type) {
     case ADD_INGREDIENT:
-      return action.payload.type !== bun
+      return action.payload.ingredient.type !== bun
         ? {
             ...state,
             selectedToppings: [
               ...state.selectedToppings,
-              { info: action.payload, id: nanoid(8) },
+              { info: action.payload.ingredient, id: action.payload.id },
             ]
           }
         : {
             ...state,
-            selectedBun: { info: action.payload, id: nanoid(8) }
+            selectedBun: { info: action.payload.ingredient, id: action.payload.id }
           };
     case DELETE_INGREDIENT:
       return {

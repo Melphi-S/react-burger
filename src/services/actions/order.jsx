@@ -18,7 +18,7 @@ export const postOrder = (order) => {
           res.success &&
           dispatch({
             type: POST_ORDER_SUCCESS,
-            payload: res.order.number
+            payload: res.order.number,
           })
       )
       .catch((err) =>
@@ -29,10 +29,6 @@ export const postOrder = (order) => {
   };
 };
 
-export const closeOrderInfo = () => {
-  return function (dispatch) {
-    dispatch({
-      type: CLOSE_ORDER_INFO
-    });
-  };
-};
+export const closeOrderInfo = () => ({
+  type: CLOSE_ORDER_INFO,
+});

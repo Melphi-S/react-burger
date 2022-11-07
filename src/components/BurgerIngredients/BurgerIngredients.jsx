@@ -18,7 +18,7 @@ const BurgerIngredients = () => {
 
   const { ingredients } = useSelector((state) => state.ingredients);
 
-  const { isViewedIngredient, viewedIngredient } = useSelector(
+  const { viewedIngredient } = useSelector(
     (state) => state.ingredientInfo
   );
 
@@ -173,7 +173,7 @@ const BurgerIngredients = () => {
         </div>
       </div>
 
-      {isViewedIngredient && (
+      {viewedIngredient && (
         <Modal closeModal={closeModal}>
           <IngredientDetails ingredient={viewedIngredient} />
         </Modal>
