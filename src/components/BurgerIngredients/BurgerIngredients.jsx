@@ -1,13 +1,12 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useInView } from "react-intersection-observer";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import Ingredient from "../Ingredient/Ingredient";
+import IngredientsSet from "../IngredientsSet/IngredientsSet";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import { ingredientTypes } from "../../utils/consts";
-import { addIngredient } from "../../services/actions/constructor";
-import { openInfo, closeInfo } from "../../services/actions/ingredientInfo";
+import { closeInfo } from "../../services/actions/ingredientInfo";
 import styles from "./BurgerIngredients.module.scss";
 
 const BurgerIngredients = () => {
@@ -16,24 +15,12 @@ const BurgerIngredients = () => {
   const main = ingredientTypes.main;
   const [current, setCurrent] = useState(bun);
 
-  const { ingredients } = useSelector((state) => state.ingredients);
-
-  const { viewedIngredient } = useSelector(
-    (state) => state.ingredientInfo
-  );
+  const { viewedIngredient } = useSelector((state) => state.ingredientInfo);
 
   const dispatch = useDispatch();
 
-  const openModal = (ingredient) => {
-    dispatch(openInfo(ingredient));
-  };
-
   const closeModal = () => {
     dispatch(closeInfo());
-  };
-
-  const handleRightClick = (ingredient) => {
-    dispatch(addIngredient(ingredient));
   };
 
   const onTabClick = (tab) => {
@@ -62,63 +49,6 @@ const BurgerIngredients = () => {
       setCurrent(main);
     }
   }, [inViewBun, inViewMain, inViewSauce, bun, main, sauce]);
-
-  const buns = useMemo(
-    () =>
-      ingredients.map(
-        (ingredient) =>
-          ingredient.type === bun && (
-            <Ingredient
-              key={ingredient._id}
-              ingredient={ingredient}
-              onLeftClick={() => openModal(ingredient)}
-              onRightClick={(evt) => {
-                evt.preventDefault();
-                handleRightClick(ingredient);
-              }}
-            />
-          )
-      ),
-    [ingredients]
-  );
-
-  const mains = useMemo(
-    () =>
-      ingredients.map(
-        (ingredient) =>
-          ingredient.type === main && (
-            <Ingredient
-              key={ingredient._id}
-              ingredient={ingredient}
-              onLeftClick={() => openModal(ingredient)}
-              onRightClick={(evt) => {
-                evt.preventDefault();
-                handleRightClick(ingredient);
-              }}
-            />
-          )
-      ),
-    [ingredients]
-  );
-
-  const sauces = useMemo(
-    () =>
-      ingredients.map(
-        (ingredient) =>
-          ingredient.type === sauce && (
-            <Ingredient
-              key={ingredient._id}
-              ingredient={ingredient}
-              onLeftClick={() => openModal(ingredient)}
-              onRightClick={(evt) => {
-                evt.preventDefault();
-                handleRightClick(ingredient);
-              }}
-            />
-          )
-      ),
-    [ingredients]
-  );
 
   return (
     <>
@@ -150,26 +80,21 @@ const BurgerIngredients = () => {
           </Tab>
         </nav>
         <div className={`${styles.burgerIngredients} mt-10`}>
-          <h2 id={bun} className="text text_type_main-medium" ref={bunRef}>
-            Булки
-          </h2>
-          <ul className={`${styles.ingredientSet} pl-4 mt-6 mb-6`}>{buns}</ul>
-          <h2
-            id={sauce}
-            className="text text_type_main-medium mt-10"
+          <IngredientsSet
+            type={bun}
+            name={"Булки"}
+            ref={bunRef}
+          ></IngredientsSet>
+          <IngredientsSet
+            type={sauce}
+            name={"Соусы"}
             ref={sauceRef}
-          >
-            Соусы
-          </h2>
-          <ul className={`${styles.ingredientSet} pl-4 mt-6 mb-6`}>{sauces}</ul>
-          <h2
-            id={main}
-            className="text text_type_main-medium mt-10"
+          ></IngredientsSet>
+          <IngredientsSet
+            type={main}
+            name={"Начинки"}
             ref={mainRef}
-          >
-            Начинки
-          </h2>
-          <ul className={`${styles.ingredientSet} pl-4 mt-6 mb-6`}>{mains}</ul>
+          ></IngredientsSet>
         </div>
       </div>
 

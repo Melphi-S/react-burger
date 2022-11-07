@@ -37,8 +37,6 @@ const BurgerConstructor = () => {
     return totalPrice;
   }, [selectedBun, selectedToppings]);
 
-
-
   const closeModal = () => {
     !orderFailed && dispatch(resetConstructor());
     dispatch(closeOrderInfo());
@@ -48,16 +46,19 @@ const BurgerConstructor = () => {
     dispatch(deleteIngredient(ingredient));
   };
 
-  const newOrder = useMemo(() => 
-  selectedToppings.length && selectedBun
-  ? {
-      ingredients: [
-        selectedBun.info._id, ...selectedToppings.map((topping) => topping.info._id),
-        selectedBun.info._id,
-      ],
-    }
-  : null, [selectedBun, selectedToppings]
-  )
+  const newOrder = useMemo(
+    () =>
+      selectedToppings.length && selectedBun
+        ? {
+            ingredients: [
+              selectedBun.info._id,
+              ...selectedToppings.map((topping) => topping.info._id),
+              selectedBun.info._id,
+            ],
+          }
+        : null,
+    [selectedBun, selectedToppings]
+  );
 
   const makeNewOrder = (order) => {
     dispatch(postOrder(order));
@@ -71,7 +72,7 @@ const BurgerConstructor = () => {
     accept: "ingredients",
     collect: (monitor) => ({
       isHover: monitor.isOver(),
-      canDrop: monitor.canDrop()
+      canDrop: monitor.canDrop(),
     }),
     drop(ingredient) {
       handleDrop(ingredient);
@@ -91,16 +92,12 @@ const BurgerConstructor = () => {
     [selectedToppings]
   );
 
-  // const dropStatus = isHover ? hover 
-
   return (
     <>
       <div
         className={`${styles.burgerConstructor} mt-25 ${
           canDrop & !isHover && styles.dropActive
-        } ${
-          isHover && styles.dropHover
-        }`}
+        } ${isHover && styles.dropHover}`}
         ref={dropTarget}
       >
         {selectedBun ? (
@@ -119,9 +116,7 @@ const BurgerConstructor = () => {
           </p>
         )}
         {selectedToppings.length ? (
-          <ul
-            className={`${styles.burgerConstructor__list} pl-1 pr-4`}
-          >
+          <ul className={`${styles.burgerConstructor__list} pl-1 pr-4`}>
             {renderIngredients}
           </ul>
         ) : (
