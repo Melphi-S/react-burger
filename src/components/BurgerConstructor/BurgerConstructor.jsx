@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useCallback } from "react";
+import { useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import {
@@ -28,14 +28,16 @@ const BurgerConstructor = () => {
     (state) => state.order
   );
 
-  const countTotalPrice = () => {
+  const countTotalPrice = useMemo(() => {
     const bunsPrice = selectedBun ? selectedBun.info.price * 2 : 0;
     const toppingPrice = selectedToppings.reduce(
       (sum, ingredient) => sum + ingredient.info.price,
       0
     );
     return bunsPrice + toppingPrice;
-  };
+  }, [selectedBun, selectedToppings]);
+
+
 
   const closeModal = () => {
     !orderFailed && dispatch(resetConstructor());
@@ -50,15 +52,16 @@ const BurgerConstructor = () => {
     dispatch(deleteIngredient(ingredient));
   };
 
-  const newOrder =
-    selectedToppings.length && selectedBun
-      ? {
-          ingredients: [
-            ...selectedToppings.map((topping) => topping.info._id),
-            selectedBun.info._id,
-          ],
-        }
-      : null;
+  const newOrder = useMemo(() => 
+  selectedToppings.length && selectedBun
+  ? {
+      ingredients: [
+        ...selectedToppings.map((topping) => topping.info._id),
+        selectedBun.info._id,
+      ],
+    }
+  : null, [selectedBun, selectedToppings]
+  )
 
   const makeNewOrder = (order) => {
     dispatch(postOrder(order));
@@ -78,16 +81,18 @@ const BurgerConstructor = () => {
     },
   });
 
-  const renderCard = useCallback((ingredient, index) => {
-    return (
-      <Topping
-        ingredient={ingredient}
-        key={ingredient.id}
-        index={index}
-        handleClose={() => handleDeleteButton(ingredient)}
-      ></Topping>
-    );
-  }, []);
+  const renderIngredients = useMemo(
+    () =>
+      selectedToppings.map((ingredient, index) => (
+        <Topping
+          ingredient={ingredient}
+          key={ingredient.id}
+          index={index}
+          handleClose={() => handleDeleteButton(ingredient)}
+        ></Topping>
+      )),
+    [selectedToppings]
+  );
 
   return (
     <>
@@ -116,9 +121,7 @@ const BurgerConstructor = () => {
           <ul
             className={`${styles.burgerConstructor__list} pl-1 pr-4`}
           >
-            {selectedToppings.map((ingredient, index) =>
-              renderCard(ingredient, index)
-            )}
+            {renderIngredients}
           </ul>
         ) : (
           <p className="text text_type_main-large mt-5 mb-5 pr-5">
@@ -142,7 +145,7 @@ const BurgerConstructor = () => {
         >
           <div className={`${styles.burgerConstructor__totalPrice} mr-10`}>
             <p className="text text_type_digits-medium mr-2">
-              {countTotalPrice()}
+              {countTotalPrice}
             </p>
             <CurrencyIcon type="primary" />
           </div>

@@ -21,7 +21,7 @@ export const deleteIngredient = (ingredient) => {
   };
 };
 
-export const resetConstructor = (ingredient) => {
+export const resetConstructor = () => {
   return function (dispatch) {
     dispatch({
       type: RESET_CONSTRUCTOR,
@@ -29,14 +29,14 @@ export const resetConstructor = (ingredient) => {
   };
 };
 
-export const sortConstructor = (toppings, dragIndex, dropIndex) => {
+export const sortConstructor = (toppings, dragIndex, hoverIndex) => {
   const dragTopping = toppings[dragIndex];
   toppings.splice(dragIndex, 1);
-  toppings.splice(dropIndex, 0, dragTopping);
+  toppings.splice(hoverIndex, 0, dragTopping);
   return function (dispatch) {
     dispatch({
       type: SORT_CONSTRUCTOR,
-      payload: [...toppings]
+      payload: [...toppings],
     });
   };
 };

@@ -69,15 +69,62 @@ const BurgerIngredients = () => {
     }
   }, [inViewBun, inViewMain, inViewSauce]);
 
-  const countNumber = (ingredient) => {
-    if (ingredient.type !== bun) {
-      const sameIngredients = selectedToppings.filter(
-        (topping) => topping.info._id === ingredient._id
-      );
-      return sameIngredients.length;
-    }
-    return selectedBun ? (selectedBun.info._id === ingredient._id ? 2 : 0) : 0;
-  };
+  const buns = useMemo(
+    () =>
+      ingredients.map(
+        (ingredient) =>
+          ingredient.type === bun && (
+            <Ingredient
+              key={ingredient._id}
+              ingredient={ingredient}
+              onLeftClick={() => openModal(ingredient)}
+              onRightClick={(evt) => {
+                evt.preventDefault();
+                handleRightClick(ingredient);
+              }}
+            />
+          )
+      ),
+    [ingredients]
+  );
+
+  const mains = useMemo(
+    () =>
+      ingredients.map(
+        (ingredient) =>
+          ingredient.type === main && (
+            <Ingredient
+              key={ingredient._id}
+              ingredient={ingredient}
+              onLeftClick={() => openModal(ingredient)}
+              onRightClick={(evt) => {
+                evt.preventDefault();
+                handleRightClick(ingredient);
+              }}
+            />
+          )
+      ),
+    [ingredients]
+  );
+
+  const sauces = useMemo(
+    () =>
+      ingredients.map(
+        (ingredient) =>
+          ingredient.type === sauce && (
+            <Ingredient
+              key={ingredient._id}
+              ingredient={ingredient}
+              onLeftClick={() => openModal(ingredient)}
+              onRightClick={(evt) => {
+                evt.preventDefault();
+                handleRightClick(ingredient);
+              }}
+            />
+          )
+      ),
+    [ingredients]
+  );
 
   return (
     <>
@@ -112,23 +159,7 @@ const BurgerIngredients = () => {
           <h2 id={bun} className="text text_type_main-medium" ref={bunRef}>
             Булки
           </h2>
-          <ul className={`${styles.ingredientSet} pl-4 mt-6 mb-6`}>
-            {ingredients.map(
-              (ingredient) =>
-                ingredient.type === bun && (
-                  <Ingredient
-                    key={ingredient._id}
-                    ingredient={ingredient}
-                    count={countNumber(ingredient)}
-                    onLeftClick={() => openModal(ingredient)}
-                    onRightClick={(evt) => {
-                      evt.preventDefault();
-                      handleRightClick(ingredient);
-                    }}
-                  />
-                )
-            )}
-          </ul>
+          <ul className={`${styles.ingredientSet} pl-4 mt-6 mb-6`}>{buns}</ul>
           <h2
             id={sauce}
             className="text text_type_main-medium mt-10"
@@ -136,23 +167,7 @@ const BurgerIngredients = () => {
           >
             Соусы
           </h2>
-          <ul className={`${styles.ingredientSet} pl-4 mt-6 mb-6`}>
-            {ingredients.map(
-              (ingredient) =>
-                ingredient.type === sauce && (
-                  <Ingredient
-                    key={ingredient._id}
-                    ingredient={ingredient}
-                    count={countNumber(ingredient)}
-                    onLeftClick={() => openModal(ingredient)}
-                    onRightClick={(evt) => {
-                      evt.preventDefault();
-                      handleRightClick(ingredient);
-                    }}
-                  />
-                )
-            )}
-          </ul>
+          <ul className={`${styles.ingredientSet} pl-4 mt-6 mb-6`}>{sauces}</ul>
           <h2
             id={main}
             className="text text_type_main-medium mt-10"
@@ -160,23 +175,7 @@ const BurgerIngredients = () => {
           >
             Начинки
           </h2>
-          <ul className={`${styles.ingredientSet} pl-4 mt-6 mb-6`}>
-            {ingredients.map(
-              (ingredient) =>
-                ingredient.type === main && (
-                  <Ingredient
-                    key={ingredient._id}
-                    ingredient={ingredient}
-                    count={countNumber(ingredient)}
-                    onLeftClick={() => openModal(ingredient)}
-                    onRightClick={(evt) => {
-                      evt.preventDefault();
-                      handleRightClick(ingredient);
-                    }}
-                  />
-                )
-            )}
-          </ul>
+          <ul className={`${styles.ingredientSet} pl-4 mt-6 mb-6`}>{mains}</ul>
         </div>
       </div>
 
