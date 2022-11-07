@@ -87,7 +87,7 @@ const BurgerConstructor = () => {
           handleClose={() => handleDeleteButton(ingredient)}
         ></Topping>
       )),
-    [selectedToppings]
+    [selectedToppings, handleDeleteButton]
   );
 
   return (

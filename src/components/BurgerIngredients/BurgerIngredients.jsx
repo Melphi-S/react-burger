@@ -61,7 +61,7 @@ const BurgerIngredients = () => {
     } else if (inViewMain) {
       setCurrent(main);
     }
-  }, [inViewBun, inViewMain, inViewSauce]);
+  }, [inViewBun, inViewMain, inViewSauce, bun, main, sauce]);
 
   const buns = useMemo(
     () =>

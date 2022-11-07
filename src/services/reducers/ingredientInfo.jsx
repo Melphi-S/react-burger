@@ -1,4 +1,3 @@
-import { isAsyncThunkAction } from "@reduxjs/toolkit";
 import {
   OPEN_INGREDIENT_INFO,
   CLOSE_INGREDIENT_INFO,
