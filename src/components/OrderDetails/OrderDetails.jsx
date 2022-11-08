@@ -8,8 +8,8 @@ const OrderDetails = ({ number }) => {
 
   return (
     <>
-      {orderRequest && <div className={styles.spinner}></div>}
-      {orderFailed && (
+      {!!orderRequest && <div className={styles.spinner}></div>}
+      {!!orderFailed && (
         <div className={`${styles.container} mt-30 mb-30`}>
           <p className="text text_type_main-default">Что-то пошло не так...</p>
           <p className="text text_type_main-default mt-8">
@@ -18,7 +18,7 @@ const OrderDetails = ({ number }) => {
           <p className="text text_type_main-large mt-8">322-22-32-22</p>
         </div>
       )}
-      {!orderRequest & !orderFailed && (
+      {!orderRequest & !orderFailed ? (
         <div className={`${styles.container} mt-30 mb-30`}>
           <p className="text text_type_digits-large mb-8">{number}</p>
           <p className="text text_type_main-medium">идентификатор заказа</p>
@@ -30,7 +30,7 @@ const OrderDetails = ({ number }) => {
             Дождитесь готовности на орбитальной станции
           </p>
         </div>
-      )}
+      ) : null}
     </>
   );
 };

@@ -4,6 +4,7 @@ import Ingredient from "../Ingredient/Ingredient";
 import { addIngredient } from "../../services/actions/constructor";
 import { openInfo } from "../../services/actions/ingredientInfo";
 import styles from "./IngredientsSet.module.scss";
+import PropTypes from "prop-types";
 
 const IngredientsSet = React.forwardRef(({ name, type }, ref ) => {
   const dispatch = useDispatch();
@@ -45,5 +46,10 @@ const IngredientsSet = React.forwardRef(({ name, type }, ref ) => {
     </>
   );
 });
+
+IngredientsSet.propTypes = {
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired
+};
 
 export default IngredientsSet;

@@ -22,8 +22,8 @@ const App = () => {
   return (
     <>
       <AppHeader />
-      {ingredientsRequest && <div className={styles.spinner}></div>}
-      {ingredientsFailed && (
+      {!!ingredientsRequest && <div className={styles.spinner}></div>}
+      {!!ingredientsFailed && (
         <div>
           <p className="text text_type_main-large mt-30">
             Что-то пошло не так...
@@ -34,14 +34,14 @@ const App = () => {
           <p className="text text_type_main-large mt-15">322-22-32-22</p>
         </div>
       )}
-      {!ingredientsRequest & !ingredientsFailed && (
+      {!ingredientsRequest & !ingredientsFailed ? (
         <main className={styles.main}>
           <DndProvider backend={HTML5Backend}>
             <BurgerIngredients />
             <BurgerConstructor />
           </DndProvider>
         </main>
-      )}
+      ) : null}
     </>
   );
 };
