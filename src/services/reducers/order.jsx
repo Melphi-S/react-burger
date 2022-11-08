@@ -17,7 +17,8 @@ export const orderReducer = (state = orderInitialState, action) => {
       case POST_ORDER_REQUEST:
         return {
           ...state,
-          orderRequest: true
+          orderRequest: true,
+          isOrderInfoOpened: true
         };
       case POST_ORDER_SUCCESS:
         return {
@@ -25,7 +26,6 @@ export const orderReducer = (state = orderInitialState, action) => {
           orderRequest: false,
           orderFailed: false,
           orderNumber: action.payload,
-          isOrderInfoOpened: true
         };
       case POST_ORDER_FAILED:
         return {
