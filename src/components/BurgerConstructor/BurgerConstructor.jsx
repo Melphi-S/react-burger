@@ -1,108 +1,169 @@
-import { useState } from "react";
+import { useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useDrop } from "react-dnd";
 import {
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import { ingredient } from "../../utils/consts";
+import Topping from "../Topping/Topping";
+import {
+  addIngredient,
+  deleteIngredient,
+  resetConstructor,
+} from "../../services/actions/constructor";
+import { postOrder, closeOrderInfo } from "../../services/actions/order";
 import styles from "./BurgerConstructor.module.scss";
-import PropTypes from "prop-types";
 
-const BurgerConstructor = ({ ingredients, selectedIngredientIds }) => {
-  const [ingredientIds, setSelectedIds] = useState(selectedIngredientIds);
-  const [isOrderDetailsOpened, setIsOrderDetailsOpened] = useState(false);
-  const bun = ingredients.find(
-    (ingredient) => ingredient._id === ingredientIds.bunId
-  );
-  const selectedIngredients = ingredientIds.toppingIds.map((id) =>
-    ingredients.find((ingredient) => ingredient._id === id)
-  );
-  const totalPrice =
-    bun.price * 2 +
-    selectedIngredients.reduce((sum, ingredient) => sum + ingredient.price, 0);
+const BurgerConstructor = () => {
+  const dispatch = useDispatch();
 
-  const openModal = () => {
-    setIsOrderDetailsOpened(true);
-  };
+  const { selectedToppings, selectedBun } = useSelector(
+    (state) => state.burgerConstructor
+  );
+
+  const { isOrderInfoOpened, orderNumber, orderFailed } = useSelector(
+    (state) => state.order
+  );
+
+  const countTotalPrice = useMemo(() => {
+    const bunsPrice = selectedBun ? selectedBun.info.price * 2 : 0;
+    const totalPrice = selectedToppings.reduce(
+      (sum, ingredient) => sum + ingredient.info.price,
+      bunsPrice
+    );
+    return totalPrice;
+  }, [selectedBun, selectedToppings]);
 
   const closeModal = () => {
-    setIsOrderDetailsOpened(false);
+    !orderFailed && dispatch(resetConstructor());
+    dispatch(closeOrderInfo());
   };
 
-  const handleEscKeydown = (event) => {
-    event.key === "Escape" && closeModal();
+  const handleDeleteButton = (ingredient) => {
+    dispatch(deleteIngredient(ingredient));
   };
+
+  const newOrder = useMemo(
+    () =>
+      selectedToppings.length && selectedBun
+        ? {
+            ingredients: [
+              selectedBun.info._id,
+              ...selectedToppings.map((topping) => topping.info._id),
+              selectedBun.info._id,
+            ],
+          }
+        : null,
+    [selectedBun, selectedToppings]
+  );
+
+  const makeNewOrder = (order) => {
+    dispatch(postOrder(order));
+  };
+
+  const handleDrop = (ingredient) => {
+    dispatch(addIngredient(ingredient));
+  };
+
+  const [{ isHover, canDrop }, dropTarget] = useDrop({
+    accept: "ingredients",
+    collect: (monitor) => ({
+      isHover: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+    }),
+    drop(ingredient) {
+      handleDrop(ingredient);
+    },
+  });
+
+  const renderIngredients = useMemo(
+    () =>
+      selectedToppings.map((ingredient, index) => (
+        <Topping
+          ingredient={ingredient}
+          key={ingredient.id}
+          index={index}
+          handleClose={() => handleDeleteButton(ingredient)}
+        ></Topping>
+      )),
+    [selectedToppings]
+  );
 
   return (
     <>
-      <div className={`${styles.burgerConstructor} mt-25`}>
-        <div className="pr-5">
-          <ConstructorElement
-            type="top"
-            isLocked={true}
-            text={`${bun.name} (верх)`}
-            price={bun.price}
-            thumbnail={bun.image}
-          />
-        </div>
-        <ul className={`${styles.burgerConstructor__list} pl-1 pr-4`}>
-          {selectedIngredients.map((ingredient, index) => (
-            <li className={styles.burgerConstructor__item} key={index}>
-              <DragIcon type="primary" />
-              <ConstructorElement
-                text={ingredient.name}
-                price={ingredient.price}
-                thumbnail={ingredient.image}
-              />
-            </li>
-          ))}
-        </ul>
-        <div className="pr-5">
-          <ConstructorElement
-            type="bottom"
-            isLocked={true}
-            text={`${bun.name} (низ)`}
-            price={bun.price}
-            thumbnail={bun.image}
-          />
-        </div>
+      <div
+        className={`${styles.burgerConstructor} mt-25 ${
+          canDrop & !isHover && styles.dropActive
+        } ${isHover && styles.dropHover}`}
+        ref={dropTarget}
+      >
+        {selectedBun ? (
+          <div className="pr-5">
+            <ConstructorElement
+              type="top"
+              isLocked={true}
+              text={`${selectedBun.info.name} (верх)`}
+              price={selectedBun.info.price}
+              thumbnail={selectedBun.info.image}
+            />
+          </div>
+        ) : (
+          <p className="text text_type_main-large mt-5 mb-5 pr-5">
+            Выберите булку
+          </p>
+        )}
+        {selectedToppings.length ? (
+          <ul className={`${styles.burgerConstructor__list} pl-1 pr-4`}>
+            {renderIngredients}
+          </ul>
+        ) : (
+          <p className="text text_type_main-large mt-5 mb-5 pr-5">
+            Выберите начинки
+          </p>
+        )}
+        {!!selectedBun && (
+          <div className="pr-5">
+            <ConstructorElement
+              type="bottom"
+              isLocked={true}
+              text={`${selectedBun.info.name} (низ)`}
+              price={selectedBun.info.price}
+              thumbnail={selectedBun.info.image}
+            />
+          </div>
+        )}
 
         <div
           className={`${styles.burgerConstructor__buttonContainer} mt-6 pr-4`}
         >
           <div className={`${styles.burgerConstructor__totalPrice} mr-10`}>
-            <p className="text text_type_digits-medium mr-2">{totalPrice}</p>
+            <p className="text text_type_digits-medium mr-2">
+              {countTotalPrice}
+            </p>
             <CurrencyIcon type="primary" />
           </div>
           <Button
             htmlType="button"
             type="primary"
             size="large"
-            onClick={openModal}
+            onClick={() => makeNewOrder(newOrder)}
+            disabled={!selectedToppings.length || !selectedBun}
           >
             Оформить заказ
           </Button>
         </div>
       </div>
 
-      {isOrderDetailsOpened && (
-        <Modal closeModal={closeModal} onEscKeydown={handleEscKeydown}>
-          <OrderDetails />
+      {isOrderInfoOpened && (
+        <Modal closeModal={closeModal}>
+          <OrderDetails number={orderNumber} />
         </Modal>
       )}
     </>
   );
-};
-
-BurgerConstructor.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredient).isRequired,
-  selectedIngredientIds: PropTypes.shape({
-    bunId: PropTypes.string,
-    toppingIds: PropTypes.arrayOf(PropTypes.string),
-  }),
 };
 
 export default BurgerConstructor;

@@ -5,6 +5,7 @@
     padding: 0;
     gap: 16px;
     list-style: none;
+    box-sizing: border-box;
 
     &__list {
         display: flex;
@@ -14,7 +15,9 @@
         list-style: none;
         max-height: 464px;
         overflow-y: scroll;
-
+        overscroll-behavior: contain;
+        width: 100%;
+s
         &::-webkit-scrollbar {
             width: 8px;
         }
@@ -30,13 +33,6 @@
         }
     }
 
-    &__item {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 8px;
-    }
-
     &__totalPrice {
         display: flex;
         align-items: center;
@@ -45,4 +41,12 @@
     &__buttonContainer {
         display: flex;
     }
+}
+
+.dropHover {
+    box-shadow: 0 0 30px 1px #4C4CFF
+}
+
+.dropActive {
+    box-shadow: 0 0 10px 1px #4C4CFF
 }

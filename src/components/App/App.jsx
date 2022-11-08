@@ -1,39 +1,47 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import { currentApi } from "../../utils/Api";
-import { selectedIngredientIds } from "../../utils/consts";
-import styles from "./App.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { getIngredients } from "../../services/actions/ingredients";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import styles from "./App.module.scss";
 
 const App = () => {
-  const [ingredients, setIngredients] = useState([]);
+  const dispatch = useDispatch();
 
-  const getIngredientsFromApi = () => {
-    currentApi.getIngredients().then((res) => {
-      setIngredients(res.data);
-    });
-  };
+  const { ingredientsRequest, ingredientsFailed } = useSelector(
+    (store) => store.ingredients
+  );
 
   useEffect(() => {
-    getIngredientsFromApi();
-  }, []);
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
     <>
       <AppHeader />
-      {ingredients.length && (
-        <main className={styles.main}>
-          <BurgerIngredients
-            ingredients={ingredients}
-            selectedIngredientIds={selectedIngredientIds}
-          />
-          <BurgerConstructor
-            ingredients={ingredients}
-            selectedIngredientIds={selectedIngredientIds}
-          />
-        </main>
+      {!!ingredientsRequest && <div className={styles.spinner}></div>}
+      {!!ingredientsFailed && (
+        <div>
+          <p className="text text_type_main-large mt-30">
+            Что-то пошло не так...
+          </p>
+          <p className="text text_type_main-large mt-15">
+            Попробуйте обновить страницу или свяжитесь с нами по телефону
+          </p>
+          <p className="text text_type_main-large mt-15">322-22-32-22</p>
+        </div>
       )}
+      {!ingredientsRequest & !ingredientsFailed ? (
+        <main className={styles.main}>
+          <DndProvider backend={HTML5Backend}>
+            <BurgerIngredients />
+            <BurgerConstructor />
+          </DndProvider>
+        </main>
+      ) : null}
     </>
   );
 };
