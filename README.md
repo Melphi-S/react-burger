@@ -1,12 +1,3 @@
-# Проект: Stellar Burger
-
-[GitHub Pages](https://melphi-s.github.io/react-burger/)
-
-Проект создан в рамках курса Яндекс.Практикум "Веб-разработчик плюс"
-
-## Ссылки
-[Яндекс.Практикум](https://practicum.yandex.ru/)
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
