@@ -100,6 +100,7 @@ const BurgerConstructor = () => {
         } ${isHover && styles.dropHover}`}
         ref={dropTarget}
       >
+      <div className={`${styles.burgerConstructor__container}`}>
         {selectedBun ? (
           <div className="pr-5">
             <ConstructorElement
@@ -135,6 +136,7 @@ const BurgerConstructor = () => {
             />
           </div>
         )}
+        </div>
 
         <div
           className={`${styles.burgerConstructor__buttonContainer} mt-6 pr-4`}

@@ -2,10 +2,18 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    justify-content: space-between;
     padding: 0;
-    gap: 16px;
-    list-style: none;
     box-sizing: border-box;
+    height: calc(100vh - 234px);
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: flex-start;
+        gap: 16px;
+    }
 
     &__list {
         display: flex;
@@ -13,7 +21,7 @@
         margin: 0;
         gap: 16px;
         list-style: none;
-        max-height: 464px;
+        max-height: calc(100vh - 536px);
         overflow-y: scroll;
         overscroll-behavior: contain;
         width: 100%;
@@ -24,12 +32,12 @@ s
     
         &::-webkit-scrollbar-track {
             background: #2F2F37;
-            height: 464px;
+            height: calc(100vh - 536px);
         }
     
         &::-webkit-scrollbar-thumb {
             background-color: #8585AD;
-            height: 292px;
+            height: calc(100vh - 708px);
         }
     }
 
@@ -44,9 +52,9 @@ s
 }
 
 .dropHover {
-    box-shadow: 0 0 30px 1px #4C4CFF
+    box-shadow: 0px 0px 16px 8px rgba(51, 51, 255, 0.25), 0px 0px 16px 8px rgba(51, 51, 255, 0.25);
 }
 
 .dropActive {
-    box-shadow: 0 0 10px 1px #4C4CFF
+    box-shadow: 0px 0px 8px 4px rgba(51, 51, 255, 0.25), 0px 0px 8px 4px rgba(51, 51, 255, 0.25);
 }
