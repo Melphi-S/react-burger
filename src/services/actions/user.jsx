@@ -1,4 +1,5 @@
 import { currentApi } from "../../utils/Api";
+import { setCookie } from "../../utils/cookie";
 
 export const REGISTER_REQUEST = "REGISTER_REQUEST";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
@@ -8,22 +9,26 @@ export const GET_USER_REQUEST = "GET_USER_REQUEST";
 export const GET_USER_SUCCESS = "GET_USER_SUCCESS";
 export const GET_USER_FAILED = "GET_USER_FAILED";
 
+export const LOGIN_REQUEST = "LOGIN_REQUEST";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAILED = "LOGIN_FAILED";
+
 export const register = (email, password, name) => {
   return function (dispatch) {
     dispatch({
-      type: REGISTER_REQUEST
+      type: REGISTER_REQUEST,
     });
     currentApi
       .register(email, password, name)
       .then((res) => {
-        res &&
-          res.success &&
+        if (res && res.success) {
           dispatch({
             type: REGISTER_SUCCESS,
             payload: res.user
           });
-        localStorage.setItem("refreshToken", res.refreshToken);
-        setCookie("accessToken", res.accessToken);
+          localStorage.setItem("refreshToken", res.refreshToken);
+          setCookie("accessToken", res.accessToken);
+        }
       })
       .catch((err) =>
         dispatch({
@@ -39,7 +44,7 @@ export const getUserInfo = () => {
       type: GET_USER_REQUEST,
     });
     currentApi
-      .getUserInfo("accessToken")
+      .getUserInfo()
       .then((res) => {
         res &&
           res.success &&
@@ -48,47 +53,58 @@ export const getUserInfo = () => {
             payload: res.user
           });
       })
-      .catch((err) =>
+      .catch((err) => {
+        console.log(err);
+        if (err.status === 403) {
+          dispatch(refreshToken());
+        }
         dispatch({
           type: GET_USER_FAILED
+        });
+      });
+  };
+};
+
+export const refreshToken = () => {
+  return function (dispatch) {
+    currentApi
+      .refreshToken()
+      .then((res) => {
+        if (res && res.success) {
+          localStorage.setItem("refreshToken", res.refreshToken);
+          setCookie("accessToken", res.accessToken);
+          dispatch(getUserInfo());
+        }
+      })
+      .catch((err) =>
+        dispatch({
+          type: GET_USER_FAILED,
         })
       );
   };
 };
 
-export function setCookie(name, value, props) {
-  props = {
-    path: "/",
-    ...props,
+export const login = (email, password) => {
+  return function (dispatch) {
+    dispatch({
+      type: LOGIN_REQUEST,
+    });
+    currentApi
+      .login(email, password)
+      .then((res) => {
+        if (res && res.success) {
+          dispatch({
+            type: LOGIN_SUCCESS,
+            payload: res.user
+          });
+          localStorage.setItem("refreshToken", res.refreshToken);
+          setCookie("accessToken", res.accessToken);
+        }
+      })
+      .catch((err) =>
+        dispatch({
+          type: LOGIN_FAILED
+        })
+      );
   };
-  let exp = props.expires;
-  if (typeof exp == "number" && exp) {
-    const d = new Date();
-    d.setTime(d.getTime() + exp * 1000);
-    exp = props.expires = d;
-  }
-  if (exp && exp.toUTCString) {
-    props.expires = exp.toUTCString();
-  }
-  value = encodeURIComponent(value);
-  let updatedCookie = name + "=" + value;
-  for (const propName in props) {
-    updatedCookie += "; " + propName;
-    const propValue = props[propName];
-    if (propValue !== true) {
-      updatedCookie += "=" + propValue;
-    }
-  }
-  document.cookie = updatedCookie;
-}
-
-export function getCookie(name) {
-  const matches = document.cookie.match(
-    new RegExp(
-      "(?:^|; )" +
-        name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, "\\$1") +
-        "=([^;]*)"
-    )
-  );
-  return matches ? decodeURIComponent(matches[1]) : undefined;
-}
+};

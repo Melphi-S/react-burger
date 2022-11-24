@@ -51,7 +51,6 @@ const Register = () => {
           placeholder="Пароль"
           name="password"
           onChange={(evt) => {
-            console.log(evt.target.value);
             setPassword(evt.target.value)}}
           value={password}
         />

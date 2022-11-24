@@ -5,6 +5,9 @@ import {
   GET_USER_REQUEST,
   GET_USER_SUCCESS,
   GET_USER_FAILED,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_FAILED
 } from "../actions/user";
 
 const userInitialState = {
@@ -13,6 +16,9 @@ const userInitialState = {
   registerFailed: false,
   getUserRequest: false,
   getUserFailed: false,
+  isTokenRefreshed: false,
+  loginRequest: false,
+  loginFailed: false
 };
 
 export const userReducer = (state = userInitialState, action) => {
@@ -27,7 +33,7 @@ export const userReducer = (state = userInitialState, action) => {
         ...state,
         userInfo: action.payload,
         registerRequest: false,
-        registerFailed: false
+        registerFailed: false,
       };
     case REGISTER_FAILED:
       return {
@@ -53,6 +59,24 @@ export const userReducer = (state = userInitialState, action) => {
         getUserRequest: false,
         getUserFailed: true,
       };
+      case LOGIN_REQUEST:
+        return {
+          ...state,
+          loginRequest: true,
+        };
+      case LOGIN_SUCCESS:
+        return {
+          ...state,
+          userInfo: action.payload,
+          loginRequest: false,
+          loginFailed: false,
+        };
+      case LOGIN_FAILED:
+        return {
+          ...state,
+          loginRequest: false,
+          loginFailed: true
+        };
     default:
       return state;
   }

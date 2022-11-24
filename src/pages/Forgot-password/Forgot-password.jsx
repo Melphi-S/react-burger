@@ -17,7 +17,7 @@ import {
         </form>
         <p className="text text_type_main-default text_color_inactive mt-20">
           Вспомнили пароль?
-          <Link className={styles.link} to="/Login">Войти</Link>
+          <Link className={styles.link} to="/login">Войти</Link>
         </p>
       </div>
     );
