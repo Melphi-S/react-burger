@@ -5,6 +5,7 @@ import { getUserInfo } from "../../services/actions/user";
 import AppHeader from "../AppHeader/AppHeader";
 import Main from "../../pages/Main/Main";
 import { Switch, Route } from "react-router-dom";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Login from "../../pages/Login/Login";
 import Register from "../../pages/Register/Register";
 import ForgotPassword from "../../pages/Forgot-password/Forgot-password";
@@ -27,9 +28,9 @@ const App = () => {
         <Route path='/' exact>
           <Main />
         </Route>
-        <Route path='/profile'>
+        <ProtectedRoute path='/profile'>
           <Profile/>
-        </Route>
+        </ProtectedRoute>
         <Route path='/login'>
           <Login />
         </Route>

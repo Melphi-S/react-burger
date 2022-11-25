@@ -58,7 +58,6 @@ const Register = () => {
           htmlType="submit"
           type="primary"
           size="medium"
-          onClick={() => register()}
         >
           Зарегистрироваться
         </Button>

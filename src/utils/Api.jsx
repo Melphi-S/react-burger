@@ -34,35 +34,56 @@ class Api {
     }).then(this._checkResponce);
   }
 
-  getUserInfo() {
+  getUserInfo(token) {
     return fetch(`${this.url}/auth/user`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
-        Authorization: getCookie("accessToken"),
+        Authorization: token,
       },
     }).then(this._checkResponce);
   }
 
-  refreshToken() {
+  patchUserInfo(email, password, name, token) {
+    return fetch(`${this.url}/auth/user`, {
+      method: "PATCH",
+      headers: {
+        "Content-type": "application/json",
+        Authorization: token,
+      },
+      body: JSON.stringify({ email, password, name }),
+    }).then(this._checkResponce);
+  }
+
+  refreshToken(token) {
     return fetch(`${this.url}/auth/token`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
       body: JSON.stringify({
-        token: localStorage.getItem("refreshToken")
+        token,
       }),
     }).then(this._checkResponce);
   }
 
-  login(email, password) {
+  logIn(email, password) {
     return fetch(`${this.url}/auth/login`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify({ email, password}),
+      body: JSON.stringify({ email, password }),
+    }).then(this._checkResponce);
+  }
+
+  logOut(token) {
+    return fetch(`${this.url}/auth/logout`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ token }),
     }).then(this._checkResponce);
   }
 }

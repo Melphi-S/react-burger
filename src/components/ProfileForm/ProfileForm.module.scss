@@ -1,0 +1,14 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    grid-area: content;
+
+    &__buttonContainer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 28px;
+        width: 100%;
+    }
+}

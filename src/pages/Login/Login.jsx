@@ -6,7 +6,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { login } from "../../services/actions/user";
+import { logIn } from "../../services/actions/user";
 import styles from "./Login.module.scss";
 
 const Login = () => {
@@ -17,16 +17,14 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const userInfo = useSelector((state) => state.user.userInfo);
 
-  console.log(location);
-
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    dispatch(login(email, password));
+    dispatch(logIn(email, password));
   };
 
   useEffect(() => {
     if (userInfo) {
-      (location.state && location.state.prevLocation) ? history.push(location.state.prevLocation.pathname) : history.push('/');
+      (location.state && location.state.from) ? history.push(location.state.from.pathname) : history.push('/');
     }
   }, [userInfo, history, location])
 

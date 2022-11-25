@@ -1,19 +1,73 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
-import {
-  EmailInput,
-  PasswordInput,
-  Button,
-  Input,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import { register, getUserInfo } from "../../services/actions/user";
-import { Link, useHistory } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../services/actions/user";
 import styles from "./Profile.module.scss";
+import ProfileForm from "../../components/ProfileForm/ProfileForm";
 
 const Profile = () => {
-  return (
-    <div className={`${styles.container}`}>
+  const dispatch = useDispatch();
+  const { pathname } = useLocation();
 
+  const profileCaption = () => {
+    switch (pathname) {
+      case "/profile":
+        return "В этом разделе вы можете изменить свои персональные данные";
+      case "/profile/orders":
+        return "В этом разделе вы можете просмотреть свою историю заказов";
+      default:
+        return "";
+    }
+  };
+
+  const handleLogout = () => {
+    dispatch(logOut())
+  }
+
+  return (
+    <div className={styles.profile}>
+      <ul className={styles.profile__nav}>
+        <li>
+          <NavLink
+            to="/profile"
+            exact
+            className={`${styles.profile__link} text text_type_main-medium`}
+            activeClassName={`${styles.profile__link_active} text text_type_main-medium`}
+          >
+            Профиль
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/profile/orders"
+            exact
+            className={`${styles.profile__link} text text_type_main-medium`}
+            activeClassName={`${styles.profile__link_active} text text_type_main-medium`}
+          >
+            История заказов
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            onClick={handleLogout}
+            to="/"
+            exact
+            className={`${styles.profile__link} text text_type_main-medium`}
+            activeClassName={`${styles.profile__link_active} text text_type_main-medium`}
+          >
+            Выход
+          </NavLink>
+        </li>
+      </ul>
+      <p className={`${styles.profile__caption} text text_type_main-default text_color_inactive`}>
+        {profileCaption()}
+      </p>
+      <Switch>
+        <Route path="/profile" exact>
+          <ProfileForm/>
+        </Route>
+        <Route path="/profile/orders"></Route>
+      </Switch>
     </div>
   );
 };
