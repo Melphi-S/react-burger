@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions/ingredients";
 import { getUserInfo } from "../../services/actions/user";
 import AppHeader from "../AppHeader/AppHeader";
@@ -15,6 +15,10 @@ import Profile from "../../pages/Profile/Profile";
 const App = () => {
   const dispatch = useDispatch();
 
+  const { userInfo, forgotPasswordSuccess } = useSelector(
+    (state) => state.user
+  );
+
   useEffect(() => {
     dispatch(getIngredients());
     dispatch(getUserInfo());
@@ -25,24 +29,44 @@ const App = () => {
     <>
       <AppHeader />
       <Switch>
-        <Route path='/' exact>
+        <Route path="/" exact>
           <Main />
         </Route>
-        <ProtectedRoute path='/profile'>
-          <Profile/>
+        <ProtectedRoute
+          path="/profile"
+          condition={userInfo}
+          redirectPathname="/login"
+        >
+          <Profile />
         </ProtectedRoute>
-        <Route path='/login'>
+        <ProtectedRoute
+          path="/login"
+          condition={!userInfo}
+          redirectPathname="/profile"
+        >
           <Login />
-        </Route>
-        <Route path='/register'>
+        </ProtectedRoute>
+        <ProtectedRoute
+          path="/register"
+          condition={!userInfo}
+          redirectPathname="/profile"
+        >
           <Register />
-        </Route>
-        <Route path='/forgot-password'>
+        </ProtectedRoute>
+        <ProtectedRoute
+          path="/forgot-password"
+          condition={!userInfo}
+          redirectPathname="/profile"
+        >
           <ForgotPassword />
-        </Route>
-        <Route path='/reset-password'>
+        </ProtectedRoute>
+        <ProtectedRoute
+          path="/reset-password"
+          condition={!userInfo && forgotPasswordSuccess}
+          redirectPathname="/profile"
+        >
           <ResetPassword />
-        </Route>
+        </ProtectedRoute>
       </Switch>
     </>
   );
