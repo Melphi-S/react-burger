@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import BurgerIngredients from "../../components/BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";
+import Loader from "../../components/Loader/Loader";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styles from "./Main.module.scss";
@@ -12,7 +13,7 @@ const Main = () => {
 
   return (
     <>
-      {!!ingredientsRequest && <div className={styles.spinner}></div>}
+      {!!ingredientsRequest && <Loader text="Проверяем запасы" />}
       {!!ingredientsFailed && (
         <div>
           <p className="text text_type_main-large mt-30">
