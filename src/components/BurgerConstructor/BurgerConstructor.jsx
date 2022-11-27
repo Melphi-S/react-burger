@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
+import { useHistory } from "react-router-dom";
 import {
   ConstructorElement,
   CurrencyIcon,
@@ -19,6 +20,9 @@ import styles from "./BurgerConstructor.module.scss";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   const { selectedToppings, selectedBun } = useSelector(
     (state) => state.burgerConstructor
@@ -61,7 +65,7 @@ const BurgerConstructor = () => {
   );
 
   const makeNewOrder = (order) => {
-    dispatch(postOrder(order));
+    userInfo ? dispatch(postOrder(order)) : history.push('/login');
   };
 
   const handleDrop = (ingredient) => {

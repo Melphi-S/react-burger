@@ -42,28 +42,28 @@ const App = () => {
         <ProtectedRoute
           path="/login"
           condition={!userInfo}
-          redirectPathname="/profile"
+          redirectPathname="/"
         >
           <Login />
         </ProtectedRoute>
         <ProtectedRoute
           path="/register"
           condition={!userInfo}
-          redirectPathname="/profile"
+          redirectPathname="/"
         >
           <Register />
         </ProtectedRoute>
         <ProtectedRoute
           path="/forgot-password"
           condition={!userInfo}
-          redirectPathname="/profile"
+          redirectPathname="/"
         >
           <ForgotPassword />
         </ProtectedRoute>
         <ProtectedRoute
           path="/reset-password"
           condition={!userInfo && forgotPasswordSuccess}
-          redirectPathname="/profile"
+          redirectPathname="/"
         >
           <ResetPassword />
         </ProtectedRoute>

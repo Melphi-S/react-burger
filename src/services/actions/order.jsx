@@ -1,4 +1,5 @@
 import { currentApi } from "../../utils/Api";
+import { getCookie } from "../../utils/cookie";
 
 export const POST_ORDER_REQUEST = "POST_ORDER_REQUEST";
 export const POST_ORDER_SUCCESS = "POST_ORDER_SUCCESS";
@@ -11,7 +12,7 @@ export const postOrder = (order) => {
       type: POST_ORDER_REQUEST,
     });
     currentApi
-      .postOrder(order)
+      .postOrder(order, getCookie("accessToken"))
       .then(
         (res) =>
           res &&

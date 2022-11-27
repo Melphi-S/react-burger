@@ -13,11 +13,12 @@ class Api {
     return fetch(`${this.url}/ingredients`).then(this._checkResponce);
   }
 
-  postOrder(order) {
+  postOrder(order, token) {
     return fetch(`${this.url}/orders`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
+        Authorization: token,
       },
       body: JSON.stringify(order),
     }).then(this._checkResponce);
