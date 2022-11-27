@@ -21,6 +21,14 @@ export const LOGOUT_REQUEST = "LOGOUT_REQUEST";
 export const LOGOUT_SUCCESS = "LOGOUT_SUCCESS";
 export const LOGOUT_FAILED = "LOGOUT_FAILED";
 
+export const FORGOT_PASSWORD_REQUEST = "FORGOT_PASSWORD_REQUEST";
+export const FORGOT_PASSWORD_SUCCESS = "FORGOT_PASSWORD_SUCCESS";
+export const FORGOT_PASSWORD_FAILED = "FORGOT_PASSWORD_FAILED";
+
+export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
+export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
+export const RESET_PASSWORD_FAILED = "RESET_PASSWORD_FAILED";
+
 export const register = (email, password, name) => {
   return function (dispatch) {
     dispatch({
@@ -63,7 +71,7 @@ export const getUserInfo = () => {
       })
       .catch((err) => {
         console.log(err);
-        if (err.status === 403) {
+        if (err.message === "jwt expired") {
           dispatch(refreshToken());
         }
         dispatch({
@@ -129,7 +137,6 @@ export const logIn = (email, password) => {
             payload: res.user,
           });
           localStorage.setItem("refreshToken", res.refreshToken);
-          deleteCookie("accessToken");
           setCookie("accessToken", res.accessToken);
         }
       })
@@ -160,6 +167,50 @@ export const logOut = () => {
       .catch((err) =>
         dispatch({
           type: LOGOUT_FAILED,
+        })
+      );
+  };
+};
+
+export const requestPasswordReset = (email) => {
+  return function (dispatch) {
+    dispatch({
+      type: FORGOT_PASSWORD_REQUEST,
+    });
+    currentApi
+      .requestPasswordReset(email)
+      .then((res) => {
+        if (res && res.success) {
+          dispatch({
+            type: FORGOT_PASSWORD_SUCCESS,
+          });
+        }
+      })
+      .catch((err) =>
+        dispatch({
+          type: FORGOT_PASSWORD_FAILED,
+        })
+      );
+  };
+};
+
+export const resetPassword = (email, token) => {
+  return function (dispatch) {
+    dispatch({
+      type: RESET_PASSWORD_REQUEST,
+    });
+    currentApi
+      .resetPassword(email, token)
+      .then((res) => {
+        if (res && res.success) {
+          dispatch({
+            type: RESET_PASSWORD_SUCCESS,
+          });
+        }
+      })
+      .catch((err) =>
+        dispatch({
+          type: RESET_PASSWORD_FAILED,
         })
       );
   };

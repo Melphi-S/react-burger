@@ -4,7 +4,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { logIn } from "../../services/actions/user";
 import styles from "./Login.module.scss";
@@ -24,9 +24,23 @@ const Login = () => {
 
   useEffect(() => {
     if (userInfo) {
-      (location.state && location.state.from) ? history.push(location.state.from.pathname) : history.push('/');
+      location.state && location.state.from
+        ? history.push(location.state.from.pathname)
+        : history.push("/");
     }
-  }, [userInfo, history, location])
+  }, [userInfo, history, location]);
+
+  const isValidEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const isValidPassword = (password) => password.length > 5;
+
+  const isValidDetails = useMemo(
+    () => isValidEmail(email) && isValidPassword(password),
+    [email, password]
+  );
 
   return (
     <div className={`${styles.container}`}>
@@ -37,6 +51,7 @@ const Login = () => {
           name="email"
           onChange={(evt) => setEmail(evt.target.value)}
           value={email}
+          errorText={"Введите e-mail"}
         />
         <PasswordInput
           placeholder="Пароль"
@@ -45,8 +60,14 @@ const Login = () => {
             setPassword(evt.target.value);
           }}
           value={password}
+          errorText={"Длина пароля должна быть более 5 символов"}
         />
-        <Button htmlType="submit" type="primary" size="medium">
+        <Button
+          htmlType="submit"
+          type="primary"
+          size="medium"
+          disabled={!isValidDetails}
+        >
           Войти
         </Button>
       </form>

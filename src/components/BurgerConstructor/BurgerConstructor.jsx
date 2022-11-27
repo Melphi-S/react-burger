@@ -95,7 +95,7 @@ const BurgerConstructor = () => {
   return (
     <>
       <div
-        className={`${styles.burgerConstructor} mt-25 ${
+        className={`${styles.burgerConstructor} ${
           canDrop & !isHover && styles.dropActive
         } ${isHover && styles.dropHover}`}
         ref={dropTarget}

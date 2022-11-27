@@ -1,5 +1,4 @@
 import { URL } from "./consts";
-import { getCookie } from "./cookie";
 
 class Api {
   constructor(url) {
@@ -7,7 +6,7 @@ class Api {
   }
 
   _checkResponce(res) {
-    return res.ok ? res.json() : Promise.reject(res);
+    return res.ok ? res.json() : res.json().then(data => Promise.reject(data));
   }
 
   getIngredients() {
@@ -84,6 +83,26 @@ class Api {
         "Content-type": "application/json",
       },
       body: JSON.stringify({ token }),
+    }).then(this._checkResponce);
+  }
+
+  requestPasswordReset(email) {
+    return fetch(`${this.url}/password-reset`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    }).then(this._checkResponce);
+  }
+
+  resetPassword(password, token) {
+    return fetch(`${this.url}/password-reset/reset`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({ password, token }),
     }).then(this._checkResponce);
   }
 }

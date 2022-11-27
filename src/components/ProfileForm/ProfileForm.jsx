@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import {
   EmailInput,
   PasswordInput,
@@ -16,6 +16,15 @@ const ProfileForm = () => {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
+  const isValidEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const isValidPassword = (password) => password.length > 0 ? password.length > 5 : true
+
+  const isValidName = (name) => name.length > 0;
+
   useEffect(() => {
     if (userInfo) {
       setEmail(userInfo.email);
@@ -31,14 +40,19 @@ const ProfileForm = () => {
   const resetChanges = () => {
     setEmail(userInfo.email);
     setName(userInfo.name);
-    setPassword('');
-  }
+    setPassword("");
+  };
 
-  const isValidChanges = useMemo(() => userInfo
-  ? userInfo.email !== email ||
-      userInfo.name !== name ||
-      password.length > 5
-  : false, [userInfo, email, name, password]) 
+  const isValidChanges = useMemo(
+    () =>
+      userInfo
+        ? (userInfo.email !== email ||
+          userInfo.name !== name ||
+          password.length) &&
+          (isValidEmail(email) && isValidPassword(password) && isValidName(name))
+        : false,
+    [userInfo, email, name, password]
+  );
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>
@@ -56,6 +70,7 @@ const ProfileForm = () => {
         onChange={(evt) => setEmail(evt.target.value)}
         value={email}
         isIcon={true}
+        errorText={"Введите e-mail"}
       />
       <PasswordInput
         placeholder="Пароль"
@@ -65,17 +80,23 @@ const ProfileForm = () => {
         }}
         value={password}
         icon={"EditIcon"}
+        errorText={'Длина пароля должны быть более 5 символов'}
       />
-      {isValidChanges && (
+      {isValidChanges ? (
         <div className={styles.form__buttonContainer}>
-          <Button htmlType="button" type="secondary" size="medium" onClick={resetChanges}>
+          <Button
+            htmlType="button"
+            type="secondary"
+            size="medium"
+            onClick={resetChanges}
+          >
             Отмена
           </Button>
           <Button htmlType="submit" type="primary" size="medium">
             Сохранить
           </Button>
         </div>
-      )}
+      ) : null}
     </form>
   );
 };
