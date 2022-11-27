@@ -63,7 +63,7 @@ const App = () => {
         <ProtectedRoute
           path="/reset-password"
           condition={!userInfo && forgotPasswordSuccess}
-          redirectPathname="/"
+          redirectPathname="/forgot-password"
         >
           <ResetPassword />
         </ProtectedRoute>

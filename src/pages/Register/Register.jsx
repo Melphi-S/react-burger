@@ -8,6 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { register } from "../../services/actions/user";
 import { Link, useHistory } from "react-router-dom";
+import Loader from "../../components/Loader/Loader";
 import styles from "./Register.module.scss";
 
 const Register = () => {
@@ -16,7 +17,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const userInfo = useSelector((state) => state.user.userInfo);
+  const { userInfo, isAuthChecked } = useSelector((state) => state.user);
 
   const isValidEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -41,7 +42,7 @@ const Register = () => {
     userInfo && history.push("/");
   }, [userInfo, history]);
 
-  return (
+  return isAuthChecked ? (
     <div className={`${styles.container}`}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <h1 className={`${styles.loginTitle}  text text_type_main-medium`}>
@@ -86,6 +87,8 @@ const Register = () => {
         </Link>
       </p>
     </div>
+  ) : (
+    <Loader />
   );
 };
 

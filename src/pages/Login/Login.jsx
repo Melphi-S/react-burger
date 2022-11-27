@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect, useMemo } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { logIn } from "../../services/actions/user";
+import Loader from "../../components/Loader/Loader";
 import styles from "./Login.module.scss";
 
 const Login = () => {
@@ -15,7 +16,7 @@ const Login = () => {
   const location = useLocation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const userInfo = useSelector((state) => state.user.userInfo);
+  const {userInfo, isAuthChecked }  = useSelector((state) => state.user);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -43,6 +44,7 @@ const Login = () => {
   );
 
   return (
+    isAuthChecked ?
     <div className={`${styles.container}`}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <h1 className={`${styles.title}  text text_type_main-medium`}>Вход</h1>
@@ -83,7 +85,7 @@ const Login = () => {
           Восстановить пароль
         </Link>
       </p>
-    </div>
+    </div> : <Loader />
   );
 };
 

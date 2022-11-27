@@ -29,6 +29,8 @@ export const RESET_PASSWORD_REQUEST = "RESET_PASSWORD_REQUEST";
 export const RESET_PASSWORD_SUCCESS = "RESET_PASSWORD_SUCCESS";
 export const RESET_PASSWORD_FAILED = "RESET_PASSWORD_FAILED";
 
+export const CHECK_AUTH = "CHECK_AUTH";
+
 export const register = (email, password, name) => {
   return function (dispatch) {
     dispatch({
@@ -77,7 +79,12 @@ export const getUserInfo = () => {
         dispatch({
           type: GET_USER_FAILED,
         });
-      });
+      })
+      .finally(() =>
+        dispatch({
+          type: CHECK_AUTH,
+        })
+      );
   };
 };
 

@@ -1,12 +1,14 @@
 import { Switch, Route } from "react-router-dom";
 import { NavLink, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../services/actions/user";
 import styles from "./Profile.module.scss";
 import ProfileForm from "../../components/ProfileForm/ProfileForm";
+import Loader from "../../components/Loader/Loader";
 
 const Profile = () => {
   const dispatch = useDispatch();
+  const isAuthChecked = useSelector((state) => state.user.isAuthChecked);
   const { pathname } = useLocation();
 
   const profileCaption = () => {
@@ -21,10 +23,10 @@ const Profile = () => {
   };
 
   const handleLogout = () => {
-    dispatch(logOut())
-  }
+    dispatch(logOut());
+  };
 
-  return (
+  return isAuthChecked ? (
     <div className={styles.profile}>
       <ul className={styles.profile__nav}>
         <li>
@@ -59,16 +61,20 @@ const Profile = () => {
           </NavLink>
         </li>
       </ul>
-      <p className={`${styles.profile__caption} text text_type_main-default text_color_inactive`}>
+      <p
+        className={`${styles.profile__caption} text text_type_main-default text_color_inactive`}
+      >
         {profileCaption()}
       </p>
       <Switch>
         <Route path="/profile" exact>
-          <ProfileForm/>
+          <ProfileForm />
         </Route>
         <Route path="/profile/orders"></Route>
       </Switch>
     </div>
+  ) : (
+    <Loader />
   );
 };
 

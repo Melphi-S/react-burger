@@ -20,10 +20,12 @@ import {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILED,
+  CHECK_AUTH
 } from "../actions/user";
 
 const userInitialState = {
   userInfo: null,
+  isAuthChecked: false,
   registerRequest: false,
   registerFailed: false,
   getUserRequest: false,
@@ -173,6 +175,11 @@ export const userReducer = (state = userInitialState, action) => {
         resetPasswordRequest: false,
         resetPasswordFailed: true,
       };
+      case CHECK_AUTH:
+        return {
+          ...state,
+          isAuthChecked: true
+        }
     default:
       return state;
   }

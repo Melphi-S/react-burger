@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { requestPasswordReset } from "../../services/actions/user";
+import Loader from "../../components/Loader/Loader";
 import styles from "./Forgot-password.module.scss";
 
 const ForgotPassword = () => {
@@ -15,6 +16,7 @@ const ForgotPassword = () => {
   const forgotPasswordSuccess = useSelector(
     (state) => state.user.forgotPasswordSuccess
   );
+  const isAuthChecked = useSelector((state) => state.user.isAuthChecked);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -31,6 +33,7 @@ const ForgotPassword = () => {
   };
 
   return (
+    isAuthChecked ?
     <div className={`${styles.container}`}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <h1 className={`${styles.title}  text text_type_main-medium`}>
@@ -58,7 +61,7 @@ const ForgotPassword = () => {
           Войти
         </Link>
       </p>
-    </div>
+    </div> : <Loader />
   );
 };
 
