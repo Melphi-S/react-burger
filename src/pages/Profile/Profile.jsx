@@ -2,6 +2,7 @@ import { Switch, Route } from "react-router-dom";
 import { NavLink, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../services/actions/user";
+import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./Profile.module.scss";
 import ProfileForm from "../../components/ProfileForm/ProfileForm";
 import Loader from "../../components/Loader/Loader";
@@ -50,15 +51,14 @@ const Profile = () => {
           </NavLink>
         </li>
         <li>
-          <NavLink
+          <Button
+            htmlType="button"
+            type="secondary"
             onClick={handleLogout}
-            to="/"
-            exact
-            className={`${styles.profile__link} text text_type_main-medium`}
-            activeClassName={`${styles.profile__link_active} text text_type_main-medium`}
+            extraClass={`${styles.profile__link} text text_type_main-medium`}
           >
             Выход
-          </NavLink>
+          </Button>
         </li>
       </ul>
       <p

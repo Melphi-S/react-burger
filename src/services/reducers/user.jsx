@@ -20,7 +20,9 @@ import {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILED,
-  CHECK_AUTH
+  CHECK_AUTH,
+  SHOW_INFO_BOARD,
+  HIDE_INFO_BOARD,
 } from "../actions/user";
 
 const userInitialState = {
@@ -43,6 +45,7 @@ const userInitialState = {
   resetPasswordRequest: false,
   resetPasswordSuccess: false,
   resetPasswordFailed: false,
+  errorMessage: null,
 };
 
 export const userReducer = (state = userInitialState, action) => {
@@ -58,12 +61,14 @@ export const userReducer = (state = userInitialState, action) => {
         userInfo: action.payload,
         registerRequest: false,
         registerFailed: false,
+        errorMessage: null,
       };
     case REGISTER_FAILED:
       return {
         ...state,
         registerRequest: false,
         registerFailed: true,
+        errorMessage: action.payload,
       };
     case GET_USER_REQUEST:
       return {
@@ -94,12 +99,14 @@ export const userReducer = (state = userInitialState, action) => {
         patchUserRequest: false,
         patchUserFailed: false,
         userInfo: action.payload,
+        errorMessage: null,
       };
     case PATCH_USER_FAILED:
       return {
         ...state,
         patchUserRequest: false,
         patchUserFailed: true,
+        errorMessage: action.payload,
       };
     case LOGIN_REQUEST:
       return {
@@ -112,12 +119,14 @@ export const userReducer = (state = userInitialState, action) => {
         userInfo: action.payload,
         loginRequest: false,
         loginFailed: false,
+        errorMessage: null,
       };
     case LOGIN_FAILED:
       return {
         ...state,
         loginRequest: false,
         loginFailed: true,
+        errorMessage: action.payload,
       };
     case LOGOUT_REQUEST:
       return {
@@ -130,12 +139,14 @@ export const userReducer = (state = userInitialState, action) => {
         userInfo: null,
         logoutRequest: false,
         logoutFailed: false,
+        errorMessage: null,
       };
     case LOGOUT_FAILED:
       return {
         ...state,
         logoutRequest: false,
         logoutFailed: true,
+        errorMessage: action.payload,
       };
     case FORGOT_PASSWORD_REQUEST:
       return {
@@ -148,6 +159,7 @@ export const userReducer = (state = userInitialState, action) => {
         forgotPasswordRequest: false,
         forgotPasswordSuccess: true,
         forgotPasswordFailed: false,
+        errorMessage: null,
       };
     case FORGOT_PASSWORD_FAILED:
       return {
@@ -155,6 +167,7 @@ export const userReducer = (state = userInitialState, action) => {
         forgotPasswordRequest: false,
         forgotPasswordSuccess: false,
         forgotPasswordFailed: true,
+        errorMessage: action.payload,
       };
     case RESET_PASSWORD_REQUEST:
       return {
@@ -167,19 +180,31 @@ export const userReducer = (state = userInitialState, action) => {
         resetPasswordRequest: false,
         resetPasswordSuccess: true,
         resetPasswordFailed: false,
-        forgotPasswordSuccess: false
+        forgotPasswordSuccess: false,
+        errorMessage: null,
       };
     case RESET_PASSWORD_FAILED:
       return {
         ...state,
         resetPasswordRequest: false,
         resetPasswordFailed: true,
+        errorMessage: action.payload,
       };
-      case CHECK_AUTH:
-        return {
-          ...state,
-          isAuthChecked: true
-        }
+    case CHECK_AUTH:
+      return {
+        ...state,
+        isAuthChecked: true,
+      };
+    case SHOW_INFO_BOARD:
+      return {
+        ...state,
+        errorMessage: action.payload,
+      };
+    case HIDE_INFO_BOARD:
+      return {
+        ...state,
+        errorMessage: null,
+      };
     default:
       return state;
   }

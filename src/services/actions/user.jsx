@@ -31,6 +31,9 @@ export const RESET_PASSWORD_FAILED = "RESET_PASSWORD_FAILED";
 
 export const CHECK_AUTH = "CHECK_AUTH";
 
+export const SHOW_INFO_BOARD = "SHOW_INFO_BOARD";
+export const HIDE_INFO_BOARD = "HIDE_INFO_BOARD";
+
 export const register = (email, password, name) => {
   return function (dispatch) {
     dispatch({
@@ -51,6 +54,7 @@ export const register = (email, password, name) => {
       .catch((err) =>
         dispatch({
           type: REGISTER_FAILED,
+          payload: err.message
         })
       );
   };
@@ -72,7 +76,6 @@ export const getUserInfo = () => {
           });
       })
       .catch((err) => {
-        console.log(err);
         if (err.message === "jwt expired") {
           dispatch(refreshToken());
         }
@@ -106,6 +109,7 @@ export const patchUserInfo = (email, password, name) => {
       .catch((err) => {
         dispatch({
           type: PATCH_USER_FAILED,
+          payload: err.message
         });
       });
   };
@@ -150,6 +154,7 @@ export const logIn = (email, password) => {
       .catch((err) =>
         dispatch({
           type: LOGIN_FAILED,
+          payload: err.message
         })
       );
   };
@@ -174,6 +179,7 @@ export const logOut = () => {
       .catch((err) =>
         dispatch({
           type: LOGOUT_FAILED,
+          payload: err.message
         })
       );
   };
@@ -196,6 +202,7 @@ export const requestPasswordReset = (email) => {
       .catch((err) =>
         dispatch({
           type: FORGOT_PASSWORD_FAILED,
+          payload: err.message
         })
       );
   };
@@ -218,7 +225,17 @@ export const resetPassword = (email, token) => {
       .catch((err) =>
         dispatch({
           type: RESET_PASSWORD_FAILED,
+          payload: err.message
         })
       );
   };
 };
+
+export const showInfoBoard = (message) => ({
+  type: SHOW_INFO_BOARD,
+  payload: message
+})
+
+export const hideInfoBoard = () => ({
+  type: HIDE_INFO_BOARD
+})

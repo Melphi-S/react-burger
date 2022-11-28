@@ -12,13 +12,13 @@ import ForgotPassword from "../../pages/Forgot-password/Forgot-password";
 import ResetPassword from "../../pages/Reset-password/Reset-password";
 import Profile from "../../pages/Profile/Profile";
 import NotFound from "../../pages/Not-found/Not-found";
+import InfoBoard from "../InfoBoard/InfoBoard";
 
 const App = () => {
   const dispatch = useDispatch();
 
-  const { userInfo, forgotPasswordSuccess } = useSelector(
-    (state) => state.user
-  );
+  const { userInfo, forgotPasswordSuccess, errorMessage } =
+    useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -71,6 +71,7 @@ const App = () => {
           <NotFound />
         </Route>
       </Switch>
+      {errorMessage && <InfoBoard errorMessage={errorMessage} />}
     </>
   );
 };

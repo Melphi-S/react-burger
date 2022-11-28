@@ -27,6 +27,11 @@
     &_active {
       color: #F2F2F3;
     }
+
+    &:hover {
+      color: #F2F2F3;
+      opacity: 0.9;
+    }
   }
 
   &__caption {
