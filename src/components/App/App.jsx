@@ -11,6 +11,7 @@ import Register from "../../pages/Register/Register";
 import ForgotPassword from "../../pages/Forgot-password/Forgot-password";
 import ResetPassword from "../../pages/Reset-password/Reset-password";
 import Profile from "../../pages/Profile/Profile";
+import NotFound from "../../pages/Not-found/Not-found";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,6 @@ const App = () => {
   useEffect(() => {
     dispatch(getIngredients());
     dispatch(getUserInfo());
-    console.log(localStorage);
   }, [dispatch]);
 
   return (
@@ -67,6 +67,9 @@ const App = () => {
         >
           <ResetPassword />
         </ProtectedRoute>
+        <Route>
+          <NotFound />
+        </Route>
       </Switch>
     </>
   );
