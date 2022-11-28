@@ -79,7 +79,7 @@ const BurgerIngredients = () => {
             Начинки
           </Tab>
         </nav>
-        <div className={`${styles.burgerIngredients} mt-10`}>
+        <div className={`${styles.burgerIngredients}`}>
           <IngredientsSet
             type={bun}
             name={"Булки"}

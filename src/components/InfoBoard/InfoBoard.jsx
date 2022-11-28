@@ -3,6 +3,7 @@ import { useMemo, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { hideInfoBoard } from "../../services/actions/user";
 import { infoMessages, defaultMessage } from "../../utils/consts";
+import PropTypes from "prop-types";
 import styles from "./InfoBoard.module.scss";
 
 const infoBoardElement = document.querySelector("#infoBoard");
@@ -41,6 +42,10 @@ const InfoBoard = ({ errorMessage }) => {
 
     infoBoardElement
   );
+};
+
+InfoBoard.propTypes = {
+  errorMessage: PropTypes.string.isRequired,
 };
 
 export default InfoBoard;

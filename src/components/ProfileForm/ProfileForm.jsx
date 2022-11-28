@@ -89,6 +89,7 @@ const ProfileForm = () => {
             type="secondary"
             size="medium"
             onClick={resetChanges}
+            extraClass={styles.form__cancelButton}
           >
             Отмена
           </Button>

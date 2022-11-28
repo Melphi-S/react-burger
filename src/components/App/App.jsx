@@ -17,8 +17,9 @@ import InfoBoard from "../InfoBoard/InfoBoard";
 const App = () => {
   const dispatch = useDispatch();
 
-  const { userInfo, forgotPasswordSuccess, errorMessage } =
-    useSelector((state) => state.user);
+  const { userInfo, forgotPasswordSuccess, errorMessage } = useSelector(
+    (state) => state.user
+  );
 
   useEffect(() => {
     dispatch(getIngredients());
