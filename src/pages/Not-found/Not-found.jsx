@@ -19,7 +19,7 @@ const NotFound = () => {
         <img src={spaceShip} alt="Космический корабль." />
         <span className={styles.errorNumber}>4</span>
       </div>
-      <p className="text text_type_main-medium mb-10">
+      <p className="text text_type_main-medium mb-15">
         Упс, кажется, Вы забрели не туда... Поскорее возвращайтесь домой.
       </p>
       <Button htmlType="button" type="primary" size="large" onClick={goHome}>

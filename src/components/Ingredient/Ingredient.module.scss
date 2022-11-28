@@ -4,6 +4,8 @@
     position: relative;
     max-width: 272px;
     cursor: grab;
+    text-decoration: none;
+    color: #F2F2F3;
 
     &:hover {
         & .ingredient__image {

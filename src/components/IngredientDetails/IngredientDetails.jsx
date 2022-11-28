@@ -1,7 +1,13 @@
 import styles from "./IngredientDetails.module.scss";
 import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
+import { useMemo } from "react";
 
-const IngredientDetails = ({ ingredient }) => {
+const IngredientDetails = ({ ingredients }) => {
+  const { id } = useParams();
+
+  const ingredient = useMemo(() => ingredients.find((ingredient) => ingredient._id === id), [ingredients, id])
+
   return (
     <div className={`${styles.container} mt-15 mb-15 ml-10 mr-10`}>
       <h2 className={`${styles.title} text text_type_main-large mb-3`}>
@@ -34,7 +40,7 @@ const IngredientDetails = ({ ingredient }) => {
 };
 
 IngredientDetails.propTypes = {
-  ingredient: PropTypes.object.isRequired,
+  ingredients: PropTypes.array.isRequired,
 };
 
 export default IngredientDetails;
