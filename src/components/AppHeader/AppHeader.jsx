@@ -1,7 +1,6 @@
 import {
   Logo,
   BurgerIcon,
-  ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink, useLocation } from "react-router-dom";
@@ -21,15 +20,19 @@ const AppHeader = () => {
               className={styles.header__link}
               activeClassName={styles.header__link_active}
             >
-              <BurgerIcon type={pathname === '/' ? 'primary' : 'secondary'}/>
+              <BurgerIcon type={pathname === "/" ? "primary" : "secondary"} />
               <p className="text text_type_main-default ml-2">Конструктор</p>
             </NavLink>
           </li>
           <li className="pl-4 pr-4">
-            <a href="#" className={styles.header__link}>
-              <ListIcon type="secondary" />
+            <NavLink
+              to="/feed"
+              className={styles.header__link}
+              activeClassName={styles.header__link_active}
+            >
+              <BurgerIcon type={pathname === "/feed" ? "primary" : "secondary"} />
               <p className="text text_type_main-default ml-2">Лента заказов</p>
-            </a>
+            </NavLink>
           </li>
         </ul>
         <Logo />
@@ -38,7 +41,9 @@ const AppHeader = () => {
           className={styles.header__link}
           activeClassName={styles.header__link_active}
         >
-          <ProfileIcon type={pathname.startsWith('/profile') ? 'primary' : 'secondary'} />
+          <ProfileIcon
+            type={pathname.startsWith("/profile") ? "primary" : "secondary"}
+          />
           <p className="text text_type_main-default ml-2">Личный кабинет</p>
         </NavLink>
       </div>
