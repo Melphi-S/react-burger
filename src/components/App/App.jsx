@@ -22,7 +22,7 @@ const App = () => {
   const location = useLocation();
   const background = location.state?.background;
 
-  const { userInfo, forgotPasswordSuccess, errorMessage } = useSelector(
+  const { userInfo, errorMessage } = useSelector(
     (state) => state.user
   );
 
@@ -49,39 +49,23 @@ const App = () => {
             <IngredientDetails ingredients={ingredients} />
           )}
         </Route>
-        <ProtectedRoute
-          path="/profile"
-          condition={userInfo}
-          redirectPathname="/login"
-        >
+        <ProtectedRoute path="/profile" onlyForAuth>
           <Profile />
         </ProtectedRoute>
-        <ProtectedRoute
-          path="/login"
-          condition={!userInfo}
-          redirectPathname="/"
-        >
+        <ProtectedRoute path="/login" onlyForAuth={false}>
           <Login />
         </ProtectedRoute>
-        <ProtectedRoute
-          path="/register"
-          condition={!userInfo}
-          redirectPathname="/"
-        >
+        <ProtectedRoute path="/register" onlyForAuth={false}>
           <Register />
         </ProtectedRoute>
         <ProtectedRoute
           path="/forgot-password"
           condition={!userInfo}
-          redirectPathname="/"
+          onlyForAuth={false}
         >
           <ForgotPassword />
         </ProtectedRoute>
-        <ProtectedRoute
-          path="/reset-password"
-          condition={!userInfo && forgotPasswordSuccess}
-          redirectPathname="/forgot-password"
-        >
+        <ProtectedRoute path="/reset-password" onlyForAuth={false}>
           <ResetPassword />
         </ProtectedRoute>
         <Route>

@@ -15,8 +15,8 @@ const ResetPassword = () => {
   const [password, setPassword] = useState("");
   const [token, setToken] = useState("");
 
-  const resetPasswordSuccess = useSelector(
-    (state) => state.user.resetPasswordSuccess
+  const { resetPasswordSuccess, forgotPasswordSuccess } = useSelector(
+    (state) => state.user
   );
 
   const handleSubmit = (evt) => {
@@ -25,8 +25,9 @@ const ResetPassword = () => {
   };
 
   useEffect(() => {
+    !forgotPasswordSuccess && history.push("/forgot-password");
     resetPasswordSuccess && history.push("/login");
-  }, [resetPasswordSuccess, history]);
+  }, [resetPasswordSuccess, forgotPasswordSuccess, history]);
 
   const isValidPassword = (password) => password.length > 5;
 
