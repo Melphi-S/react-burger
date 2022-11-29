@@ -27,8 +27,7 @@ const ProtectedRoute = ({ onlyForAuth, children, ...rest }) => {
 };
 
 ProtectedRoute.propTypes = {
-  condition: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
-  redirectPathname: PropTypes.string.isRequired,
+  onlyForAuth: PropTypes.bool.isRequired,
   children: PropTypes.element.isRequired,
 };
 

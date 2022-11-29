@@ -2,38 +2,36 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { requestPasswordReset } from "../../services/actions/user";
+import { useFormAndValidation } from "../../hooks/useFormsAndValidation";
 import Loader from "../../components/Loader/Loader";
 import styles from "./Forgot-password.module.scss";
 
 const ForgotPassword = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [email, setEmail] = useState("");
   const forgotPasswordSuccess = useSelector(
     (state) => state.user.forgotPasswordSuccess
   );
   const isAuthChecked = useSelector((state) => state.user.isAuthChecked);
+  const { values, handleChange, isValid } = useFormAndValidation(
+    { email: "" },
+    false
+  );
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    dispatch(requestPasswordReset(email));
+    dispatch(requestPasswordReset(values));
   };
 
   useEffect(() => {
     forgotPasswordSuccess && history.push("/reset-password");
   }, [forgotPasswordSuccess, history]);
 
-  const isValidEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
-
-  return (
-    isAuthChecked ?
+  return isAuthChecked ? (
     <div className={`${styles.container}`}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <h1 className={`${styles.title}  text text_type_main-medium`}>
@@ -42,15 +40,15 @@ const ForgotPassword = () => {
         <EmailInput
           placeholder="Укажите e-mail"
           name="email"
-          onChange={(evt) => setEmail(evt.target.value)}
-          value={email}
+          onChange={(evt) => handleChange(evt)}
+          value={values.email}
           errorText={"Введите e-mail"}
         />
         <Button
           htmlType="submit"
           type="primary"
           size="medium"
-          disabled={!isValidEmail}
+          disabled={!isValid}
         >
           Восстановить
         </Button>
@@ -61,7 +59,9 @@ const ForgotPassword = () => {
           Войти
         </Link>
       </p>
-    </div> : <Loader />
+    </div>
+  ) : (
+    <Loader />
   );
 };
 

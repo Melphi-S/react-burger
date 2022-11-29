@@ -30,12 +30,16 @@ const AppHeader = () => {
               className={styles.header__link}
               activeClassName={styles.header__link_active}
             >
-              <BurgerIcon type={pathname === "/feed" ? "primary" : "secondary"} />
+              <BurgerIcon
+                type={pathname === "/feed" ? "primary" : "secondary"}
+              />
               <p className="text text_type_main-default ml-2">Лента заказов</p>
             </NavLink>
           </li>
         </ul>
-        <Logo />
+        <NavLink to="/" exact>
+          <Logo />
+        </NavLink>
         <NavLink
           to="/profile"
           className={styles.header__link}

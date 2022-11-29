@@ -6,7 +6,9 @@ class Api {
   }
 
   _checkResponce(res) {
-    return res.ok ? res.json() : res.json().then(data => Promise.reject(data));
+    return res.ok
+      ? res.json()
+      : res.json().then((data) => Promise.reject(data));
   }
 
   getIngredients() {

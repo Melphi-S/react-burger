@@ -34,7 +34,7 @@ export const CHECK_AUTH = "CHECK_AUTH";
 export const SHOW_INFO_BOARD = "SHOW_INFO_BOARD";
 export const HIDE_INFO_BOARD = "HIDE_INFO_BOARD";
 
-export const register = (email, password, name) => {
+export const register = ({email, password, name}) => {
   return function (dispatch) {
     dispatch({
       type: REGISTER_REQUEST,
@@ -91,7 +91,7 @@ export const getUserInfo = () => {
   };
 };
 
-export const patchUserInfo = (email, password, name) => {
+export const patchUserInfo = ({email, password, name}) => {
   return function (dispatch) {
     dispatch({
       type: PATCH_USER_REQUEST,
@@ -134,7 +134,7 @@ export const refreshToken = () => {
   };
 };
 
-export const logIn = (email, password) => {
+export const logIn = ({email, password}) => {
   return function (dispatch) {
     dispatch({
       type: LOGIN_REQUEST,
@@ -185,7 +185,7 @@ export const logOut = () => {
   };
 };
 
-export const requestPasswordReset = (email) => {
+export const requestPasswordReset = ({email}) => {
   return function (dispatch) {
     dispatch({
       type: FORGOT_PASSWORD_REQUEST,
@@ -208,13 +208,13 @@ export const requestPasswordReset = (email) => {
   };
 };
 
-export const resetPassword = (email, token) => {
+export const resetPassword = ({password, token}) => {
   return function (dispatch) {
     dispatch({
       type: RESET_PASSWORD_REQUEST,
     });
     currentApi
-      .resetPassword(email, token)
+      .resetPassword(password, token)
       .then((res) => {
         if (res && res.success) {
           dispatch({

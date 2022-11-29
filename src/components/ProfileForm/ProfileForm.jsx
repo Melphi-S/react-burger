@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import {
   EmailInput,
   PasswordInput,
@@ -7,51 +7,29 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { patchUserInfo } from "../../services/actions/user";
+import { useFormAndValidation } from "../../hooks/useFormsAndValidation";
 import styles from "./ProfileForm.module.scss";
 
 const ProfileForm = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+  const { name, email } = useSelector(state => state.user.userInfo)
 
-  const isValidEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
+  const { values, handleChange, isValid, resetForm } =
+    useFormAndValidation({ name: name, email: email, password: "" }, true);
 
-  const isValidPassword = (password) => password.length > 0 ? password.length > 5 : true
-
-  const isValidName = (name) => name.length > 0;
-
-  useEffect(() => {
-    if (userInfo) {
-      setEmail(userInfo.email);
-      setName(userInfo.name);
-    }
-  }, [userInfo]);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    dispatch(patchUserInfo(email, password, name));
-  };
-
-  const resetChanges = () => {
-    setEmail(userInfo.email);
-    setName(userInfo.name);
-    setPassword("");
+    dispatch(patchUserInfo(values));
   };
 
   const isValidChanges = useMemo(
     () =>
-      userInfo
-        ? (userInfo.email !== email ||
-          userInfo.name !== name ||
-          password.length) &&
-          (isValidEmail(email) && isValidPassword(password) && isValidName(name))
-        : false,
-    [userInfo, email, name, password]
+      userInfo &&
+      isValid &&
+      (userInfo.email !== values.email || userInfo.name !== values.name || values.password.length),
+    [userInfo, values, isValid]
   );
 
   return (
@@ -60,27 +38,27 @@ const ProfileForm = () => {
         type="text"
         placeholder="Имя"
         name="name"
-        onChange={(evt) => setName(evt.target.value)}
-        value={name}
+        onChange={(evt) => handleChange(evt)}
+        value={values.name}
         icon={"EditIcon"}
       />
       <EmailInput
         placeholder="E-mail"
         name="email"
-        onChange={(evt) => setEmail(evt.target.value)}
-        value={email}
+        onChange={(evt) => handleChange(evt)}
+        value={values.email}
         isIcon={true}
         errorText={"Введите e-mail"}
       />
       <PasswordInput
         placeholder="Пароль"
-        name="password"
+        name='password'
         onChange={(evt) => {
-          setPassword(evt.target.value);
+          handleChange(evt);
         }}
-        value={password}
+        value={values.password}
         icon={"EditIcon"}
-        errorText={'Длина пароля должны быть более 5 символов'}
+        errorText={"Длина пароля должны быть более 5 символов"}
       />
       {isValidChanges ? (
         <div className={styles.form__buttonContainer}>
@@ -88,7 +66,7 @@ const ProfileForm = () => {
             htmlType="button"
             type="secondary"
             size="medium"
-            onClick={resetChanges}
+            onClick={resetForm}
             extraClass={styles.form__cancelButton}
           >
             Отмена

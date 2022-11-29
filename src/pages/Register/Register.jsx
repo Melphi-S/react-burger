@@ -8,34 +8,22 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { register } from "../../services/actions/user";
 import { Link, useHistory } from "react-router-dom";
+import { useFormAndValidation } from "../../hooks/useFormsAndValidation";
 import Loader from "../../components/Loader/Loader";
 import styles from "./Register.module.scss";
 
 const Register = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
   const { userInfo, isAuthChecked } = useSelector((state) => state.user);
-
-  const isValidEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-  };
-
-  const isValidPassword = (password) => password.length > 5;
-
-  const isValidName = (name) => name.length > 0;
-
-  const isValidDetails = useMemo(
-    () => isValidName(name) && isValidEmail(email) && isValidPassword(password),
-    [email, name, password]
+  const { values, handleChange, isValid } = useFormAndValidation(
+    { name: "", email: "", password: "" },
+    false
   );
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    dispatch(register(email, password, name));
+    dispatch(register(values));
   };
 
   useEffect(() => {
@@ -52,30 +40,30 @@ const Register = () => {
           type="text"
           placeholder="Имя"
           name="name"
-          onChange={(evt) => setName(evt.target.value)}
-          value={name}
+          onChange={(evt) => handleChange(evt)}
+          value={values.name}
         />
         <EmailInput
           placeholder="E-mail"
           name="email"
-          onChange={(evt) => setEmail(evt.target.value)}
-          value={email}
+          onChange={(evt) => handleChange(evt)}
+          value={values.email}
           errorText={"Введите e-mail"}
         />
         <PasswordInput
           placeholder="Пароль"
           name="password"
           onChange={(evt) => {
-            setPassword(evt.target.value);
+            handleChange(evt);
           }}
-          value={password}
+          value={values.password}
           errorText={"Длина пароля должна быть более 5 символов"}
         />
         <Button
           htmlType="submit"
           type="primary"
           size="medium"
-          disabled={!isValidDetails}
+          disabled={!isValid}
         >
           Зарегистрироваться
         </Button>
