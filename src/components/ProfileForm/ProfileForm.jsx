@@ -15,13 +15,14 @@ const ProfileForm = () => {
   const userInfo = useSelector((state) => state.user.userInfo);
   const { name, email } = useSelector(state => state.user.userInfo)
 
-  const { values, handleChange, isValid, resetForm } =
+  const { values, handleChange, isValid, resetForm, setValues } =
     useFormAndValidation({ name: name, email: email, password: "" }, true);
 
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
     dispatch(patchUserInfo(values));
+    setValues({ ...values, password: "" })
   };
 
   const isValidChanges = useMemo(
