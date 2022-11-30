@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
+import { useHistory } from "react-router-dom";
 import {
   ConstructorElement,
   CurrencyIcon,
@@ -15,10 +16,14 @@ import {
   resetConstructor,
 } from "../../services/actions/constructor";
 import { postOrder, closeOrderInfo } from "../../services/actions/order";
+import { showInfoBoard } from "../../services/actions/user";
 import styles from "./BurgerConstructor.module.scss";
 
 const BurgerConstructor = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  const userInfo = useSelector((state) => state.user.userInfo);
 
   const { selectedToppings, selectedBun } = useSelector(
     (state) => state.burgerConstructor
@@ -61,7 +66,12 @@ const BurgerConstructor = () => {
   );
 
   const makeNewOrder = (order) => {
-    dispatch(postOrder(order));
+    if (userInfo) {
+      dispatch(postOrder(order));
+    } else {
+      history.push("/login");
+      dispatch(showInfoBoard("Unauthorized user"));
+    }
   };
 
   const handleDrop = (ingredient) => {
@@ -95,47 +105,47 @@ const BurgerConstructor = () => {
   return (
     <>
       <div
-        className={`${styles.burgerConstructor} mt-25 ${
+        className={`${styles.burgerConstructor} ${
           canDrop & !isHover && styles.dropActive
         } ${isHover && styles.dropHover}`}
         ref={dropTarget}
       >
-      <div className={`${styles.burgerConstructor__container}`}>
-        {selectedBun ? (
-          <div className="pr-5">
-            <ConstructorElement
-              type="top"
-              isLocked={true}
-              text={`${selectedBun.info.name} (верх)`}
-              price={selectedBun.info.price}
-              thumbnail={selectedBun.info.image}
-            />
-          </div>
-        ) : (
-          <p className="text text_type_main-large mt-5 mb-5 pr-5">
-            Выберите булку
-          </p>
-        )}
-        {selectedToppings.length ? (
-          <ul className={`${styles.burgerConstructor__list} pl-1 pr-4`}>
-            {renderIngredients}
-          </ul>
-        ) : (
-          <p className="text text_type_main-large mt-5 mb-5 pr-5">
-            Выберите начинки
-          </p>
-        )}
-        {!!selectedBun && (
-          <div className="pr-5">
-            <ConstructorElement
-              type="bottom"
-              isLocked={true}
-              text={`${selectedBun.info.name} (низ)`}
-              price={selectedBun.info.price}
-              thumbnail={selectedBun.info.image}
-            />
-          </div>
-        )}
+        <div className={`${styles.burgerConstructor__container}`}>
+          {selectedBun ? (
+            <div className="pr-5">
+              <ConstructorElement
+                type="top"
+                isLocked={true}
+                text={`${selectedBun.info.name} (верх)`}
+                price={selectedBun.info.price}
+                thumbnail={selectedBun.info.image}
+              />
+            </div>
+          ) : (
+            <p className="text text_type_main-large mt-5 mb-5 pr-5">
+              Выберите булку
+            </p>
+          )}
+          {selectedToppings.length ? (
+            <ul className={`${styles.burgerConstructor__list} pl-1 pr-4`}>
+              {renderIngredients}
+            </ul>
+          ) : (
+            <p className="text text_type_main-large mt-5 mb-5 pr-5">
+              Выберите начинки
+            </p>
+          )}
+          {!!selectedBun && (
+            <div className="pr-5">
+              <ConstructorElement
+                type="bottom"
+                isLocked={true}
+                text={`${selectedBun.info.name} (низ)`}
+                price={selectedBun.info.price}
+                thumbnail={selectedBun.info.image}
+              />
+            </div>
+          )}
         </div>
 
         <div

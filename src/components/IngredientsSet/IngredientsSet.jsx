@@ -39,7 +39,7 @@ const IngredientsSet = React.forwardRef(({ name, type }, ref ) => {
 
   return (
     <>
-      <h2 id={type} className="text text_type_main-medium" ref={ref}>
+      <h2 id={type} className="text text_type_main-medium mt-10" ref={ref}>
         {name}
       </h2>
       <ul className={`${styles.ingredientsSet} pl-4 mt-6 mb-6`}>{set}</ul>

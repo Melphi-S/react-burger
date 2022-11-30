@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useDrag } from "react-dnd";
+import { Link, useLocation } from "react-router-dom";
 import {
   CurrencyIcon,
   Counter,
@@ -10,6 +11,8 @@ import PropTypes from "prop-types";
 import { ingredientTypes } from "../../utils/consts";
 
 const Ingredient = ({ ingredient, onLeftClick, onRightClick }) => {
+  const location = useLocation();
+
   const bun = ingredientTypes.bun;
 
   const { selectedToppings, selectedBun } = useSelector(
@@ -32,27 +35,30 @@ const Ingredient = ({ ingredient, onLeftClick, onRightClick }) => {
   });
 
   return (
-    <li
-      className={styles.ingredient}
-      onClick={onLeftClick}
-      onContextMenu={onRightClick}
-      ref={dragRef}
-    >
-      <img
-        className={`${styles.ingredient__image} mr-4 ml-4`}
-        src={ingredient.image}
-        alt={ingredient.name}
-      />
-      <div className={`${styles.ingredient__price} mt-1 mb-1`}>
-        <p className="text text_type_digits-default">{ingredient.price}</p>
-        <CurrencyIcon type="primary" />
-      </div>
-      <p
-        className={`${styles.ingredient__name} text text_type_main-default pb-6`}
+    <li onClick={onLeftClick} onContextMenu={onRightClick} ref={dragRef}>
+      <Link
+        className={styles.ingredient}
+        to={{
+          pathname: `/ingredients/${ingredient._id}`,
+          state: { background: location }
+        }}
       >
-        {ingredient.name}
-      </p>
-      {countNumber > 0 && <Counter count={countNumber} size="default" />}
+        <img
+          className={`${styles.ingredient__image} mr-4 ml-4`}
+          src={ingredient.image}
+          alt={ingredient.name}
+        />
+        <div className={`${styles.ingredient__price} mt-1 mb-1`}>
+          <p className="text text_type_digits-default">{ingredient.price}</p>
+          <CurrencyIcon type="primary" />
+        </div>
+        <p
+          className={`${styles.ingredient__name} text text_type_main-default pb-6`}
+        >
+          {ingredient.name}
+        </p>
+        {countNumber > 0 && <Counter count={countNumber} size="default" />}
+      </Link>
     </li>
   );
 };
@@ -60,7 +66,7 @@ const Ingredient = ({ ingredient, onLeftClick, onRightClick }) => {
 Ingredient.propTypes = {
   ingredient: PropTypes.object.isRequired,
   onLeftClick: PropTypes.func.isRequired,
-  onRightClick: PropTypes.func.isRequired
+  onRightClick: PropTypes.func.isRequired,
 };
 
 export default Ingredient;

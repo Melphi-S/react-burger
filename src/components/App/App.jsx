@@ -1,47 +1,87 @@
 import { useEffect } from "react";
-import AppHeader from "../AppHeader/AppHeader";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions/ingredients";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import styles from "./App.module.scss";
+import { getUserInfo } from "../../services/actions/user";
+import AppHeader from "../AppHeader/AppHeader";
+import Main from "../../pages/Main/Main";
+import { Switch, Route, useLocation, useHistory } from "react-router-dom";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import Login from "../../pages/Login/Login";
+import Register from "../../pages/Register/Register";
+import ForgotPassword from "../../pages/Forgot-password/Forgot-password";
+import ResetPassword from "../../pages/Reset-password/Reset-password";
+import Profile from "../../pages/Profile/Profile";
+import NotFound from "../../pages/Not-found/Not-found";
+import InfoBoard from "../InfoBoard/InfoBoard";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import Modal from "../Modal/Modal";
 
 const App = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
+  const background = location.state?.background;
 
-  const { ingredientsRequest, ingredientsFailed } = useSelector(
-    (store) => store.ingredients
+  const { userInfo, errorMessage } = useSelector(
+    (state) => state.user
   );
+
+  const ingredients = useSelector((store) => store.ingredients.ingredients);
 
   useEffect(() => {
     dispatch(getIngredients());
+    dispatch(getUserInfo());
   }, [dispatch]);
+
+  const closeModal = () => {
+    history.goBack();
+  };
 
   return (
     <>
       <AppHeader />
-      {!!ingredientsRequest && <div className={styles.spinner}></div>}
-      {!!ingredientsFailed && (
-        <div>
-          <p className="text text_type_main-large mt-30">
-            Что-то пошло не так...
-          </p>
-          <p className="text text_type_main-large mt-15">
-            Попробуйте обновить страницу или свяжитесь с нами по телефону
-          </p>
-          <p className="text text_type_main-large mt-15">322-22-32-22</p>
-        </div>
+      <Switch location={background || location}>
+        <Route path="/" exact>
+          <Main />
+        </Route>
+        <Route path="/ingredients/:id">
+          {ingredients.length && (
+            <IngredientDetails ingredients={ingredients} />
+          )}
+        </Route>
+        <ProtectedRoute path="/profile" onlyForAuth>
+          <Profile />
+        </ProtectedRoute>
+        <ProtectedRoute path="/login" onlyForAuth={false}>
+          <Login />
+        </ProtectedRoute>
+        <ProtectedRoute path="/register" onlyForAuth={false}>
+          <Register />
+        </ProtectedRoute>
+        <ProtectedRoute
+          path="/forgot-password"
+          condition={!userInfo}
+          onlyForAuth={false}
+        >
+          <ForgotPassword />
+        </ProtectedRoute>
+        <ProtectedRoute path="/reset-password" onlyForAuth={false}>
+          <ResetPassword />
+        </ProtectedRoute>
+        <Route>
+          <NotFound />
+        </Route>
+      </Switch>
+      {background && (
+        <Route path="/ingredients/:id">
+          <Modal closeModal={closeModal}>
+            {ingredients.length && (
+              <IngredientDetails ingredients={ingredients} />
+            )}
+          </Modal>
+        </Route>
       )}
-      {!ingredientsRequest & !ingredientsFailed ? (
-        <main className={styles.main}>
-          <DndProvider backend={HTML5Backend}>
-            <BurgerIngredients />
-            <BurgerConstructor />
-          </DndProvider>
-        </main>
-      ) : null}
+      {errorMessage && <InfoBoard errorMessage={errorMessage} />}
     </>
   );
 };

@@ -3,10 +3,19 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+    margin: 56px 40px;
+
+    &_fullPage {
+        margin: 135px 0;
+    }
 }
 
 .title {
     width: 100%;
+
+    &_fullPage {
+        width: auto;
+    }
 }
 
 .nutritionInfo {

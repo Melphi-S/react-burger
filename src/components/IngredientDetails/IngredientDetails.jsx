@@ -1,10 +1,21 @@
 import styles from "./IngredientDetails.module.scss";
 import PropTypes from "prop-types";
+import { useParams, useLocation } from "react-router-dom";
+import { useMemo } from "react";
 
-const IngredientDetails = ({ ingredient }) => {
+const IngredientDetails = ({ ingredients }) => {
+  const location = useLocation();
+  const background = location.state?.background;
+  const { id } = useParams();
+
+  const ingredient = useMemo(
+    () => ingredients.find((ingredient) => ingredient._id === id),
+    [ingredients, id]
+  );
+
   return (
-    <div className={`${styles.container} mt-15 mb-15 ml-10 mr-10`}>
-      <h2 className={`${styles.title} text text_type_main-large mb-3`}>
+    <div className={`${styles.container} ${!background && styles.container_fullPage}`}>
+      <h2 className={`${background ? styles.title : styles.title_fullPage} text text_type_main-large mb-3`}>
         Детали ингредиента
       </h2>
       <img src={ingredient.image_large} alt={ingredient.name} />
@@ -34,7 +45,7 @@ const IngredientDetails = ({ ingredient }) => {
 };
 
 IngredientDetails.propTypes = {
-  ingredient: PropTypes.object.isRequired,
+  ingredients: PropTypes.array.isRequired,
 };
 
 export default IngredientDetails;

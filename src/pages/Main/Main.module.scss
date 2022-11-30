@@ -1,6 +1,5 @@
-.ingredientsSet {
+.main {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 32px 24px;
-    list-style: none;
+    column-gap: 40px;
 }

@@ -1,0 +1,59 @@
+.container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 50px;
+}
+
+.errorNumber {
+    font-size: 500px;
+    line-height: 1;
+    font-family: 'Alien';
+    margin: 0;
+    -webkit-animation: blink 5s linear infinite;
+    animation: blink 5s linear infinite;
+}
+
+@font-face {
+    src: url(../../fonts/KrAlien-YXp2.ttf) format('truetype');
+    font-family: 'Alien';
+    font-weight: normal;
+}
+
+@-webkit-keyframes blink {
+    0% {
+        color: rgba(255, 255, 255, 0);
+    }
+
+    50% {
+        color: rgba(255, 255, 255, 0);
+    }
+
+
+    75% {
+        color: rgba(255, 255, 255, 1);
+    }
+
+    100% {
+        color: rgba(255, 255, 255, 0);
+    }
+}
+
+@keyframes blink {
+    0% {
+        color: rgba(255, 255, 255, 0);
+    }
+
+    50% {
+        color: rgba(255, 255, 255, 0);
+    }
+
+
+    75% {
+        color: rgba(255, 255, 255, 1);
+    }
+
+    100% {
+        color: rgba(255, 255, 255, 0);
+    }
+}
