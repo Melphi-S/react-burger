@@ -14,11 +14,23 @@ const IngredientDetails = ({ ingredients }) => {
   );
 
   return (
-    <div className={`${styles.container} ${!background && styles.container_fullPage}`}>
-      <h2 className={`${background ? styles.title : styles.title_fullPage} text text_type_main-large mb-3`}>
+    <div
+      className={`${styles.container} ${
+        !background && styles.container_fullPage
+      }`}
+    >
+      <h2
+        className={`${
+          background ? styles.title : styles.title_fullPage
+        } text text_type_main-large mb-3`}
+      >
         Детали ингредиента
       </h2>
-      <img src={ingredient.image_large} alt={ingredient.name} />
+      <img
+        src={ingredient.image_large}
+        alt={ingredient.name}
+        className={styles.image}
+      />
       <p className="text text_type_main-medium mt-4 mb-8">{ingredient.name}</p>
       <ul className={styles.nutritionInfo}>
         <li className={styles.nutritionInfo__item}>
