@@ -32,6 +32,10 @@
         &_active {
             color: #F2F2F3;
         }
+
+        &:hover {
+            opacity: 0.7;
+        }
     }
 }
 
