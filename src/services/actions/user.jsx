@@ -34,7 +34,7 @@ export const CHECK_AUTH = "CHECK_AUTH";
 export const SHOW_INFO_BOARD = "SHOW_INFO_BOARD";
 export const HIDE_INFO_BOARD = "HIDE_INFO_BOARD";
 
-export const register = ({email, password, name}) => {
+export const register = ({ email, password, name }) => {
   return function (dispatch) {
     dispatch({
       type: REGISTER_REQUEST,
@@ -54,7 +54,7 @@ export const register = ({email, password, name}) => {
       .catch((err) =>
         dispatch({
           type: REGISTER_FAILED,
-          payload: err.message
+          payload: err.message,
         })
       );
   };
@@ -91,7 +91,7 @@ export const getUserInfo = () => {
   };
 };
 
-export const patchUserInfo = ({email, password, name}) => {
+export const patchUserInfo = ({ email, password, name }) => {
   return function (dispatch) {
     dispatch({
       type: PATCH_USER_REQUEST,
@@ -103,13 +103,13 @@ export const patchUserInfo = ({email, password, name}) => {
           res.success &&
           dispatch({
             type: PATCH_USER_SUCCESS,
-            payload: {userInfo: res.user, message: "User info changed"}
+            payload: { userInfo: res.user, message: "User info changed" },
           });
       })
       .catch((err) => {
         dispatch({
           type: PATCH_USER_FAILED,
-          payload: err.message
+          payload: err.message,
         });
       });
   };
@@ -134,7 +134,7 @@ export const refreshToken = () => {
   };
 };
 
-export const logIn = ({email, password}) => {
+export const logIn = ({ email, password }) => {
   return function (dispatch) {
     dispatch({
       type: LOGIN_REQUEST,
@@ -154,7 +154,7 @@ export const logIn = ({email, password}) => {
       .catch((err) =>
         dispatch({
           type: LOGIN_FAILED,
-          payload: err.message
+          payload: err.message,
         })
       );
   };
@@ -179,13 +179,13 @@ export const logOut = () => {
       .catch((err) =>
         dispatch({
           type: LOGOUT_FAILED,
-          payload: err.message
+          payload: err.message,
         })
       );
   };
 };
 
-export const requestPasswordReset = ({email}) => {
+export const requestPasswordReset = ({ email }) => {
   return function (dispatch) {
     dispatch({
       type: FORGOT_PASSWORD_REQUEST,
@@ -202,13 +202,13 @@ export const requestPasswordReset = ({email}) => {
       .catch((err) =>
         dispatch({
           type: FORGOT_PASSWORD_FAILED,
-          payload: err.message
+          payload: err.message,
         })
       );
   };
 };
 
-export const resetPassword = ({password, token}) => {
+export const resetPassword = ({ password, token }) => {
   return function (dispatch) {
     dispatch({
       type: RESET_PASSWORD_REQUEST,
@@ -219,13 +219,14 @@ export const resetPassword = ({password, token}) => {
         if (res && res.success) {
           dispatch({
             type: RESET_PASSWORD_SUCCESS,
+            payload: "Password changed",
           });
         }
       })
       .catch((err) =>
         dispatch({
           type: RESET_PASSWORD_FAILED,
-          payload: err.message
+          payload: err.message,
         })
       );
   };
@@ -233,9 +234,9 @@ export const resetPassword = ({password, token}) => {
 
 export const showInfoBoard = (message) => ({
   type: SHOW_INFO_BOARD,
-  payload: message
-})
+  payload: message,
+});
 
 export const hideInfoBoard = () => ({
-  type: HIDE_INFO_BOARD
-})
+  type: HIDE_INFO_BOARD,
+});

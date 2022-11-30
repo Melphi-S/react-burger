@@ -182,7 +182,7 @@ export const userReducer = (state = userInitialState, action) => {
         resetPasswordSuccess: true,
         resetPasswordFailed: false,
         forgotPasswordSuccess: false,
-        errorMessage: null,
+        errorMessage: action.payload,
       };
     case RESET_PASSWORD_FAILED:
       return {

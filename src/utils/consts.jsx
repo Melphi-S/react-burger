@@ -30,6 +30,10 @@ const infoMessages = [
     payloadMessage: "User info changed",
     boardMessage: "Данные успешно изменены",
   },
+  {
+    payloadMessage: "Password changed",
+    boardMessage: "Пароль успешно изменен",
+  },
 ];
 
 const defaultMessage = "Что-то пошло не так – попробуйте повторить позже";
