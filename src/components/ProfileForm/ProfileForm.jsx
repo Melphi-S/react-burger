@@ -13,23 +13,26 @@ import styles from "./ProfileForm.module.scss";
 const ProfileForm = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
-  const { name, email } = useSelector(state => state.user.userInfo)
+  const { name, email } = useSelector(
+    (state) => state.user.userInfo
+  );
 
   const { values, handleChange, isValid, resetForm, setValues } =
     useFormAndValidation({ name: name, email: email, password: "" }, true);
 
-
   const handleSubmit = (evt) => {
     evt.preventDefault();
     dispatch(patchUserInfo(values));
-    setValues({ ...values, password: "" })
+    setValues({ ...values, password: "" });
   };
 
   const isValidChanges = useMemo(
     () =>
       userInfo &&
       isValid &&
-      (userInfo.email !== values.email || userInfo.name !== values.name || values.password.length),
+      (userInfo.email !== values.email ||
+        userInfo.name !== values.name ||
+        values.password.length),
     [userInfo, values, isValid]
   );
 
@@ -53,7 +56,7 @@ const ProfileForm = () => {
       />
       <PasswordInput
         placeholder="Пароль"
-        name='password'
+        name="password"
         onChange={(evt) => {
           handleChange(evt);
         }}

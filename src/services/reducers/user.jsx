@@ -92,14 +92,15 @@ export const userReducer = (state = userInitialState, action) => {
       return {
         ...state,
         patchUserRequest: true,
+        patchUserSuccess: false
       };
     case PATCH_USER_SUCCESS:
       return {
         ...state,
         patchUserRequest: false,
         patchUserFailed: false,
-        userInfo: action.payload,
-        errorMessage: null,
+        userInfo: action.payload.userInfo,
+        errorMessage: action.payload.message,
       };
     case PATCH_USER_FAILED:
       return {

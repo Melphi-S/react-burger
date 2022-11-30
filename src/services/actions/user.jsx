@@ -103,7 +103,7 @@ export const patchUserInfo = ({email, password, name}) => {
           res.success &&
           dispatch({
             type: PATCH_USER_SUCCESS,
-            payload: res.user,
+            payload: {userInfo: res.user, message: "User info changed"}
           });
       })
       .catch((err) => {

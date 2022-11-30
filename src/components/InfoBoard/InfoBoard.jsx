@@ -35,7 +35,7 @@ const InfoBoard = ({ errorMessage }) => {
 
   return createPortal(
     <div className={styles.infoBoard} ref={boardRef}>
-      <p className="text text_type_main-default mt-2 mb-2 mr-1 ml-1">
+      <p className="text text_type_main-default mt-2 mb-2 mr-2 ml-2">
         {infoMessage}
       </p>
     </div>,

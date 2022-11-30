@@ -26,6 +26,10 @@ const infoMessages = [
     payloadMessage: "Unauthorized user",
     boardMessage: "Пожалуйста, авторизуйтесь для оформления заказа",
   },
+  {
+    payloadMessage: "User info changed",
+    boardMessage: "Данные успешно изменены",
+  },
 ];
 
 const defaultMessage = "Что-то пошло не так – попробуйте повторить позже";
