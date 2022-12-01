@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import {
   EmailInput,
   PasswordInput,
@@ -7,15 +7,23 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { patchUserInfo } from "../../services/actions/user";
-import { useFormAndValidation } from "../../hooks/useFormsAndValidation";
+import { useFormAndValidation } from "../../services/hooks/useFormsAndValidation";
+import {
+  startUserWsConnection,
+  closeUserWsConnection,
+} from "../../services/actions/wsOrders";
 import styles from "./ProfileForm.module.scss";
 
 const ProfileForm = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
-  const { name, email } = useSelector(
-    (state) => state.user.userInfo
-  );
+  const { name, email } = useSelector((state) => state.user.userInfo);
+
+  useEffect(() => {
+    userInfo && dispatch(startUserWsConnection());
+
+    return () => dispatch(closeUserWsConnection());
+  }, [userInfo, dispatch]);
 
   const { values, handleChange, isValid, resetForm, setValues } =
     useFormAndValidation({ name: name, email: email, password: "" }, true);

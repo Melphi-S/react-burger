@@ -6,7 +6,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { requestPasswordReset } from "../../services/actions/user";
-import { useFormAndValidation } from "../../hooks/useFormsAndValidation";
+import { useFormAndValidation } from "../../services/hooks/useFormsAndValidation";
 import Loader from "../../components/Loader/Loader";
 import styles from "./Forgot-password.module.scss";
 
