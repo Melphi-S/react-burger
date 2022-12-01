@@ -8,9 +8,12 @@ export function setCookie(name, value, props) {
     const d = new Date();
     d.setTime(d.getTime() + exp * 1000);
     exp = props.expires = d;
-  }
-  if (exp && exp.toUTCString) {
+  } else if (exp && exp.toUTCString) {
     props.expires = exp.toUTCString();
+  } else {
+    const d = new Date();
+    d.setTime(d.getTime() + 2592000e3);
+    props.expires = d;
   }
   value = encodeURIComponent(value);
   let updatedCookie = name + "=" + value;
