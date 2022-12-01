@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/react-burger/static/css/main.0934cd43.css",
-    "main.js": "/react-burger/static/js/main.eceacd6d.js",
+    "main.js": "/react-burger/static/js/main.7572a941.js",
     "static/media/space-ship.gif": "/react-burger/static/media/space-ship.db830634ed425dc9522e.gif",
     "static/media/JetBrainsMono-Bold.woff": "/react-burger/static/media/JetBrainsMono-Bold.3914674f1cb2335acf26.woff",
     "static/media/JetBrainsMono-Regular.woff": "/react-burger/static/media/JetBrainsMono-Regular.f52bee61d00ce995b89f.woff",
@@ -12,10 +12,10 @@
     "static/media/iceland.woff2": "/react-burger/static/media/iceland.4ae67a017a5ff82bbbb7.woff2",
     "index.html": "/react-burger/index.html",
     "main.0934cd43.css.map": "/react-burger/static/css/main.0934cd43.css.map",
-    "main.eceacd6d.js.map": "/react-burger/static/js/main.eceacd6d.js.map"
+    "main.7572a941.js.map": "/react-burger/static/js/main.7572a941.js.map"
   },
   "entrypoints": [
     "static/css/main.0934cd43.css",
-    "static/js/main.eceacd6d.js"
+    "static/js/main.7572a941.js"
   ]
 }
