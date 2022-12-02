@@ -8,7 +8,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import Modal from "../Modal/Modal";
-import OrderDetails from "../OrderDetails/OrderDetails";
+import OrderConfirmation from "../OrderConfirmation/OrderConfirmation";
 import Topping from "../Topping/Topping";
 import {
   addIngredient,
@@ -171,7 +171,7 @@ const BurgerConstructor = () => {
 
       {isOrderInfoOpened && (
         <Modal closeModal={closeModal}>
-          <OrderDetails number={orderNumber} />
+          <OrderConfirmation number={orderNumber} />
         </Modal>
       )}
     </>

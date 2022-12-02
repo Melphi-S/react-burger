@@ -22,11 +22,9 @@ const App = () => {
   const location = useLocation();
   const background = location.state?.background;
 
-  const { userInfo, errorMessage } = useSelector(
-    (state) => state.user
-  );
+  const { userInfo, errorMessage } = useSelector((state) => state.user);
 
-  const ingredients = useSelector((store) => store.ingredients.ingredients);
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
 
   useEffect(() => {
     dispatch(getIngredients());

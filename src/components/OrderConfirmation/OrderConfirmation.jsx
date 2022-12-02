@@ -1,10 +1,10 @@
-import styles from "./OrderDetails.module.scss";
+import styles from "./OrderConfirmation.module.scss";
 import doneImage from "../../images/done.jpg";
 import PropTypes from "prop-types";
 import Loader from "../Loader/Loader";
 import { useSelector } from "react-redux";
 
-const OrderDetails = ({ number }) => {
+const OrderConfirmation = ({ number }) => {
   const { orderRequest, orderFailed } = useSelector((state) => state.order);
 
   return (
@@ -36,8 +36,8 @@ const OrderDetails = ({ number }) => {
   );
 };
 
-OrderDetails.propTypes = {
+OrderConfirmation.propTypes = {
   number: PropTypes.number,
 };
 
-export default OrderDetails;
+export default OrderConfirmation;

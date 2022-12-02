@@ -40,8 +40,8 @@ const composeEnhancers =
 const enhancer = composeEnhancers(
   applyMiddleware(
     thunk,
-    // wsMiddleware(ORDERS_URL, wsUserActions),
-    // wsMiddleware(`${ORDERS_URL}/all`, wsPublicActions)
+    wsMiddleware(ORDERS_URL, wsUserActions),
+    wsMiddleware(`${ORDERS_URL}/all`, wsPublicActions)
   )
 );
 

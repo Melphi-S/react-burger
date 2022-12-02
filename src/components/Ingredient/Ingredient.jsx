@@ -10,7 +10,7 @@ import styles from "./Ingredient.module.scss";
 import PropTypes from "prop-types";
 import { ingredientTypes } from "../../utils/consts";
 
-const Ingredient = ({ ingredient, onLeftClick, onRightClick }) => {
+const Ingredient = ({ ingredient, onRightClick }) => {
   const location = useLocation();
 
   const bun = ingredientTypes.bun;
@@ -35,7 +35,7 @@ const Ingredient = ({ ingredient, onLeftClick, onRightClick }) => {
   });
 
   return (
-    <li onClick={onLeftClick} onContextMenu={onRightClick} ref={dragRef}>
+    <li onContextMenu={onRightClick} ref={dragRef}>
       <Link
         className={styles.ingredient}
         to={{
@@ -65,7 +65,6 @@ const Ingredient = ({ ingredient, onLeftClick, onRightClick }) => {
 
 Ingredient.propTypes = {
   ingredient: PropTypes.object.isRequired,
-  onLeftClick: PropTypes.func.isRequired,
   onRightClick: PropTypes.func.isRequired,
 };
 

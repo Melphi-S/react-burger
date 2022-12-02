@@ -2,17 +2,12 @@ import React, { useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Ingredient from "../Ingredient/Ingredient";
 import { addIngredient } from "../../services/actions/constructor";
-import { openInfo } from "../../services/actions/ingredientInfo";
 import styles from "./IngredientsSet.module.scss";
 import PropTypes from "prop-types";
 
 const IngredientsSet = React.forwardRef(({ name, type }, ref ) => {
   const dispatch = useDispatch();
   const { ingredients } = useSelector((state) => state.ingredients);
-
-  const openModal = (ingredient) => {
-    dispatch(openInfo(ingredient));
-  };
 
   const handleRightClick = (ingredient) => {
     dispatch(addIngredient(ingredient));
@@ -26,7 +21,6 @@ const IngredientsSet = React.forwardRef(({ name, type }, ref ) => {
             <Ingredient
               key={ingredient._id}
               ingredient={ingredient}
-              onLeftClick={() => openModal(ingredient)}
               onRightClick={(evt) => {
                 evt.preventDefault();
                 handleRightClick(ingredient);

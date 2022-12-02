@@ -12,6 +12,7 @@ import {
 const wsOrdersInitialState = {
   isOpenConnection: false,
   connectionError: null,
+  isTrusted: false,
   orders: null,
 };
 
@@ -23,6 +24,7 @@ export const wsOrdersReducer = (state = wsOrdersInitialState, action) => {
         ...state,
         isOpenConnection: false,
         connectionError: null,
+        isTrusted: false,
       };
     case WS_USER_ERROR:
     case WS_PUBLIC_ERROR:
@@ -30,12 +32,16 @@ export const wsOrdersReducer = (state = wsOrdersInitialState, action) => {
         ...state,
         isOpenConnection: false,
         connectionError: action.payload,
+        isTrusted: false,
         orders: null,
       };
     case WS_USER_CLOSED:
     case WS_PUBLIC_CLOSED:
       return {
-        ...wsOrdersInitialState,
+        ...state,
+        isOpenConnection: false,
+        isTrusted: action.payload ? action.payload.isTrusted : false,
+        orders: null,
       };
     case WS_USER_ORDERS:
     case WS_PUBLIC_ORDERS:
