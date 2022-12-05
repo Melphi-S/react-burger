@@ -5,6 +5,7 @@ import { orderStatuses } from "../../utils/consts";
 import {
   FormattedDate,
   CurrencyIcon,
+  Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import styles from "./OrderBrief.module.scss";
@@ -15,28 +16,43 @@ const OrderBrief = ({ order, forUser }) => {
   const { createdAt, ingredients, name, number, status } = order;
   const ingredientsInfo = useSelector((state) => state.ingredients.ingredients);
 
-  const selectedIngredients = useMemo(
-    () =>
-      ingredients.map((ingredient) =>
-        ingredientsInfo.find(
-          (ingredientInfo) => ingredientInfo._id === ingredient
-        )
-      ),
-    [ingredients, ingredientsInfo]
-  );
+  const selectedIngredients = useMemo(() => {
+    const ingredientsList = ingredients.map((ingredient) =>
+      ingredientsInfo.find(
+        (ingredientInfo) => ingredientInfo._id === ingredient
+      )
+    );
+    const ingredientsCount = ingredientsList.reduce((arr, ingredient) => {
+      let currentIngredient = arr.find(
+        (arrIngrredient) => arrIngrredient._id === ingredient._id
+      );
+      if (currentIngredient) {
+        currentIngredient.count += 1;
+      } else {
+        let currentIngredient = {
+          count: 1,
+          ...ingredient,
+        };
+        arr.push(currentIngredient);
+      }
+      return arr;
+    }, []);
+    return ingredientsCount;
+  }, [ingredients, ingredientsInfo]);
 
   const totalPrice = useMemo(
     () =>
       selectedIngredients.reduce(
-        (total, ingredient) => (total += ingredient.price),
+        (total, ingredient) => (total += ingredient.price * ingredient.count),
         0
       ),
     [selectedIngredients]
   );
 
   const hiddenImagesCount = useMemo(
-    () => (ingredients.length > 5 ? ingredients.length - 5 : null),
-    [ingredients]
+    () =>
+      selectedIngredients.length > 5 ? selectedIngredients.length - 5 : null,
+    [selectedIngredients]
   );
 
   const headerNumber = useMemo(
@@ -76,7 +92,7 @@ const OrderBrief = ({ order, forUser }) => {
                 return (
                   <li
                     className={styles.orderBrief__imageContainer}
-                    key={index}
+                    key={ingredient._id}
                     style={{ zIndex: 6 - index }}
                   >
                     <img
@@ -84,6 +100,13 @@ const OrderBrief = ({ order, forUser }) => {
                       src={ingredient.image}
                       alt={ingredient.name}
                     />
+                    {index < 5 && ingredient.count > 1 && (
+                      <Counter
+                        count={ingredient.count}
+                        size="small"
+                        extraClass={styles.orderBrief__counter}
+                      />
+                    )}
                     {index === 5 && (
                       <>
                         <div className={styles.orderBrief__imageOverlay}></div>
@@ -109,7 +132,7 @@ const OrderBrief = ({ order, forUser }) => {
 
 OrderBrief.propTypes = {
   order: PropTypes.object.isRequired,
-  forUser: PropTypes.bool
+  forUser: PropTypes.bool,
 };
 
 export default OrderBrief;

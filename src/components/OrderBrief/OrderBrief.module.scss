@@ -66,4 +66,10 @@
     &__hiddenCount {
         z-index: 2;
     }
+
+    &__counter {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+    }
 }
