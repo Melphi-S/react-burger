@@ -27,7 +27,7 @@ const OrdersSummary = ({ orders }) => {
                     index < 10 && (
                       <li
                         className={`${styles.ordersSummary__done} text text_type_digits-default`}
-                        key={index}
+                        key={order.number}
                       >
                         {order.number}
                       </li>
@@ -41,7 +41,7 @@ const OrdersSummary = ({ orders }) => {
                     index < 20 && (
                       <li
                         className={`${styles.ordersSummary__done} text text_type_digits-default`}
-                        key={index}
+                        key={order.number}
                       >
                         {order.number}
                       </li>

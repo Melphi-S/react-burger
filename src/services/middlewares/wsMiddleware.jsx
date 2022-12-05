@@ -3,11 +3,13 @@ export const wsMiddleware = (wsUrl, wsActions) => {
     let socket = null;
 
     return (next) => (action) => {
-      const { dispatch, getState } = store;
+      const { dispatch } = store;
       const { type } = action;
       const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;
       if (type === wsInit) {
-        socket = new WebSocket(`${wsUrl}?token=${action.payload}`);
+        socket = action.payload
+          ? new WebSocket(`${wsUrl}${action.payload}`)
+          : new WebSocket(wsUrl);
       }
       if (socket) {
         socket.onopen = (event) => {

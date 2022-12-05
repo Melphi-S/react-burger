@@ -12,7 +12,7 @@ export const WS_PUBLIC_ORDERS = "WS_PUBLIC_ORDERS";
 export const startUserWsConnection = (token) => {
   return {
     type: WS_USER_START,
-    payload: token
+    payload: `?token=${token}`
   };
 };
 
