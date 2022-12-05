@@ -5,12 +5,12 @@ import Loader from "../Loader/Loader";
 import { useSelector } from "react-redux";
 
 const OrderConfirmation = ({ number }) => {
-  const { orderRequest, orderFailed } = useSelector((state) => state.order);
+  const { postOrderRequest, postOrderFailed } = useSelector((state) => state.order);
 
   return (
     <div className={`${styles.container} mt-30 mb-30`}>
-      {!!orderRequest && <Loader text="Оформляем заказ" />}
-      {!!orderFailed && (
+      {!!postOrderRequest && <Loader text="Оформляем заказ" />}
+      {!!postOrderFailed && (
         <>
           <p className="text text_type_main-default">Что-то пошло не так...</p>
           <p className="text text_type_main-default mt-8">
@@ -19,7 +19,7 @@ const OrderConfirmation = ({ number }) => {
           <p className="text text_type_main-large mt-8">322-22-32-22</p>
         </>
       )}
-      {!orderRequest & !orderFailed ? (
+      {!postOrderRequest & !postOrderFailed ? (
         <>
           <p className="text text_type_digits-large mb-8">{number}</p>
           <p className="text text_type_main-medium">идентификатор заказа</p>

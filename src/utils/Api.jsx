@@ -26,6 +26,15 @@ class Api {
     }).then(this._checkResponce);
   }
 
+  getOrder(orderNumber) {
+    return fetch(`${this.url}/orders/${orderNumber}`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+    }).then(this._checkResponce);
+  }
+
   register(email, password, name) {
     return fetch(`${this.url}/auth/register`, {
       method: "POST",

@@ -6,9 +6,10 @@ import {
   FormattedDate,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import PropTypes from "prop-types";
 import styles from "./OrderBrief.module.scss";
 
-const OrderBrief = ({ order }) => {
+const OrderBrief = ({ order, forUser }) => {
   const location = useLocation();
   const { path } = useRouteMatch();
   const { createdAt, ingredients, name, number, status } = order;
@@ -39,7 +40,7 @@ const OrderBrief = ({ order }) => {
   );
 
   const headerNumber = useMemo(
-    () => `#${number < 100000 ? 0 : null}${number}`,
+    () => `#${String(number).padStart(6, "0")}`,
     [number]
   );
 
@@ -58,15 +59,17 @@ const OrderBrief = ({ order }) => {
             <FormattedDate date={new Date(createdAt)} />
           </p>
         </div>
-        <h3 className="text text_type_main-medium mt-6 mb-2">{name}</h3>
-        <p
-          className={`text text_type_main-small mb-6 ${
-            status === "done" ? styles.orderBrief__doneStatus : null
-          }`}
-        >
-          {orderStatuses[status]}
-        </p>
-        <div className={styles.orderBrief__flexContainer}>
+        <h3 className="text text_type_main-medium mt-6">{name}</h3>
+        {forUser && (
+          <span
+            className={`text text_type_main-small mt-2 ${
+              status === "done" ? styles.orderBrief__doneStatus : null
+            }`}
+          >
+            {orderStatuses[status]}
+          </span>
+        )}
+        <div className={`${styles.orderBrief__flexContainer} mt-6`}>
           <ul className={styles.orderBrief__imageList}>
             {selectedIngredients.map((ingredient, index) => {
               if (index < 6) {
@@ -102,6 +105,11 @@ const OrderBrief = ({ order }) => {
       </Link>
     </li>
   );
+};
+
+OrderBrief.propTypes = {
+  order: PropTypes.object.isRequired,
+  forUser: PropTypes.bool
 };
 
 export default OrderBrief;

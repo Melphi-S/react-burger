@@ -2,8 +2,9 @@
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    min-width: 720px;
+    transform: translate(-50%, -50%) scale(0.2);
+    width: 720px;
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -11,7 +12,9 @@
     border: 1px solid rgba(76, 76, 255, 0.2);
     box-shadow: 0px 24px 32px rgba(0, 0, 0, 0.04), 0px 16px 24px rgba(0, 0, 0, 0.04), 0px 4px 8px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
     border-radius: 40px;
-    z-index: 2;
+    z-index: 999;
+    opacity: 0;
+    animation: rising 0.5s forwards;
 
     &__closeButton {
         position: absolute;
@@ -20,5 +23,17 @@
         background-color: transparent;
         border: 0;
         cursor: pointer;
+    }
+}
+
+@keyframes rising {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.2);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
 }

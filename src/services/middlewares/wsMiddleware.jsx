@@ -1,5 +1,3 @@
-import { getCookie } from "../../utils/cookie";
-
 export const wsMiddleware = (wsUrl, wsActions) => {
   return (store) => {
     let socket = null;
@@ -8,10 +6,8 @@ export const wsMiddleware = (wsUrl, wsActions) => {
       const { dispatch, getState } = store;
       const { type } = action;
       const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;
-      const { userInfo } = getState().user;
-      const token = getCookie("accessToken").replace("Bearer ", "");
-      if (type === wsInit && userInfo) {
-        socket = new WebSocket(`${wsUrl}?token=${token}`);
+      if (type === wsInit) {
+        socket = new WebSocket(`${wsUrl}?token=${action.payload}`);
       }
       if (socket) {
         socket.onopen = (event) => {
@@ -31,7 +27,7 @@ export const wsMiddleware = (wsUrl, wsActions) => {
         };
 
         socket.onclose = (event) => {
-          dispatch({ type: onClose, payload: event });
+          dispatch({ type: onClose });
         };
       }
 

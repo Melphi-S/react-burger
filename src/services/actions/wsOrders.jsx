@@ -9,9 +9,10 @@ export const WS_PUBLIC_CLOSED = "WS_PUBLIC_CLOSED";
 export const WS_USER_ORDERS = "WS_USER_ORDERS";
 export const WS_PUBLIC_ORDERS = "WS_PUBLIC_ORDERS";
 
-export const startUserWsConnection = () => {
+export const startUserWsConnection = (token) => {
   return {
-    type: WS_USER_START
+    type: WS_USER_START,
+    payload: token
   };
 };
 

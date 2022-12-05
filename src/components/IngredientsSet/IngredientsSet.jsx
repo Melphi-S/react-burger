@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Ingredient from "../Ingredient/Ingredient";
 import { addIngredient } from "../../services/actions/constructor";
@@ -9,9 +9,9 @@ const IngredientsSet = React.forwardRef(({ name, type }, ref ) => {
   const dispatch = useDispatch();
   const { ingredients } = useSelector((state) => state.ingredients);
 
-  const handleRightClick = (ingredient) => {
+  const handleRightClick = useCallback((ingredient) => {
     dispatch(addIngredient(ingredient));
-  };
+  }, [dispatch]);
 
   const set = useMemo(
     () =>
@@ -28,7 +28,7 @@ const IngredientsSet = React.forwardRef(({ name, type }, ref ) => {
             />
           )
       ),
-    [ingredients]
+    [ingredients, handleRightClick, type]
   );
 
   return (

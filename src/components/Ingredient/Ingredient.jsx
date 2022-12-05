@@ -27,7 +27,7 @@ const Ingredient = ({ ingredient, onRightClick }) => {
       return sameIngredients.length;
     }
     return selectedBun ? (selectedBun.info._id === ingredient._id ? 2 : 0) : 0;
-  }, [selectedToppings, selectedBun]);
+  }, [selectedToppings, selectedBun, bun, ingredient]);
 
   const [, dragRef] = useDrag({
     type: "ingredients",
@@ -40,7 +40,7 @@ const Ingredient = ({ ingredient, onRightClick }) => {
         className={styles.ingredient}
         to={{
           pathname: `/ingredients/${ingredient._id}`,
-          state: { background: location }
+          state: { background: location },
         }}
       >
         <img
