@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import PropTypes from "prop-types";
 import styles from "./OrdersSummary.module.scss";
 
@@ -12,6 +12,11 @@ const OrdersSummary = ({ orders }) => {
   const pendingOrders = useMemo(
     () => orders.orders.filter((order) => order.status === "pending"),
     [orders]
+  );
+
+  const renderNumber = useCallback(
+    (number) => String(number).padStart(6, "0"),
+    []
   );
 
   return (
@@ -29,7 +34,7 @@ const OrdersSummary = ({ orders }) => {
                         className={`${styles.ordersSummary__done} text text_type_digits-default`}
                         key={order.number}
                       >
-                        {order.number}
+                        {renderNumber(order.number)}
                       </li>
                     )
                 )}
@@ -43,7 +48,7 @@ const OrdersSummary = ({ orders }) => {
                         className={`${styles.ordersSummary__done} text text_type_digits-default`}
                         key={order.number}
                       >
-                        {order.number}
+                        {renderNumber(order.number)}
                       </li>
                     )
                 )}
@@ -60,7 +65,7 @@ const OrdersSummary = ({ orders }) => {
                   (order, index) =>
                     index < 10 && (
                       <li className="text text_type_digits-default" key={index}>
-                        {order.number}
+                        {renderNumber(order.number)}
                       </li>
                     )
                 )}
@@ -71,7 +76,7 @@ const OrdersSummary = ({ orders }) => {
                     index >= 10 &&
                     index < 20 && (
                       <li className="text text_type_digits-default" key={index}>
-                        {order.number}
+                        {renderNumber(order.number)}
                       </li>
                     )
                 )}
