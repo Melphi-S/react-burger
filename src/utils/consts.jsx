@@ -38,6 +38,14 @@ const infoMessages = [
 
 const defaultMessage = "Что-то пошло не так – попробуйте повторить позже";
 
-const URL = "https://norma.nomoreparties.space/api";
+const orderStatuses = {
+  created: "Создан",
+  pending: "Готовится",
+  done: "Выполнен"
+}
 
-export { ingredientTypes, URL, infoMessages, defaultMessage };
+
+const URL = "https://norma.nomoreparties.space/api";
+const ORDERS_URL = "wss://norma.nomoreparties.space/orders"
+
+export { ingredientTypes, URL, ORDERS_URL, infoMessages, defaultMessage, orderStatuses };

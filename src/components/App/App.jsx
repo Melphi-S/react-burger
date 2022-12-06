@@ -14,7 +14,10 @@ import Profile from "../../pages/Profile/Profile";
 import NotFound from "../../pages/Not-found/Not-found";
 import InfoBoard from "../InfoBoard/InfoBoard";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
+import Feed from "../../pages/Feed/Feed";
+import Loader from "../Loader/Loader";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -22,11 +25,9 @@ const App = () => {
   const location = useLocation();
   const background = location.state?.background;
 
-  const { userInfo, errorMessage } = useSelector(
-    (state) => state.user
-  );
+  const { userInfo, errorMessage } = useSelector((state) => state.user);
 
-  const ingredients = useSelector((store) => store.ingredients.ingredients);
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -44,13 +45,25 @@ const App = () => {
         <Route path="/" exact>
           <Main />
         </Route>
+        <Route path="/feed" exact>
+          <Feed />
+        </Route>
+        <Route path="/feed/:number">
+          <OrderDetails />
+        </Route>
         <Route path="/ingredients/:id">
           {ingredients.length && (
             <IngredientDetails ingredients={ingredients} />
           )}
         </Route>
-        <ProtectedRoute path="/profile" onlyForAuth>
+        <ProtectedRoute path="/profile" exact onlyForAuth>
           <Profile />
+        </ProtectedRoute>
+        <ProtectedRoute path="/profile/orders" exact onlyForAuth>
+          <Profile />
+        </ProtectedRoute>
+        <ProtectedRoute path="/profile/orders/:number" onlyForAuth>
+          <OrderDetails />
         </ProtectedRoute>
         <ProtectedRoute path="/login" onlyForAuth={false}>
           <Login />
@@ -81,7 +94,18 @@ const App = () => {
           </Modal>
         </Route>
       )}
+      {background && (
+        <Route path="/profile/orders/:number">
+          <Modal closeModal={closeModal}>{<OrderDetails />}</Modal>
+        </Route>
+      )}
+      {background && (
+        <Route path="/feed/:number">
+          <Modal closeModal={closeModal}>{<OrderDetails />}</Modal>
+        </Route>
+      )}
       {errorMessage && <InfoBoard errorMessage={errorMessage} />}
+      {!ingredients && <Loader text="Проверяем запасы" />}
     </>
   );
 };

@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { resetPassword } from "../../services/actions/user";
-import { useFormAndValidation } from "../../hooks/useFormsAndValidation";
+import { useFormAndValidation } from "../../services/hooks/useFormsAndValidation";
 import styles from "./Reset-password.module.scss";
 
 const ResetPassword = () => {

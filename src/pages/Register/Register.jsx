@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import {
   EmailInput,
   PasswordInput,
@@ -8,7 +8,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { register } from "../../services/actions/user";
 import { Link, useHistory } from "react-router-dom";
-import { useFormAndValidation } from "../../hooks/useFormsAndValidation";
+import { useFormAndValidation } from "../../services/hooks/useFormsAndValidation";
 import Loader from "../../components/Loader/Loader";
 import styles from "./Register.module.scss";
 

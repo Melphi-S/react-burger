@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { logIn } from "../../services/actions/user";
-import { useFormAndValidation } from "../../hooks/useFormsAndValidation";
+import { useFormAndValidation } from "../../services/hooks/useFormsAndValidation";
 import Loader from "../../components/Loader/Loader";
 import styles from "./Login.module.scss";
 

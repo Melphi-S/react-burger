@@ -7,15 +7,13 @@ import {
   Input,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { patchUserInfo } from "../../services/actions/user";
-import { useFormAndValidation } from "../../hooks/useFormsAndValidation";
+import { useFormAndValidation } from "../../services/hooks/useFormsAndValidation";
 import styles from "./ProfileForm.module.scss";
 
 const ProfileForm = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
-  const { name, email } = useSelector(
-    (state) => state.user.userInfo
-  );
+  const { name, email } = useSelector((state) => state.user.userInfo);
 
   const { values, handleChange, isValid, resetForm, setValues } =
     useFormAndValidation({ name: name, email: email, password: "" }, true);

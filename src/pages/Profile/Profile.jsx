@@ -5,6 +5,7 @@ import { logOut } from "../../services/actions/user";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./Profile.module.scss";
 import ProfileForm from "../../components/ProfileForm/ProfileForm";
+import ProfileOrders from "../../components/ProfileOrders/ProfileOrders";
 import Loader from "../../components/Loader/Loader";
 
 const Profile = () => {
@@ -28,7 +29,7 @@ const Profile = () => {
   };
 
   return isAuthChecked ? (
-    <div className={styles.profile}>
+    <main className={styles.profile}>
       <ul className={styles.profile__nav}>
         <li>
           <NavLink
@@ -70,9 +71,11 @@ const Profile = () => {
         <Route path="/profile" exact>
           <ProfileForm />
         </Route>
-        <Route path="/profile/orders"></Route>
+        <Route path="/profile/orders" exact>
+          <ProfileOrders />
+        </Route>
       </Switch>
-    </div>
+    </main>
   ) : (
     <Loader />
   );

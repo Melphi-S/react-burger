@@ -10,7 +10,7 @@ import styles from "./Ingredient.module.scss";
 import PropTypes from "prop-types";
 import { ingredientTypes } from "../../utils/consts";
 
-const Ingredient = ({ ingredient, onLeftClick, onRightClick }) => {
+const Ingredient = ({ ingredient, onRightClick }) => {
   const location = useLocation();
 
   const bun = ingredientTypes.bun;
@@ -27,7 +27,7 @@ const Ingredient = ({ ingredient, onLeftClick, onRightClick }) => {
       return sameIngredients.length;
     }
     return selectedBun ? (selectedBun.info._id === ingredient._id ? 2 : 0) : 0;
-  }, [selectedToppings, selectedBun]);
+  }, [selectedToppings, selectedBun, bun, ingredient]);
 
   const [, dragRef] = useDrag({
     type: "ingredients",
@@ -35,12 +35,12 @@ const Ingredient = ({ ingredient, onLeftClick, onRightClick }) => {
   });
 
   return (
-    <li onClick={onLeftClick} onContextMenu={onRightClick} ref={dragRef}>
+    <li onContextMenu={onRightClick} ref={dragRef}>
       <Link
         className={styles.ingredient}
         to={{
           pathname: `/ingredients/${ingredient._id}`,
-          state: { background: location }
+          state: { background: location },
         }}
       >
         <img
@@ -65,7 +65,6 @@ const Ingredient = ({ ingredient, onLeftClick, onRightClick }) => {
 
 Ingredient.propTypes = {
   ingredient: PropTypes.object.isRequired,
-  onLeftClick: PropTypes.func.isRequired,
   onRightClick: PropTypes.func.isRequired,
 };
 
