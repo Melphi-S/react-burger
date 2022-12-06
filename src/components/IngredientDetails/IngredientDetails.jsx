@@ -1,5 +1,6 @@
 import styles from "./IngredientDetails.module.scss";
 import PropTypes from "prop-types";
+import NotFound from "../../pages/Not-found/Not-found";
 import { useParams, useLocation } from "react-router-dom";
 import { useMemo } from "react";
 
@@ -9,11 +10,11 @@ const IngredientDetails = ({ ingredients }) => {
   const { id } = useParams();
 
   const ingredient = useMemo(
-    () => ingredients.find((ingredient) => ingredient._id === id),
+    () => ingredients?.find((ingredient) => ingredient._id === id),
     [ingredients, id]
   );
 
-  return (
+  return ingredient ? (
     <div
       className={`${styles.container} ${
         !background && styles.container_fullPage
@@ -53,6 +54,8 @@ const IngredientDetails = ({ ingredients }) => {
         </li>
       </ul>
     </div>
+  ) : (
+    <NotFound />
   );
 };
 

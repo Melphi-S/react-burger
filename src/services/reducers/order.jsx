@@ -50,7 +50,7 @@ export const orderReducer = (state = orderInitialState, action) => {
         ...state,
         getOrderRequest: false,
         getOrderFailed: false,
-        orderInfo: action.payload,
+        orderInfo: action.payload || "notFound",
       };
     case GET_ORDER_FAILED:
       return {

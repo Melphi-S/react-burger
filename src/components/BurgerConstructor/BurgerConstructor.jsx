@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useDrop } from "react-dnd";
 import { useHistory } from "react-router-dom";
@@ -47,9 +47,9 @@ const BurgerConstructor = () => {
     dispatch(closeOrderInfo());
   };
 
-  const handleDeleteButton = (ingredient) => {
+  const handleDeleteButton = useCallback((ingredient) => {
     dispatch(deleteIngredient(ingredient));
-  };
+  }, [dispatch]);
 
   const newOrder = useMemo(
     () =>
