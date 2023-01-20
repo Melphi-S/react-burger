@@ -1,10 +1,15 @@
-const ingredientTypes = {
+const ingredientTypes: {bun: string, sauce: string, main: string} = {
   bun: "bun",
   sauce: "sauce",
   main: "main",
 };
 
-const infoMessages = [
+type TMessage = {
+  readonly payloadMessage: string;
+  readonly boardMessage: string;
+}
+
+const infoMessages: ReadonlyArray<TMessage> = [
   {
     payloadMessage: "email or password are incorrect",
     boardMessage:
@@ -36,16 +41,16 @@ const infoMessages = [
   },
 ];
 
-const defaultMessage = "Что-то пошло не так – попробуйте повторить позже";
+const defaultMessage: string = "Что-то пошло не так – попробуйте повторить позже";
 
-const orderStatuses = {
+const orderStatuses: {created: string, pending: string, done: string} = {
   created: "Создан",
   pending: "Готовится",
   done: "Выполнен"
 }
 
 
-const URL = "https://norma.nomoreparties.space/api";
-const ORDERS_URL = "wss://norma.nomoreparties.space/orders"
+const URL: string = "https://norma.nomoreparties.space/api";
+const ORDERS_URL: string = "wss://norma.nomoreparties.space/orders"
 
 export { ingredientTypes, URL, ORDERS_URL, infoMessages, defaultMessage, orderStatuses };

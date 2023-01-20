@@ -7,6 +7,7 @@ import {
   GET_ORDER_FAILED,
   CLOSE_ORDER_INFO,
 } from "../actions/order";
+import { TOrderActions } from "../../types/order";
 
 const orderInitialState = {
   postOrderRequest: false,
@@ -18,7 +19,7 @@ const orderInitialState = {
   isOrderInfoOpened: false,
 };
 
-export const orderReducer = (state = orderInitialState, action) => {
+export const orderReducer = (state = orderInitialState, action: TOrderActions) => {
   switch (action.type) {
     case POST_ORDER_REQUEST:
       return {

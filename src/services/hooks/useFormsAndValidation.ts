@@ -1,28 +1,33 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, ChangeEvent } from "react";
+import { TForm } from "../../types/user";
 
-export function useFormAndValidation(initialState, isProfileForm) {
+export function useFormAndValidation(
+  initialState: TForm,
+  isProfileForm: boolean
+) {
   const [values, setValues] = useState(initialState);
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
 
-  const isValidName = (name) => (name || name === "" ? name.length > 0 : true);
+  const isValidName = (name: string | undefined) =>
+    name || name === "" ? name.length > 0 : true;
 
-  const isValidEmail = (email) => {
+  const isValidEmail = (email: string) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return email || email === "" ? re.test(email) : true;
   };
 
-  const isValidPassword = (password) => {
+  const isValidPassword = (password: string | undefined) => {
     if (isProfileForm) {
       return password?.length ? password.length > 5 : true;
     }
     return password || password === "" ? password.length > 5 : true;
   };
 
-  const isValidToken = (token) =>
+  const isValidToken = (token: string | undefined) =>
     token || token === "" ? token.length > 0 : true;
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: e.target.validationMessage });
@@ -30,7 +35,7 @@ export function useFormAndValidation(initialState, isProfileForm) {
       isValidEmail(name === "email" ? value : values.email) &&
         isValidPassword(name === "password" ? value : values.password) &&
         isValidToken(name === "token" ? value : values.token) &&
-        isValidName(name === "name" ? value : values.token)
+        isValidName(name === "name" ? value : values.name)
     );
   };
 

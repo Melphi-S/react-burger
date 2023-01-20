@@ -1,11 +1,14 @@
 import { URL } from "./consts";
+import { TOrder } from "../types/order";
 
 class Api {
-  constructor(url) {
+  private url: string;
+
+  constructor(url: string) {
     this.url = url;
   }
 
-  _checkResponce(res) {
+  _checkResponce(res: Response) {
     return res.ok
       ? res.json()
       : res.json().then((data) => Promise.reject(data));
@@ -15,7 +18,7 @@ class Api {
     return fetch(`${this.url}/ingredients`).then(this._checkResponce);
   }
 
-  postOrder(order, token) {
+  postOrder(order: TOrder, token: string = "") {
     return fetch(`${this.url}/orders`, {
       method: "POST",
       headers: {
@@ -26,7 +29,7 @@ class Api {
     }).then(this._checkResponce);
   }
 
-  getOrder(orderNumber) {
+  getOrder(orderNumber: number) {
     return fetch(`${this.url}/orders/${orderNumber}`, {
       method: "GET",
       headers: {
@@ -35,7 +38,7 @@ class Api {
     }).then(this._checkResponce);
   }
 
-  register(email, password, name) {
+  register(email: string, password: string, name: string) {
     return fetch(`${this.url}/auth/register`, {
       method: "POST",
       headers: {
@@ -45,7 +48,7 @@ class Api {
     }).then(this._checkResponce);
   }
 
-  getUserInfo(token) {
+  getUserInfo(token: string = "") {
     return fetch(`${this.url}/auth/user`, {
       method: "GET",
       headers: {
@@ -55,7 +58,12 @@ class Api {
     }).then(this._checkResponce);
   }
 
-  patchUserInfo(email, password, name, token) {
+  patchUserInfo(
+    email: string,
+    password: string,
+    name: string,
+    token: string = ""
+  ) {
     return fetch(`${this.url}/auth/user`, {
       method: "PATCH",
       headers: {
@@ -66,7 +74,7 @@ class Api {
     }).then(this._checkResponce);
   }
 
-  refreshToken(token) {
+  refreshToken(token: string | null) {
     return fetch(`${this.url}/auth/token`, {
       method: "POST",
       headers: {
@@ -78,7 +86,7 @@ class Api {
     }).then(this._checkResponce);
   }
 
-  logIn(email, password) {
+  logIn(email: string, password: string) {
     return fetch(`${this.url}/auth/login`, {
       method: "POST",
       headers: {
@@ -88,7 +96,7 @@ class Api {
     }).then(this._checkResponce);
   }
 
-  logOut(token) {
+  logOut(token: string | null) {
     return fetch(`${this.url}/auth/logout`, {
       method: "POST",
       headers: {
@@ -98,7 +106,7 @@ class Api {
     }).then(this._checkResponce);
   }
 
-  requestPasswordReset(email) {
+  requestPasswordReset(email: string) {
     return fetch(`${this.url}/password-reset`, {
       method: "POST",
       headers: {
@@ -108,7 +116,7 @@ class Api {
     }).then(this._checkResponce);
   }
 
-  resetPassword(password, token) {
+  resetPassword(password: string, token: string) {
     return fetch(`${this.url}/password-reset/reset`, {
       method: "POST",
       headers: {

@@ -24,8 +24,9 @@ import {
   SHOW_INFO_BOARD,
   HIDE_INFO_BOARD,
 } from "../actions/user";
+import { TUserState, TUserActions } from "../../types/user";
 
-const userInitialState = {
+const userInitialState: TUserState = {
   userInfo: null,
   isAuthChecked: false,
   registerRequest: false,
@@ -48,7 +49,7 @@ const userInitialState = {
   errorMessage: null,
 };
 
-export const userReducer = (state = userInitialState, action) => {
+export const userReducer = (state = userInitialState, action: TUserActions) => {
   switch (action.type) {
     case REGISTER_REQUEST:
       return {

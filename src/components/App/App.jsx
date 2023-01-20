@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredients } from "../../services/actions/ingredients";
 import { getUserInfo } from "../../services/actions/user";
@@ -18,6 +18,13 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import Feed from "../../pages/Feed/Feed";
 import Loader from "../Loader/Loader";
+
+// type TLocation = {
+//   hash: string,
+//   pathname: string,
+//   search: string,
+//   background: TLocation
+// }
 
 const App = () => {
   const dispatch = useDispatch();

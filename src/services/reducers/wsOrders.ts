@@ -8,8 +8,9 @@ import {
   WS_USER_ORDERS,
   WS_PUBLIC_ORDERS,
 } from "../actions/wsOrders";
+import { TWsOrdersActions, TWsOrdersState } from "../../types/wsOrders";
 
-const wsOrdersInitialState = {
+const wsOrdersInitialState: TWsOrdersState = {
   isUserConnection: false,
   isPublicConnection: false,
   userConnectionError: null,
@@ -18,7 +19,7 @@ const wsOrdersInitialState = {
   publicOrders: null,
 };
 
-export const wsOrdersReducer = (state = wsOrdersInitialState, action) => {
+export const wsOrdersReducer = (state = wsOrdersInitialState, action: TWsOrdersActions) => {
   switch (action.type) {
     case WS_USER_SUCCESS:
       return {

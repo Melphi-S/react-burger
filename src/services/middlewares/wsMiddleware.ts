@@ -1,15 +1,22 @@
-export const wsMiddleware = (wsUrl, wsActions) => {
-  return (store) => {
-    let socket = null;
+import { TWsMiddlewareActions, TWsOrdersActions } from "../../types/wsOrders";
+import { Middleware } from "@reduxjs/toolkit";
 
-    return (next) => (action) => {
+export const wsMiddleware = (
+  wsUrl: string,
+  wsActions: TWsMiddlewareActions
+): Middleware => {
+  return (store) => {
+    let socket: WebSocket | null = null;
+
+    return (next) => (action: TWsOrdersActions) => {
       const { dispatch } = store;
       const { type } = action;
       const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;
       if (type === wsInit) {
-        socket = action.payload
-          ? new WebSocket(`${wsUrl}${action.payload}`)
-          : new WebSocket(wsUrl);
+        socket =
+          type === "WS_USER_START" && action.payload
+            ? new WebSocket(`${wsUrl}${action.payload}`)
+            : new WebSocket(wsUrl);
       }
       if (socket) {
         socket.onopen = (event) => {
