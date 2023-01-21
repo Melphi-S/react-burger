@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useMemo, FC } from "react";
+import { useSelector } from "../../types/store";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import { orderStatuses } from "../../utils/consts";
 import {
@@ -7,36 +7,53 @@ import {
   CurrencyIcon,
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import styles from "./OrderBrief.module.scss";
+import { TOrderInfo, OrderStatusesEnum } from "../../types/order";
+import { TIngredient } from "../../types/ingredients";
 
-const OrderBrief = ({ order, forUser }) => {
+type TOrderBriefProps = {
+  order: TOrderInfo;
+  forUser: boolean;
+};
+
+interface IIngredientCount extends TIngredient {
+  count: number;
+}
+
+const OrderBrief: FC<TOrderBriefProps> = ({ order, forUser }) => {
   const location = useLocation();
   const { path } = useRouteMatch();
   const { createdAt, ingredients, name, number, status } = order;
   const ingredientsInfo = useSelector((state) => state.ingredients.ingredients);
 
   const selectedIngredients = useMemo(() => {
-    const ingredientsList = ingredients.map((ingredient) =>
-      ingredientsInfo.find(
-        (ingredientInfo) => ingredientInfo._id === ingredient
-      )
+    const ingredientsList = ingredients.reduce(
+      (arr: TIngredient[], ingredient) => {
+        const myIngredient = ingredientsInfo.find(
+          (ingredientInfo) => ingredientInfo._id === ingredient
+        );
+        return myIngredient ? [...arr, myIngredient] : arr;
+      },
+      []
     );
-    const ingredientsCount = ingredientsList.reduce((arr, ingredient) => {
-      let currentIngredient = arr.find(
-        (arrIngrredient) => arrIngrredient._id === ingredient._id
-      );
-      if (currentIngredient) {
-        currentIngredient.count += 1;
-      } else {
-        let currentIngredient = {
-          count: 1,
-          ...ingredient,
-        };
-        arr.push(currentIngredient);
-      }
-      return arr;
-    }, []);
+    const ingredientsCount = ingredientsList.reduce(
+      (arr: Array<IIngredientCount>, ingredient) => {
+        let currentIngredient = arr.find(
+          (arrIngrredient) => arrIngrredient._id === ingredient._id
+        );
+        if (currentIngredient) {
+          currentIngredient.count += 1;
+        } else {
+          let currentIngredient = {
+            count: 1,
+            ...ingredient,
+          };
+          arr.push(currentIngredient);
+        }
+        return arr;
+      },
+      []
+    );
     return ingredientsCount;
   }, [ingredients, ingredientsInfo]);
 
@@ -79,10 +96,10 @@ const OrderBrief = ({ order, forUser }) => {
         {forUser && (
           <span
             className={`text text_type_main-small mt-2 ${
-              status === "done" ? styles.orderBrief__doneStatus : null
+              status === 'done' ? styles.orderBrief__doneStatus : null
             }`}
           >
-            {orderStatuses[status]}
+            {OrderStatusesEnum[status]}
           </span>
         )}
         <div className={`${styles.orderBrief__flexContainer} mt-6`}>
@@ -128,11 +145,6 @@ const OrderBrief = ({ order, forUser }) => {
       </Link>
     </li>
   );
-};
-
-OrderBrief.propTypes = {
-  order: PropTypes.object.isRequired,
-  forUser: PropTypes.bool,
 };
 
 export default OrderBrief;

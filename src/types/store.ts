@@ -14,7 +14,7 @@ import { Action, ActionCreator, Dispatch } from 'redux';
 
 export type RootState = ReturnType<typeof store.getState>;
 
-export type AppDispatch = typeof store.dispatch | AppThunk; 
+export type AppDispatch = typeof store.dispatch; 
 
 export type AppThunk<TReturn = void> = ActionCreator<ThunkAction<TReturn, Action, RootState, TApplicationActions>>;
 
@@ -26,5 +26,5 @@ export type TApplicationActions =
   | TWsOrdersActions
 
 export const useSelector: TypedUseSelectorHook<RootState> = selectorHook;
-// export const useDispatch = () => dispatchHook<AppDispatch | AppThunk>();
-export const useDispatch: () => AppDispatch = dispatchHook
+// export const useDispatch = () => dispatchHook<AppDispatch>();
+export const useDispatch: () => AppDispatch | AppThunk = dispatchHook

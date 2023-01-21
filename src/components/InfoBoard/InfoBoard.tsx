@@ -1,16 +1,20 @@
 import { createPortal } from "react-dom";
-import { useMemo, useEffect, useRef } from "react";
+import { useMemo, useEffect, useRef, FC } from "react";
 import { useDispatch } from "react-redux";
 import { hideInfoBoard } from "../../services/actions/user";
 import { infoMessages, defaultMessage } from "../../utils/consts";
 import PropTypes from "prop-types";
 import styles from "./InfoBoard.module.scss";
 
-const infoBoardElement = document.querySelector("#infoBoard");
+const infoBoardElement = document.querySelector("#infoBoard") as HTMLElement;
 
-const InfoBoard = ({ errorMessage }) => {
+type TInfoBoardProps = {
+  errorMessage: string;
+};
+
+const InfoBoard: FC<TInfoBoardProps> = ({ errorMessage }) => {
   const dispatch = useDispatch();
-  const boardRef = useRef(null);
+  const boardRef = useRef<HTMLDivElement>(null);
 
   const infoMessage = useMemo(() => {
     return (
@@ -21,7 +25,7 @@ const InfoBoard = ({ errorMessage }) => {
 
   const moveUp = () => {
     const board = boardRef.current;
-    board.classList.add(styles.infoBoard_disabled);
+    board && board.classList.add(styles.infoBoard_disabled);
   };
 
   useEffect(() => {

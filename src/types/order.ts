@@ -7,17 +7,16 @@ import {
   GET_ORDER_SUCCESS,
   GET_ORDER_FAILED,
 } from "../services/actions/order";
-import { TIngredient } from "./ingredients";
 
 export type TOrder = {
-  ingredients: Array<TIngredient>;
+  ingredients: Array<string>;
 };
 
 export type TOrderInfo = {
   _id: string;
-  ingredients: Array<TIngredient>;
+  ingredients: Array<string>;
   owner: string;
-  status: string;
+  status: TStatusActions;
   name: string;
   createdAt: string;
   updatedAt: string;
@@ -63,3 +62,11 @@ export type TGetOrderSuccessAction = {
 export type TGetOrderFailedAction = {
   readonly type: typeof GET_ORDER_FAILED;
 };
+
+export type TStatusActions = "created" | "pending" | "done";
+
+export enum OrderStatusesEnum {
+  created = "Создан",
+  pending = "Готовится",
+  done = "Выполнен",
+}

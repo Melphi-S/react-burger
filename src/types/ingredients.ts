@@ -4,7 +4,7 @@ import {
   GET_INGREDIENTS_FAILED,
 } from "../services/actions/ingredients";
 
-export enum Ingredient {
+export enum IngredientEnum {
   bun = "bun",
   sauce = "sauce",
   main = "main",
@@ -20,7 +20,7 @@ export type TIngredient = {
   image_large: string;
   _id: string;
   name: string;
-  type: Ingredient;
+  type: IngredientEnum;
   price: number;
   __v: number;
   id: string;

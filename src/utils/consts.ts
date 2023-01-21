@@ -49,7 +49,6 @@ const orderStatuses: {created: string, pending: string, done: string} = {
   done: "Выполнен"
 }
 
-
 const URL: string = "https://norma.nomoreparties.space/api";
 const ORDERS_URL: string = "wss://norma.nomoreparties.space/orders"
 

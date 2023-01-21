@@ -1,7 +1,11 @@
-import PropTypes from "prop-types";
 import styles from "./Loader.module.scss";
+import { FC } from "react";
 
-const Loader = ({text}) => {
+type TLoaderProps = {
+  text: string;
+};
+
+const Loader: FC<TLoaderProps> = ({ text }) => {
   return (
     <div className={styles.ring}>
       {text}
@@ -10,10 +14,6 @@ const Loader = ({text}) => {
   );
 };
 
-Loader.defaultProps = {text: 'Загрузка'}
-
-Loader.propTypes = {
-  text: PropTypes.string.isRequired
-};
+Loader.defaultProps = { text: "Загрузка" };
 
 export default Loader;

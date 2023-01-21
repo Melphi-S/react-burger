@@ -58,20 +58,22 @@ export type TWsPulicStartAction = {
 
 type TWsUserSuccessAction = {
   readonly type: typeof WS_USER_SUCCESS;
+  readonly payload: Event;
 };
 
 type TWsPulicSuccessAction = {
   readonly type: typeof WS_PUBLIC_SUCCESS;
+  readonly payload: Event;
 };
 
 type TWsUserErrorAction = {
   readonly type: typeof WS_USER_ERROR;
-  readonly payload: string;
+  readonly payload: Event;
 };
 
 type TWsPublicErrorAction = {
   readonly type: typeof WS_PUBLIC_ERROR;
-  readonly payload: string;
+  readonly payload: Event;
 };
 
 export type TWsUserClosedAction = {

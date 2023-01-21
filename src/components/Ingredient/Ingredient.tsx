@@ -1,5 +1,5 @@
-import { useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useMemo, FC } from "react";
+import { useSelector } from "../../types/store";
 import { useDrag } from "react-dnd";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -7,13 +7,17 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./Ingredient.module.scss";
-import PropTypes from "prop-types";
-import { ingredientTypes } from "../../utils/consts";
+import { TIngredient, IngredientEnum } from "../../types/ingredients";
 
-const Ingredient = ({ ingredient, onRightClick }) => {
+type TIngredientProps = {
+  ingredient: TIngredient;
+  onRightClick: (evt: React.MouseEvent<HTMLLIElement>) => void;
+};
+
+const Ingredient: FC<TIngredientProps> = ({ ingredient, onRightClick }) => {
   const location = useLocation();
 
-  const bun = ingredientTypes.bun;
+  const bun = IngredientEnum.bun;
 
   const { selectedToppings, selectedBun } = useSelector(
     (state) => state.burgerConstructor
@@ -61,11 +65,6 @@ const Ingredient = ({ ingredient, onRightClick }) => {
       </Link>
     </li>
   );
-};
-
-Ingredient.propTypes = {
-  ingredient: PropTypes.object.isRequired,
-  onRightClick: PropTypes.func.isRequired,
 };
 
 export default Ingredient;

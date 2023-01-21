@@ -6,8 +6,9 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink, useLocation } from "react-router-dom";
 import styles from "./AppHeader.module.scss";
+import { FC } from "react";
 
-const AppHeader = () => {
+const AppHeader: FC = () => {
   const { pathname } = useLocation();
 
   return (
@@ -32,9 +33,7 @@ const AppHeader = () => {
               className={styles.header__link}
               activeClassName={styles.header__link_active}
             >
-              <ListIcon
-                type={pathname === "/feed" ? "primary" : "secondary"}
-              />
+              <ListIcon type={pathname === "/feed" ? "primary" : "secondary"} />
               <p className="text text_type_main-default ml-2">Лента заказов</p>
             </NavLink>
           </li>
@@ -48,7 +47,7 @@ const AppHeader = () => {
           activeClassName={styles.header__link_active}
         >
           <ProfileIcon
-            type={pathname.startsWith('/profile') ? "primary" : "secondary"}
+            type={pathname.startsWith("/profile") ? "primary" : "secondary"}
           />
           <p className="text text_type_main-default ml-2">Личный кабинет</p>
         </NavLink>

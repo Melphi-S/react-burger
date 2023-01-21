@@ -8,11 +8,11 @@ import {
   TConstructorActions,
   TConstructorState,
 } from "../../types/constructor";
-import { Ingredient } from "../../types/ingredients";
+import { IngredientEnum } from "../../types/ingredients";
 
 const constructorInitialState: TConstructorState = {
   selectedToppings: [],
-  selectedBun: null,
+  selectedBun: null
 };
 
 export const constructorReducer = (
@@ -21,7 +21,7 @@ export const constructorReducer = (
 ) => {
   switch (action.type) {
     case ADD_INGREDIENT:
-      return action.payload.ingredient.type !== Ingredient.bun
+      return action.payload.ingredient.type !== IngredientEnum.bun
         ? {
             ...state,
             selectedToppings: [

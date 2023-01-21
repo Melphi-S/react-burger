@@ -1,5 +1,5 @@
 import { useEffect, FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "../../types/store";
 import { getIngredients } from "../../services/actions/ingredients";
 import { getUserInfo } from "../../services/actions/user";
 import AppHeader from "../AppHeader/AppHeader";
@@ -18,18 +18,13 @@ import OrderDetails from "../OrderDetails/OrderDetails";
 import Modal from "../Modal/Modal";
 import Feed from "../../pages/Feed/Feed";
 import Loader from "../Loader/Loader";
+import { Location } from "history";
 
-// type TLocation = {
-//   hash: string,
-//   pathname: string,
-//   search: string,
-//   background: TLocation
-// }
-
-const App = () => {
+const App: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
+
+  const location = useLocation<{ background: Location | undefined }>();
   const background = location.state?.background;
 
   const { userInfo, errorMessage } = useSelector((state) => state.user);
@@ -95,8 +90,10 @@ const App = () => {
       {background && (
         <Route path="/ingredients/:id">
           <Modal closeModal={closeModal}>
-            {ingredients.length && (
+            {ingredients.length ? (
               <IngredientDetails ingredients={ingredients} />
+            ) : (
+              <></>
             )}
           </Modal>
         </Route>

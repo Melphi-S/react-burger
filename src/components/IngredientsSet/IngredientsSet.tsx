@@ -1,17 +1,28 @@
-import React, { useMemo, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useMemo, useCallback, FC } from "react";
+import { useSelector, useDispatch } from "../../types/store";
 import Ingredient from "../Ingredient/Ingredient";
 import { addIngredient } from "../../services/actions/constructor";
 import styles from "./IngredientsSet.module.scss";
-import PropTypes from "prop-types";
+import { TIngredient } from "../../types/ingredients";
 
-const IngredientsSet = React.forwardRef(({ name, type }, ref ) => {
+type TIngredientsSetProps = {
+  name: string;
+  type: string;
+};
+
+const IngredientsSet = React.forwardRef<
+  HTMLHeadingElement,
+  TIngredientsSetProps
+>(({ name, type }, ref) => {
   const dispatch = useDispatch();
   const { ingredients } = useSelector((state) => state.ingredients);
 
-  const handleRightClick = useCallback((ingredient) => {
-    dispatch(addIngredient(ingredient));
-  }, [dispatch]);
+  const handleRightClick = useCallback(
+    (ingredient: TIngredient) => {
+      dispatch(addIngredient(ingredient));
+    },
+    [dispatch]
+  );
 
   const set = useMemo(
     () =>
@@ -40,10 +51,5 @@ const IngredientsSet = React.forwardRef(({ name, type }, ref ) => {
     </>
   );
 });
-
-IngredientsSet.propTypes = {
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired
-};
 
 export default IngredientsSet;

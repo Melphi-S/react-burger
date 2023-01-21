@@ -1,5 +1,5 @@
-import { useMemo, useCallback } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useMemo, useCallback, FC } from "react";
+import { useSelector, useDispatch } from "../../types/store";
 import { useDrop } from "react-dnd";
 import { useHistory } from "react-router-dom";
 import {
@@ -18,8 +18,11 @@ import {
 import { postOrder, closeOrderInfo } from "../../services/actions/order";
 import { showInfoBoard } from "../../services/actions/user";
 import styles from "./BurgerConstructor.module.scss";
+import { TConstuctorElement } from "../../types/constructor";
+import { TIngredient } from "../../types/ingredients";
+import { TOrder } from "../../types/order";
 
-const BurgerConstructor = () => {
+const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -36,7 +39,8 @@ const BurgerConstructor = () => {
   const countTotalPrice = useMemo(() => {
     const bunsPrice = selectedBun ? selectedBun.info.price * 2 : 0;
     const totalPrice = selectedToppings.reduce(
-      (sum, ingredient) => sum + ingredient.info.price,
+      (sum: number, ingredient: TConstuctorElement) =>
+        sum + ingredient.info.price,
       bunsPrice
     );
     return totalPrice;
@@ -47,9 +51,12 @@ const BurgerConstructor = () => {
     dispatch(closeOrderInfo());
   };
 
-  const handleDeleteButton = useCallback((ingredient) => {
-    dispatch(deleteIngredient(ingredient));
-  }, [dispatch]);
+  const handleDeleteButton = useCallback(
+    (ingredient: TConstuctorElement) => {
+      dispatch(deleteIngredient(ingredient));
+    },
+    [dispatch]
+  );
 
   const newOrder = useMemo(
     () =>
@@ -65,7 +72,7 @@ const BurgerConstructor = () => {
     [selectedBun, selectedToppings]
   );
 
-  const makeNewOrder = (order) => {
+  const makeNewOrder = (order: TOrder | null) => {
     if (userInfo) {
       dispatch(postOrder(order));
     } else {
@@ -74,19 +81,19 @@ const BurgerConstructor = () => {
     }
   };
 
-  const handleDrop = (ingredient) => {
+  const handleDrop = (ingredient: TIngredient) => {
     dispatch(addIngredient(ingredient));
   };
 
   const [{ isHover, canDrop }, dropTarget] = useDrop({
     accept: "ingredients",
+    drop(ingredient: TIngredient) {
+      handleDrop(ingredient);
+    },
     collect: (monitor) => ({
       isHover: monitor.isOver(),
       canDrop: monitor.canDrop(),
     }),
-    drop(ingredient) {
-      handleDrop(ingredient);
-    },
   });
 
   const renderIngredients = useMemo(
@@ -106,7 +113,7 @@ const BurgerConstructor = () => {
     <>
       <div
         className={`${styles.burgerConstructor} ${
-          canDrop & !isHover && styles.dropActive
+          canDrop && !isHover && styles.dropActive
         } ${isHover && styles.dropHover}`}
         ref={dropTarget}
       >

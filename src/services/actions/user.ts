@@ -80,7 +80,7 @@ export const register: AppThunk = ({
 };
 
 export const getUserInfo: AppThunk = () => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch: AppDispatch | AppThunk) {
     dispatch({
       type: GET_USER_REQUEST,
     });
@@ -96,7 +96,7 @@ export const getUserInfo: AppThunk = () => {
       })
       .catch((err) => {
         if (err.message === "jwt expired") {
-          dispatch(refreshToken())
+          dispatch(refreshToken());
         }
         dispatch({
           type: GET_USER_FAILED,
@@ -139,14 +139,14 @@ export const patchUserInfo: AppThunk = ({
 };
 
 export const refreshToken: AppThunk = () => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch: AppDispatch | AppThunk) {
     currentApi
       .refreshToken(localStorage.getItem("refreshToken"))
       .then((res) => {
         if (res && res.success) {
           localStorage.setItem("refreshToken", res.refreshToken);
           setCookie("accessToken", res.accessToken);
-          dispatch(getUserInfo())
+          dispatch(getUserInfo());
         }
       })
       .catch((err) =>

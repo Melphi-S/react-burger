@@ -12,9 +12,14 @@ export type TConstructorActions =
   | TResetConstructorAction
   | TSortConstructorAction;
 
+export type TConstuctorElement = {
+  info: TIngredient;
+  id: string;
+};
+
 export type TConstructorState = {
-  selectedToppings: Array<TIngredient>;
-  selectedBun: TIngredient | null;
+  selectedToppings: Array<TConstuctorElement>;
+  selectedBun: TConstuctorElement | null;
 };
 
 export type TAddIngredientAction = {
@@ -24,7 +29,7 @@ export type TAddIngredientAction = {
 
 export type TDeleteIngredientAction = {
   readonly type: typeof DELETE_INGREDIENT;
-  readonly payload: TIngredient;
+  readonly payload: TConstuctorElement;
 };
 
 export type TResetConstructorAction = {
@@ -33,5 +38,5 @@ export type TResetConstructorAction = {
 
 export type TSortConstructorAction = {
   readonly type: typeof SORT_CONSTRUCTOR;
-  readonly payload: Array<TIngredient>;
+  readonly payload: Array<TConstuctorElement>;
 };

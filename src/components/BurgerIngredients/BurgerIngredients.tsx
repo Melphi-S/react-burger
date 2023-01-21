@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 import { useInView } from "react-intersection-observer";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngredientsSet from "../IngredientsSet/IngredientsSet";
-import { ingredientTypes } from "../../utils/consts";
 import styles from "./BurgerIngredients.module.scss";
+import { IngredientEnum } from "../../types/ingredients";
 
-const BurgerIngredients = () => {
-  const bun = ingredientTypes.bun;
-  const sauce = ingredientTypes.sauce;
-  const main = ingredientTypes.main;
+const BurgerIngredients: FC = () => {
+  const bun = IngredientEnum.bun;
+  const sauce = IngredientEnum.sauce;
+  const main = IngredientEnum.main;
   const [current, setCurrent] = useState(bun);
 
-  const onTabClick = (tab) => {
+  const onTabClick = (tab: IngredientEnum) => {
     setCurrent(tab);
     const element = document.getElementById(tab);
     if (element) element.scrollIntoView({ behavior: "smooth", block: "start" });

@@ -1,5 +1,6 @@
 import { nanoid } from "nanoid";
 import { TIngredient } from "../../types/ingredients";
+import { TConstuctorElement } from "../../types/constructor";
 import {
   TAddIngredientAction,
   TDeleteIngredientAction,
@@ -20,7 +21,7 @@ export const addIngredient = (
 });
 
 export const deleteIngredient = (
-  ingredient: TIngredient
+  ingredient: TConstuctorElement
 ): TDeleteIngredientAction => ({
   type: DELETE_INGREDIENT,
   payload: ingredient,
@@ -31,7 +32,7 @@ export const resetConstructor = (): TResetConstructorAction => ({
 });
 
 export const sortConstructor = (
-  toppings: Array<TIngredient>,
+  toppings: Array<TConstuctorElement>,
   dragIndex: number,
   hoverIndex: number
 ): TSortConstructorAction => {

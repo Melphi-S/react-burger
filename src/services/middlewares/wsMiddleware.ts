@@ -1,11 +1,12 @@
 import { TWsMiddlewareActions, TWsOrdersActions } from "../../types/wsOrders";
-import { Middleware } from "@reduxjs/toolkit";
+import { Middleware, MiddlewareAPI } from "@reduxjs/toolkit";
+import { AppDispatch, RootState } from "../../types/store";
 
 export const wsMiddleware = (
   wsUrl: string,
   wsActions: TWsMiddlewareActions
 ): Middleware => {
-  return (store) => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
 
     return (next) => (action: TWsOrdersActions) => {
@@ -35,7 +36,7 @@ export const wsMiddleware = (
           dispatch({ type: onMessage, payload: restParsedData });
         };
 
-        socket.onclose = (event) => {
+        socket.onclose = () => {
           dispatch({ type: onClose });
         };
       }
