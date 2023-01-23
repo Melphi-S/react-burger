@@ -3,14 +3,14 @@ import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, FormEvent, FC } from "react";
+import { useSelector, useDispatch } from "../../types/store";
 import { Link, useHistory } from "react-router-dom";
 import { resetPassword } from "../../services/actions/user";
 import { useFormAndValidation } from "../../services/hooks/useFormsAndValidation";
 import styles from "./Reset-password.module.scss";
 
-const ResetPassword = () => {
+const ResetPassword: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -23,7 +23,7 @@ const ResetPassword = () => {
     (state) => state.user
   );
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(resetPassword(values));
   };
@@ -43,15 +43,14 @@ const ResetPassword = () => {
           placeholder="Введите новый пароль"
           name="password"
           onChange={(evt) => handleChange(evt)}
-          value={values.password}
-          errorText={"Длина пароля должна быть более 5 символов"}
+          value={values.password ? values.password : ""}
         />
         <Input
           type="text"
           placeholder="Введите код из письма"
           name="token"
           onChange={(evt) => handleChange(evt)}
-          value={values.token}
+          value={values.token ? values.token : ""}
           errorText={"Введите код из письма"}
         />
         <Button

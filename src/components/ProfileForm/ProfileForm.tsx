@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useMemo } from "react";
+import { useSelector, useDispatch } from "../../types/store";
+import { useMemo, FormEvent } from "react";
 import {
   EmailInput,
   PasswordInput,
@@ -13,12 +13,19 @@ import styles from "./ProfileForm.module.scss";
 const ProfileForm = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
-  const { name, email } = useSelector((state) => state.user.userInfo);
+  const { name, email } = userInfo || { name: "", email: "" };
 
   const { values, handleChange, isValid, resetForm, setValues } =
-    useFormAndValidation({ name: name, email: email, password: "" }, true);
+    useFormAndValidation(
+      {
+        name: name,
+        email: email,
+        password: "",
+      },
+      true
+    );
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(patchUserInfo(values));
     setValues({ ...values, password: "" });
@@ -30,7 +37,7 @@ const ProfileForm = () => {
       isValid &&
       (userInfo.email !== values.email ||
         userInfo.name !== values.name ||
-        values.password.length),
+        (values.password && values.password.length)),
     [userInfo, values, isValid]
   );
 
@@ -41,16 +48,15 @@ const ProfileForm = () => {
         placeholder="Имя"
         name="name"
         onChange={(evt) => handleChange(evt)}
-        value={values.name}
+        value={values.name ? values.name : ""}
         icon={"EditIcon"}
       />
       <EmailInput
         placeholder="E-mail"
         name="email"
         onChange={(evt) => handleChange(evt)}
-        value={values.email}
+        value={values.email ? values.email : ""}
         isIcon={true}
-        errorText={"Введите e-mail"}
       />
       <PasswordInput
         placeholder="Пароль"
@@ -58,9 +64,8 @@ const ProfileForm = () => {
         onChange={(evt) => {
           handleChange(evt);
         }}
-        value={values.password}
+        value={values.password ? values.password : ""}
         icon={"EditIcon"}
-        errorText={"Длина пароля должны быть более 5 символов"}
       />
       {isValidChanges ? (
         <div className={styles.form__buttonContainer}>

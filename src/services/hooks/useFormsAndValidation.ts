@@ -12,7 +12,7 @@ export function useFormAndValidation(
   const isValidName = (name: string | undefined) =>
     name || name === "" ? name.length > 0 : true;
 
-  const isValidEmail = (email: string) => {
+  const isValidEmail = (email: string | undefined) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return email || email === "" ? re.test(email) : true;
   };

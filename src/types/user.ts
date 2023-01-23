@@ -52,7 +52,7 @@ export type TUserActions =
   | THideInfoBoardAction;
 
 export type TForm = {
-  email: string;
+  email?: string;
   password?: string;
   name?: string;
   token?: string;
@@ -66,10 +66,7 @@ export type TLoginForm = Required<Omit<TForm, "token" | "name">>;
 
 export type TRequestForm = Required<Pick<TForm, "email">>;
 
-export type TResetForm = {
-  password: string;
-  token: string;
-};
+export type TResetForm = Required<Omit<TForm, "email" | "name">>;
 
 export type TUserState = {
   userInfo: TUserInfo | null;

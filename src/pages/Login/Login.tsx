@@ -3,22 +3,25 @@ import {
   PasswordInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useSelector, useDispatch } from "../../types/store";
+import { useEffect, FormEvent, FC } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { logIn } from "../../services/actions/user";
 import { useFormAndValidation } from "../../services/hooks/useFormsAndValidation";
 import Loader from "../../components/Loader/Loader";
 import styles from "./Login.module.scss";
 
-const Login = () => {
+const Login: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation();
-  const {userInfo, isAuthChecked }  = useSelector((state) => state.user);
-  const {values, handleChange, isValid} = useFormAndValidation({email: '', password: ''}, false);
+  const location = useLocation<{ from: { pathname: "/" } }>();
+  const { userInfo, isAuthChecked } = useSelector((state) => state.user);
+  const { values, handleChange, isValid } = useFormAndValidation(
+    { email: "", password: "" },
+    false
+  );
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(logIn(values));
   };
@@ -31,8 +34,7 @@ const Login = () => {
     }
   }, [userInfo, history, location]);
 
-  return (
-    isAuthChecked ?
+  return isAuthChecked ? (
     <div className={`${styles.container}`}>
       <form className={styles.form} onSubmit={handleSubmit}>
         <h1 className={`${styles.title}  text text_type_main-medium`}>Вход</h1>
@@ -40,15 +42,13 @@ const Login = () => {
           placeholder="E-mail"
           name="email"
           onChange={(evt) => handleChange(evt)}
-          value={values.email}
-          errorText={"Введите e-mail"}
+          value={values.email ? values.email : ""}
         />
         <PasswordInput
           placeholder="Пароль"
           name="password"
           onChange={(evt) => handleChange(evt)}
-          value={values.password}
-          errorText={"Длина пароля должна быть более 5 символов"}
+          value={values.password ? values.password : ""}
         />
         <Button
           htmlType="submit"
@@ -71,7 +71,9 @@ const Login = () => {
           Восстановить пароль
         </Link>
       </p>
-    </div> : <Loader />
+    </div>
+  ) : (
+    <Loader />
   );
 };
 

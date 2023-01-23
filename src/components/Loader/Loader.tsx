@@ -2,7 +2,7 @@ import styles from "./Loader.module.scss";
 import { FC } from "react";
 
 type TLoaderProps = {
-  text: string;
+  text?: string;
 };
 
 const Loader: FC<TLoaderProps> = ({ text }) => {

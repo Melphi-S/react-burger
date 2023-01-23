@@ -24,6 +24,16 @@ export type TOrderInfo = {
   __v?: number;
 };
 
+export type TOrderState = {
+  postOrderRequest: boolean,
+  postOrderFailed: boolean,
+  getOrderRequest: boolean,
+  getOrderFailed: boolean,
+  orderInfo: TOrderInfo | "notFound" | null,
+  orderNumber: number | null,
+  isOrderInfoOpened: boolean,
+}
+
 export type TOrderActions =
   | TPostOrderRequestAction
   | TPostOrderSuccessAction

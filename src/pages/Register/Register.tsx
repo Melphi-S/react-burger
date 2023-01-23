@@ -1,5 +1,5 @@
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useSelector, useDispatch } from "../../types/store";
+import { useEffect, FormEvent, FC } from "react";
 import {
   EmailInput,
   PasswordInput,
@@ -12,7 +12,7 @@ import { useFormAndValidation } from "../../services/hooks/useFormsAndValidation
 import Loader from "../../components/Loader/Loader";
 import styles from "./Register.module.scss";
 
-const Register = () => {
+const Register: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { userInfo, isAuthChecked } = useSelector((state) => state.user);
@@ -21,7 +21,7 @@ const Register = () => {
     false
   );
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(register(values));
   };
@@ -41,14 +41,13 @@ const Register = () => {
           placeholder="Имя"
           name="name"
           onChange={(evt) => handleChange(evt)}
-          value={values.name}
+          value={values.name ? values.name : ""}
         />
         <EmailInput
           placeholder="E-mail"
           name="email"
           onChange={(evt) => handleChange(evt)}
-          value={values.email}
-          errorText={"Введите e-mail"}
+          value={values.email ? values.email : ""}
         />
         <PasswordInput
           placeholder="Пароль"
@@ -56,8 +55,7 @@ const Register = () => {
           onChange={(evt) => {
             handleChange(evt);
           }}
-          value={values.password}
-          errorText={"Длина пароля должна быть более 5 символов"}
+          value={values.password ? values.password : ""}
         />
         <Button
           htmlType="submit"

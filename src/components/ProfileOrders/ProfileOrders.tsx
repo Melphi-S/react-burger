@@ -1,5 +1,5 @@
-import { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useMemo, FC } from "react";
+import { useSelector, useDispatch } from "../../types/store";
 import {
   startUserWsConnection,
   closeUserWsConnection,
@@ -10,33 +10,43 @@ import { getCookie } from "../../utils/cookie";
 import { refreshToken } from "../../services/actions/user";
 import styles from "./ProfileOrders.module.scss";
 
-const ProfileOrders = () => {
+const ProfileOrders: FC = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user.userInfo);
-  const { userOrders, userConnectionError } = useSelector((state) => state.wsOrders);
+  const { userOrders, userConnectionError } = useSelector(
+    (state) => state.wsOrders
+  );
 
   const token = getCookie("accessToken")?.replace("Bearer ", "");
 
   useEffect(() => {
-    userInfo && dispatch(startUserWsConnection(token));
+    userInfo && token && dispatch(startUserWsConnection(token));
 
-    return () => dispatch(closeUserWsConnection());
+    return () => {
+      dispatch(closeUserWsConnection());
+    };
   }, [userInfo, token, dispatch]);
 
-  const orders = useMemo(() => userOrders?.orders?.reverse(), [userOrders])
+  const orders = useMemo(
+    () => userOrders && [...userOrders.orders].reverse(),
+    [userOrders]
+  );
 
   const render = () => {
     if (userInfo && userOrders) {
-      if (userOrders.orders) {
+      if (orders) {
         return userOrders.orders.length ? (
-          <OrdersBriefList orders={orders}/>
+          <OrdersBriefList orders={orders} />
         ) : (
           <p className={`${styles.noOrders} text text_type_main-large`}>
             К сожалению, мы не смогли найти ваши заказы
           </p>
         );
       }
-      if (userOrders.message && userOrders.message === "Invalid or missing token") {
+      if (
+        userOrders.message &&
+        userOrders.message === "Invalid or missing token"
+      ) {
         dispatch(refreshToken());
       }
     } else if (userConnectionError) {
@@ -48,7 +58,7 @@ const ProfileOrders = () => {
     } else {
       return (
         <div className={styles.loader}>
-          <Loader text="Ведём учёт"/>
+          <Loader text="Ведём учёт" />
         </div>
       );
     }

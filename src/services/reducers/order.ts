@@ -7,9 +7,9 @@ import {
   GET_ORDER_FAILED,
   CLOSE_ORDER_INFO,
 } from "../actions/order";
-import { TOrderActions } from "../../types/order";
+import { TOrderActions, TOrderState } from "../../types/order";
 
-const orderInitialState = {
+const orderInitialState: TOrderState = {
   postOrderRequest: false,
   postOrderFailed: false,
   getOrderRequest: false,

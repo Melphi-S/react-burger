@@ -1,31 +1,38 @@
-import { useRef } from "react";
-import { useDrag, useDrop } from "react-dnd";
-import { useSelector, useDispatch } from "react-redux";
+import { useRef, FC } from "react";
+import { useDrag, useDrop, XYCoord } from "react-dnd";
+import { useSelector, useDispatch } from "../../types/store";
 import {
   ConstructorElement,
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./Topping.module.scss";
 import { sortConstructor } from "../../services/actions/constructor";
-import PropTypes from "prop-types";
+import { TConstuctorElement } from "../../types/constructor";
 
-const Topping = ({ index, handleClose, ingredient }) => {
+type TToppingProps = {
+  index: number;
+  handleClose: () => void;
+  ingredient: TConstuctorElement;
+};
+
+const Topping: FC<TToppingProps> = ({ index, handleClose, ingredient }) => {
   const { selectedToppings } = useSelector((state) => state.burgerConstructor);
   const dispatch = useDispatch();
-  const ref = useRef(null);
+  const ref = useRef<HTMLLIElement>(null);
   const id = ingredient.id;
-  const [{ handlerId, dragedIngredient }, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop({
     accept: "burgerConstructor",
     collect(monitor) {
       return {
         handlerId: monitor.getHandlerId(),
-        dragedIngredient: monitor.getItem(),
       };
     },
     hover(item, monitor) {
       if (!ref.current) {
         return;
       }
+
+      // @ts-ignore
       const dragIndex = item.index;
       const hoverIndex = index;
 
@@ -39,7 +46,7 @@ const Topping = ({ index, handleClose, ingredient }) => {
 
       const clientOffset = monitor.getClientOffset();
 
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
 
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
@@ -50,18 +57,22 @@ const Topping = ({ index, handleClose, ingredient }) => {
 
       dispatch(sortConstructor(selectedToppings, dragIndex, hoverIndex));
 
+      // @ts-ignore
       item.index = hoverIndex;
     },
   });
-  const [, drag] = useDrag({
+  const [{ isDragging }, drag] = useDrag({
     type: "burgerConstructor",
     item: () => {
       return { id, index };
     },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
   });
   drag(drop(ref));
 
-  const opacity = !dragedIngredient ? 1 : dragedIngredient.id === id ? 0.5 : 1;
+  const opacity = isDragging ? 0 : 1;
 
   return (
     <li
@@ -80,12 +91,5 @@ const Topping = ({ index, handleClose, ingredient }) => {
     </li>
   );
 };
-
-Topping.propTypes = {
-  ingredient: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
-  handleClose: PropTypes.func.isRequired
-};
-
 
 export default Topping;

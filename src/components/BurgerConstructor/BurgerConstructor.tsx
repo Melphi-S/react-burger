@@ -32,7 +32,7 @@ const BurgerConstructor: FC = () => {
     (state) => state.burgerConstructor
   );
 
-  const { isOrderInfoOpened, orderNumber, orderFailed } = useSelector(
+  const { isOrderInfoOpened, orderNumber } = useSelector(
     (state) => state.order
   );
 
@@ -47,7 +47,7 @@ const BurgerConstructor: FC = () => {
   }, [selectedBun, selectedToppings]);
 
   const closeModal = () => {
-    !orderFailed && dispatch(resetConstructor());
+    orderNumber && dispatch(resetConstructor());
     dispatch(closeOrderInfo());
   };
 

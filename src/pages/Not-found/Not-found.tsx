@@ -1,10 +1,10 @@
 import spaceShip from "../../images/space-ship.gif";
-import { useCallback } from "react";
+import { useCallback, FC } from "react";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useHistory } from "react-router-dom";
 import styles from "./Not-found.module.scss";
 
-const NotFound = () => {
+const NotFound: FC = () => {
   const history = useHistory();
 
   const goHome = useCallback(

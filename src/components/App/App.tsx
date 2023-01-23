@@ -24,10 +24,10 @@ const App: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const location = useLocation<{ background: Location | undefined }>();
+  const location = useLocation<{ background: Location }>();
   const background = location.state?.background;
 
-  const { userInfo, errorMessage } = useSelector((state) => state.user);
+  const { errorMessage } = useSelector((state) => state.user);
 
   const ingredients = useSelector((state) => state.ingredients.ingredients);
 
@@ -73,11 +73,7 @@ const App: FC = () => {
         <ProtectedRoute path="/register" onlyForAuth={false}>
           <Register />
         </ProtectedRoute>
-        <ProtectedRoute
-          path="/forgot-password"
-          condition={!userInfo}
-          onlyForAuth={false}
-        >
+        <ProtectedRoute path="/forgot-password" onlyForAuth={false}>
           <ForgotPassword />
         </ProtectedRoute>
         <ProtectedRoute path="/reset-password" onlyForAuth={false}>

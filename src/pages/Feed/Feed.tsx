@@ -1,5 +1,5 @@
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect, useMemo } from "react";
+import { useSelector, useDispatch } from "../../types/store";
+import { useEffect, useMemo, FC } from "react";
 import OrdersBriefList from "../../components/OrdersBriefList/OrdersBriefList";
 import OrdersSummary from "../../components/OrdersSummary/OrdersSummary";
 import Loader from "../../components/Loader/Loader";
@@ -9,7 +9,7 @@ import {
 } from "../../services/actions/wsOrders";
 import styles from "./Feed.module.scss";
 
-const Feed = () => {
+const Feed: FC = () => {
   const dispatch = useDispatch();
   const { publicOrders, publicConnectionError } = useSelector(
     (state) => state.wsOrders
@@ -20,7 +20,9 @@ const Feed = () => {
   useEffect(() => {
     dispatch(startPublicWsConnection());
 
-    return () => dispatch(closePublicWsConnection());
+    return () => {
+      dispatch(closePublicWsConnection());
+    };
   }, [dispatch]);
 
   const render = () => {
@@ -31,7 +33,7 @@ const Feed = () => {
             <h1 className="text text_type_main-large mt-10 mb-5">
               Лента заказов
             </h1>
-            <OrdersBriefList orders={ordersList} />
+            {ordersList && <OrdersBriefList orders={ordersList} />}
           </section>
           <OrdersSummary orders={publicOrders} />
         </main>
@@ -45,7 +47,7 @@ const Feed = () => {
     } else {
       return (
         <div className={styles.loader}>
-          <Loader text="Ведём учёт"/>
+          <Loader text="Ведём учёт" />
         </div>
       );
     }

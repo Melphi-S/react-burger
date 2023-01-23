@@ -1,12 +1,13 @@
-import { useSelector } from "react-redux";
+import { useSelector } from "../../types/store";
 import BurgerIngredients from "../../components/BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../../components/BurgerConstructor/BurgerConstructor";
 import Loader from "../../components/Loader/Loader";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { FC } from "react";
 import styles from "./Main.module.scss";
 
-const Main = () => {
+const Main: FC = () => {
   const { ingredientsRequest, ingredientsFailed } = useSelector(
     (store) => store.ingredients
   );
@@ -25,7 +26,7 @@ const Main = () => {
           <p className="text text_type_main-large mt-15">322-22-32-22</p>
         </div>
       )}
-      {!ingredientsRequest & !ingredientsFailed ? (
+      {!ingredientsRequest && !ingredientsFailed ? (
         <main className={styles.main}>
           <DndProvider backend={HTML5Backend}>
             <BurgerIngredients />

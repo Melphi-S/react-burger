@@ -2,15 +2,15 @@ import {
   EmailInput,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, FormEvent, FC } from "react";
+import { useSelector, useDispatch } from "../../types/store";
 import { Link, useHistory } from "react-router-dom";
 import { requestPasswordReset } from "../../services/actions/user";
 import { useFormAndValidation } from "../../services/hooks/useFormsAndValidation";
 import Loader from "../../components/Loader/Loader";
 import styles from "./Forgot-password.module.scss";
 
-const ForgotPassword = () => {
+const ForgotPassword: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const forgotPasswordSuccess = useSelector(
@@ -22,7 +22,7 @@ const ForgotPassword = () => {
     false
   );
 
-  const handleSubmit = (evt) => {
+  const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
     dispatch(requestPasswordReset(values));
   };
@@ -41,8 +41,7 @@ const ForgotPassword = () => {
           placeholder="Укажите e-mail"
           name="email"
           onChange={(evt) => handleChange(evt)}
-          value={values.email}
-          errorText={"Введите e-mail"}
+          value={values.email ? values.email : ""}
         />
         <Button
           htmlType="submit"

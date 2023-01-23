@@ -32,19 +32,20 @@ export type TWsMiddlewareActions = {
   onMessage: 'WS_USER_ORDERS' | 'WS_PUBLIC_ORDERS'
 }
 
-type TOrders = {
+export type TWsOrders = {
   orders: Array<TOrderInfo>;
   total: number;
   totalToday: number;
+  message: string
 };
 
 export type TWsOrdersState = {
   isUserConnection: boolean;
   isPublicConnection: boolean;
-  userConnectionError: null | string;
-  publicConnectionError: null | string;
-  userOrders: Array<TOrders> | null;
-  publicOrders: Array<TOrders> | null;
+  userConnectionError: null | Event;
+  publicConnectionError: null | Event;
+  userOrders: TWsOrders | null;
+  publicOrders: TWsOrders | null;
 };
 
 export type TWsUserStartAction = {
@@ -58,12 +59,10 @@ export type TWsPulicStartAction = {
 
 type TWsUserSuccessAction = {
   readonly type: typeof WS_USER_SUCCESS;
-  readonly payload: Event;
 };
 
 type TWsPulicSuccessAction = {
   readonly type: typeof WS_PUBLIC_SUCCESS;
-  readonly payload: Event;
 };
 
 type TWsUserErrorAction = {
@@ -86,10 +85,10 @@ export type TWsPublicClosedAction = {
 
 type TWsUserOrdersAction = {
   readonly type: typeof WS_USER_ORDERS;
-  readonly payload: Array<TOrders>;
+  readonly payload: TWsOrders;
 };
 
 type TWsPublicOrdersAction = {
   readonly type: typeof WS_PUBLIC_ORDERS;
-  readonly payload: Array<TOrders>;
+  readonly payload: TWsOrders;
 };

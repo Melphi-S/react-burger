@@ -1,10 +1,14 @@
 import OrderBrief from "../OrderBrief/OrderBrief";
 import { useRouteMatch } from "react-router-dom";
-import { useMemo } from "react";
-import PropTypes from "prop-types";
+import { useMemo, FC } from "react";
 import styles from "./OrdersBriefList.module.scss";
+import { TOrderInfo } from "../../types/order";
 
-const OrdersBriefList = ({ orders }) => {
+type TOrderBriefListProps = {
+  orders: Array<TOrderInfo>;
+};
+
+const OrdersBriefList: FC<TOrderBriefListProps> = ({ orders }) => {
   const { path } = useRouteMatch();
   const forUser = useMemo(() => path.startsWith("/profile"), [path]);
 
@@ -15,10 +19,6 @@ const OrdersBriefList = ({ orders }) => {
       ))}
     </ul>
   );
-};
-
-OrdersBriefList.propTypes = {
-  orders: PropTypes.array.isRequired,
 };
 
 export default OrdersBriefList;

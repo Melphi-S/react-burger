@@ -51,14 +51,14 @@ export const wsOrdersReducer = (state = wsOrdersInitialState, action: TWsOrdersA
       return {
         ...state,
         isUserConnection: false,
-        userConnectionError: false,
+        userConnectionError: null,
         userOrders: null,
       };
     case WS_PUBLIC_CLOSED:
       return {
         ...state,
         isPublicConnection: false,
-        publicConnectionError: false,
+        publicConnectionError: null,
         publicOrders: null,
       };
     case WS_USER_ORDERS:

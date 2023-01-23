@@ -1,11 +1,17 @@
 import styles from "./OrderConfirmation.module.scss";
 import doneImage from "../../images/done.jpg";
-import PropTypes from "prop-types";
 import Loader from "../Loader/Loader";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../types/store";
+import { FC } from "react";
 
-const OrderConfirmation = ({ number }) => {
-  const { postOrderRequest, postOrderFailed } = useSelector((state) => state.order);
+type TOrderConfirmationProps = {
+  number: number | null;
+};
+
+const OrderConfirmation: FC<TOrderConfirmationProps> = ({ number }) => {
+  const { postOrderRequest, postOrderFailed } = useSelector(
+    (state) => state.order
+  );
 
   return (
     <div className={`${styles.container} mt-30 mb-30`}>
@@ -19,7 +25,7 @@ const OrderConfirmation = ({ number }) => {
           <p className="text text_type_main-large mt-8">322-22-32-22</p>
         </>
       )}
-      {!postOrderRequest & !postOrderFailed ? (
+      {!postOrderRequest && !postOrderFailed ? (
         <>
           <p className="text text_type_digits-large mb-8">{number}</p>
           <p className="text text_type_main-medium">идентификатор заказа</p>
@@ -34,10 +40,6 @@ const OrderConfirmation = ({ number }) => {
       ) : null}
     </div>
   );
-};
-
-OrderConfirmation.propTypes = {
-  number: PropTypes.number,
 };
 
 export default OrderConfirmation;

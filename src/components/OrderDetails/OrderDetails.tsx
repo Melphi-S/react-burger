@@ -3,18 +3,29 @@ import {
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useParams, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { useMemo, useEffect } from "react";
+import { useSelector, useDispatch } from "../../types/store";
+import { useMemo, useEffect, FC } from "react";
 import { getOrder } from "../../services/actions/order";
-import { orderStatuses } from "../../utils/consts";
 import NotFound from "../../pages/Not-found/Not-found";
 import styles from "./OrderDetails.module.scss";
+import { Location } from "history";
+import { TIngredientCount } from "../OrderBrief/OrderBrief";
+import { OrderStatusesEnum } from "../../types/order";
 
-const OrderDetails = () => {
-  const location = useLocation();
+type TParams = {
+  number: string;
+};
+
+type TTotalPriceCounter = {
+  ingredients: Array<TIngredientCount>;
+  totalPrice: number;
+};
+
+const OrderDetails: FC = () => {
   const dispatch = useDispatch();
+  const location = useLocation<{ background: Location }>();
   const background = location.state?.background;
-  const { number } = useParams();
+  const { number } = useParams<TParams>();
 
   const { userOrders, publicOrders } = useSelector((state) => state.wsOrders);
   const { orderInfo } = useSelector((state) => state.order);
@@ -40,29 +51,35 @@ const OrderDetails = () => {
   }, [order, number, dispatch]);
 
   const headerNumber = useMemo(
-    () => `#${String(order?.number).padStart(6, "0")}`,
+    () => order !== "notFound" && `#${String(order?.number).padStart(6, "0")}`,
     [order]
   );
 
   const orderIngredients = useMemo(
     () =>
+      order &&
+      order !== "notFound" &&
       order?.ingredients?.reduce(
-        (object, id) => {
+        (object: TTotalPriceCounter, id) => {
           let orderIngredient = object.ingredients.find(
             (ingredient) => ingredient._id === id
           );
           if (orderIngredient) {
             orderIngredient.count++;
+            object.totalPrice += orderIngredient.price;
           } else {
-            orderIngredient = ingredients.find(
+            let currentIngredient = ingredients.find(
               (ingredient) => ingredient._id === id
             );
-            object.ingredients.push({
-              count: 1,
-              ...orderIngredient,
-            });
+            if (currentIngredient) {
+              orderIngredient = {
+                ...currentIngredient,
+                count: 1,
+              };
+              object.ingredients.push(orderIngredient);
+              object.totalPrice += orderIngredient.price;
+            }
           }
-          object.totalPrice += orderIngredient.price;
           return object;
         },
         { ingredients: [], totalPrice: 0 }
@@ -92,27 +109,28 @@ const OrderDetails = () => {
               order.status === "done" ? styles.doneStatus : null
             }`}
           >
-            {orderStatuses[order.status]}
+            {OrderStatusesEnum[order.status]}
           </span>
           <div className={styles.ingredients}>
             <h2 className="text text_type_main-medium">Состав:</h2>
             <ul className={styles.ingredients__container}>
-              {orderIngredients.ingredients.map((ingredient, index) => (
-                <li className={styles.ingredient} key={index}>
-                  <img
-                    className={styles.ingredient__image}
-                    src={ingredient.image}
-                    alt={ingredient.name}
-                  ></img>
-                  <p className="text text_type_main-default">
-                    {ingredient.name}
-                  </p>
-                  <div className={styles.ingredient__priceContainer}>
-                    <span className="text text_type_digits-default">{`${ingredient.count} x ${ingredient.price}`}</span>
-                    <CurrencyIcon type="primary" />
-                  </div>
-                </li>
-              ))}
+              {orderIngredients &&
+                orderIngredients.ingredients.map((ingredient, index) => (
+                  <li className={styles.ingredient} key={index}>
+                    <img
+                      className={styles.ingredient__image}
+                      src={ingredient.image}
+                      alt={ingredient.name}
+                    ></img>
+                    <p className="text text_type_main-default">
+                      {ingredient.name}
+                    </p>
+                    <div className={styles.ingredient__priceContainer}>
+                      <span className="text text_type_digits-default">{`${ingredient.count} x ${ingredient.price}`}</span>
+                      <CurrencyIcon type="primary" />
+                    </div>
+                  </li>
+                ))}
             </ul>
           </div>
           <div className={styles.footer}>
@@ -121,7 +139,7 @@ const OrderDetails = () => {
             </p>
             <div className={styles.ingredient__priceContainer}>
               <span className="text text_type_digits-default">
-                {orderIngredients.totalPrice}
+                {orderIngredients && orderIngredients.totalPrice}
               </span>
               <CurrencyIcon type="primary" />
             </div>

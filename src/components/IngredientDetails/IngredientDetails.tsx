@@ -14,7 +14,7 @@ type TParams = {
 };
 
 const IngredientDetails: FC<TIngredientDetailsProps> = ({ ingredients }) => {
-  const location = useLocation<{ background: Location | undefined }>();
+  const location = useLocation<{ background: Location}>();
   const background = location.state?.background;
   const { id } = useParams<TParams>();
 

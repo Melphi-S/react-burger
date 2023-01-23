@@ -1,8 +1,12 @@
-import { useMemo, useCallback } from "react";
-import PropTypes from "prop-types";
+import { useMemo, useCallback, FC } from "react";
 import styles from "./OrdersSummary.module.scss";
+import { TWsOrders } from "../../types/wsOrders";
 
-const OrdersSummary = ({ orders }) => {
+type TOrdersSummaryProps = {
+  orders: TWsOrders;
+};
+
+const OrdersSummary: FC<TOrdersSummaryProps> = ({ orders }) => {
   const { total, totalToday } = orders;
 
   const doneOrders = useMemo(
@@ -15,7 +19,7 @@ const OrdersSummary = ({ orders }) => {
   );
 
   const renderNumber = useCallback(
-    (number) => String(number).padStart(6, "0"),
+    (number: number) => String(number).padStart(6, "0"),
     []
   );
 
@@ -103,10 +107,6 @@ const OrdersSummary = ({ orders }) => {
       </div>
     </section>
   );
-};
-
-OrdersSummary.propTypes = {
-  orders: PropTypes.object.isRequired,
 };
 
 export default OrdersSummary;

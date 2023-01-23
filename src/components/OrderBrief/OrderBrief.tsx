@@ -1,7 +1,6 @@
 import { useMemo, FC } from "react";
 import { useSelector } from "../../types/store";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
-import { orderStatuses } from "../../utils/consts";
 import {
   FormattedDate,
   CurrencyIcon,
@@ -16,9 +15,9 @@ type TOrderBriefProps = {
   forUser: boolean;
 };
 
-interface IIngredientCount extends TIngredient {
+export type TIngredientCount = {
   count: number;
-}
+} & TIngredient;
 
 const OrderBrief: FC<TOrderBriefProps> = ({ order, forUser }) => {
   const location = useLocation();
@@ -37,7 +36,7 @@ const OrderBrief: FC<TOrderBriefProps> = ({ order, forUser }) => {
       []
     );
     const ingredientsCount = ingredientsList.reduce(
-      (arr: Array<IIngredientCount>, ingredient) => {
+      (arr: Array<TIngredientCount>, ingredient) => {
         let currentIngredient = arr.find(
           (arrIngrredient) => arrIngrredient._id === ingredient._id
         );
@@ -96,7 +95,7 @@ const OrderBrief: FC<TOrderBriefProps> = ({ order, forUser }) => {
         {forUser && (
           <span
             className={`text text_type_main-small mt-2 ${
-              status === 'done' ? styles.orderBrief__doneStatus : null
+              status === "done" ? styles.orderBrief__doneStatus : null
             }`}
           >
             {OrderStatusesEnum[status]}
@@ -104,9 +103,9 @@ const OrderBrief: FC<TOrderBriefProps> = ({ order, forUser }) => {
         )}
         <div className={`${styles.orderBrief__flexContainer} mt-6`}>
           <ul className={styles.orderBrief__imageList}>
-            {selectedIngredients.map((ingredient, index) => {
-              if (index < 6) {
-                return (
+            {selectedIngredients.map(
+              (ingredient, index) =>
+                index < 6 && (
                   <li
                     className={styles.orderBrief__imageContainer}
                     key={ingredient._id}
@@ -133,9 +132,8 @@ const OrderBrief: FC<TOrderBriefProps> = ({ order, forUser }) => {
                       </>
                     )}
                   </li>
-                );
-              }
-            })}
+                )
+            )}
           </ul>
           <div className={styles.orderBrief__flexContainer}>
             <p className="text text_type_digits-default mr-2">{totalPrice}</p>

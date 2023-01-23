@@ -1,10 +1,18 @@
-import { Route, Redirect, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
-import PropTypes from "prop-types";
+import { Route, Redirect, useLocation, RouteProps } from "react-router-dom";
+import { useSelector } from "../../types/store";
+import { FC } from "react";
 
-const ProtectedRoute = ({ onlyForAuth, children, ...rest }) => {
+type TProtectedRouteProps = {
+  onlyForAuth: boolean;
+} & RouteProps;
+
+const ProtectedRoute: FC<TProtectedRouteProps> = ({
+  onlyForAuth,
+  children,
+  ...rest
+}) => {
   const userInfo = useSelector((state) => state.user.userInfo);
-  const location = useLocation();
+  const location = useLocation<{ from: { pathname: "/" } }>();
 
   if (!onlyForAuth && userInfo) {
     const { from } = location.state || { from: { pathname: "/" } };
@@ -24,11 +32,6 @@ const ProtectedRoute = ({ onlyForAuth, children, ...rest }) => {
   }
 
   return <Route {...rest}>{children}</Route>;
-};
-
-ProtectedRoute.propTypes = {
-  onlyForAuth: PropTypes.bool.isRequired,
-  children: PropTypes.element.isRequired,
 };
 
 export default ProtectedRoute;

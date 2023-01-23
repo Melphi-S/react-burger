@@ -1,14 +1,15 @@
 import { Switch, Route } from "react-router-dom";
 import { NavLink, useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "../../types/store";
 import { logOut } from "../../services/actions/user";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./Profile.module.scss";
 import ProfileForm from "../../components/ProfileForm/ProfileForm";
 import ProfileOrders from "../../components/ProfileOrders/ProfileOrders";
 import Loader from "../../components/Loader/Loader";
+import { FC } from "react";
 
-const Profile = () => {
+const Profile: FC = () => {
   const dispatch = useDispatch();
   const isAuthChecked = useSelector((state) => state.user.isAuthChecked);
   const { pathname } = useLocation();
