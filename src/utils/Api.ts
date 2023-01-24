@@ -1,5 +1,15 @@
 import { URL } from "./consts";
 import { TOrder } from "../types/order";
+import {
+  TResponse,
+  TMessage,
+  TIngredientsResponse,
+  TUserResponse,
+  TPostOrderResponse,
+  TGetOrderResponse,
+  TLoginResponse,
+  TRefreshToken,
+} from "../types/api";
 
 class Api {
   private url: string;
@@ -8,14 +18,16 @@ class Api {
     this.url = url;
   }
 
-  _checkResponce(res: Response) {
+  _checkResponce<T>(res: Response) {
     return res.ok
-      ? res.json()
-      : res.json().then((data) => Promise.reject(data));
+      ? res.json().then((data: TResponse<T>) => data)
+      : res.json().then((data: TResponse<TMessage>) => Promise.reject(data));
   }
 
   getIngredients() {
-    return fetch(`${this.url}/ingredients`).then(this._checkResponce);
+    return fetch(`${this.url}/ingredients`).then(
+      this._checkResponce<TIngredientsResponse>
+    );
   }
 
   postOrder(order: TOrder, token: string = "") {
@@ -26,7 +38,7 @@ class Api {
         Authorization: token,
       },
       body: JSON.stringify(order),
-    }).then(this._checkResponce);
+    }).then(this._checkResponce<TPostOrderResponse>);
   }
 
   getOrder(orderNumber: number) {
@@ -35,7 +47,7 @@ class Api {
       headers: {
         "Content-type": "application/json",
       },
-    }).then(this._checkResponce);
+    }).then(this._checkResponce<TGetOrderResponse>);
   }
 
   register(email: string, password: string, name: string) {
@@ -45,7 +57,7 @@ class Api {
         "Content-type": "application/json",
       },
       body: JSON.stringify({ email, password, name }),
-    }).then(this._checkResponce);
+    }).then(this._checkResponce<TLoginResponse>);
   }
 
   getUserInfo(token: string = "") {
@@ -55,7 +67,7 @@ class Api {
         "Content-type": "application/json",
         Authorization: token,
       },
-    }).then(this._checkResponce);
+    }).then(this._checkResponce<TUserResponse>);
   }
 
   patchUserInfo(
@@ -71,7 +83,7 @@ class Api {
         Authorization: token,
       },
       body: JSON.stringify({ email, password, name }),
-    }).then(this._checkResponce);
+    }).then(this._checkResponce<TUserResponse>);
   }
 
   refreshToken(token: string | null) {
@@ -83,7 +95,7 @@ class Api {
       body: JSON.stringify({
         token,
       }),
-    }).then(this._checkResponce);
+    }).then(this._checkResponce<TRefreshToken>);
   }
 
   logIn(email: string, password: string) {
@@ -93,7 +105,7 @@ class Api {
         "Content-type": "application/json",
       },
       body: JSON.stringify({ email, password }),
-    }).then(this._checkResponce);
+    }).then(this._checkResponce<TLoginResponse>);
   }
 
   logOut(token: string | null) {
@@ -103,7 +115,7 @@ class Api {
         "Content-type": "application/json",
       },
       body: JSON.stringify({ token }),
-    }).then(this._checkResponce);
+    }).then(this._checkResponce<TMessage>);
   }
 
   requestPasswordReset(email: string) {
@@ -113,7 +125,7 @@ class Api {
         "Content-type": "application/json",
       },
       body: JSON.stringify({ email }),
-    }).then(this._checkResponce);
+    }).then(this._checkResponce<TMessage>);
   }
 
   resetPassword(password: string, token: string) {
@@ -123,7 +135,7 @@ class Api {
         "Content-type": "application/json",
       },
       body: JSON.stringify({ password, token }),
-    }).then(this._checkResponce);
+    }).then(this._checkResponce<TMessage>);
   }
 }
 

@@ -8,6 +8,7 @@ import {
 import styles from "./Topping.module.scss";
 import { sortConstructor } from "../../services/actions/constructor";
 import { TConstuctorElement } from "../../types/constructor";
+import { Identifier } from "typescript";
 
 type TToppingProps = {
   index: number;
@@ -15,15 +16,25 @@ type TToppingProps = {
   ingredient: TConstuctorElement;
 };
 
+type IDropItem = {
+  id: string;
+  index: number;
+}
+
 const Topping: FC<TToppingProps> = ({ index, handleClose, ingredient }) => {
   const { selectedToppings } = useSelector((state) => state.burgerConstructor);
   const dispatch = useDispatch();
   const ref = useRef<HTMLLIElement>(null);
   const id = ingredient.id;
-  const [{ handlerId }, drop] = useDrop({
+  const [{ handlerId }, drop] = useDrop<
+    IDropItem,
+    unknown,
+    { item: IDropItem; handlerId: string | symbol | null }
+  >({
     accept: "burgerConstructor",
     collect(monitor) {
       return {
+        item: monitor.getItem(),
         handlerId: monitor.getHandlerId(),
       };
     },
@@ -32,7 +43,6 @@ const Topping: FC<TToppingProps> = ({ index, handleClose, ingredient }) => {
         return;
       }
 
-      // @ts-ignore
       const dragIndex = item.index;
       const hoverIndex = index;
 
@@ -57,7 +67,6 @@ const Topping: FC<TToppingProps> = ({ index, handleClose, ingredient }) => {
 
       dispatch(sortConstructor(selectedToppings, dragIndex, hoverIndex));
 
-      // @ts-ignore
       item.index = hoverIndex;
     },
   });

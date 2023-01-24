@@ -48,7 +48,7 @@ export const getOrder: AppThunk = (orderNumber: number) => {
           res.success &&
           dispatch({
             type: GET_ORDER_SUCCESS,
-            payload: res.orders.shift(),
+            payload: res.orders[0],
           })
       )
       .catch((err) =>

@@ -14,7 +14,7 @@ import styles from "./Login.module.scss";
 const Login: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const location = useLocation<{ from: { pathname: "/" } }>();
+  const location = useLocation<{ from: { pathname: string } }>();
   const { userInfo, isAuthChecked } = useSelector((state) => state.user);
   const { values, handleChange, isValid } = useFormAndValidation(
     { email: "", password: "" },

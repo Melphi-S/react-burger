@@ -89,7 +89,7 @@ const App: FC = () => {
             {ingredients.length ? (
               <IngredientDetails ingredients={ingredients} />
             ) : (
-              <></>
+              null
             )}
           </Modal>
         </Route>

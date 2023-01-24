@@ -1,4 +1,4 @@
-import { compose, createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "@redux-devtools/extension";
 import { rootReducer } from "./reducers";
 import thunk from "redux-thunk";
@@ -33,35 +33,6 @@ const wsPublicActions: TWsMiddlewareActions = {
   onError: WS_PUBLIC_ERROR,
   onMessage: WS_PUBLIC_ORDERS,
 };
-
-// declare global {
-//   interface Window {
-//     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-//   }
-// }
-
-// const composeEnhancers =
-//   typeof window === "object" && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-//     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-//     : compose;
-
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-// const composeEnhancers =
-//   typeof window === "object" &&
-//   (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-//     ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({})
-//     : compose;
-
-// const enhancer = composeEnhancers(
-//   applyMiddleware(
-//     thunk,
-//     wsMiddleware(ORDERS_URL, wsUserActions),
-//     wsMiddleware(`${ORDERS_URL}/all`, wsPublicActions)
-//   )
-// );
-
-// export const store = createStore(rootReducer, enhancer);
 
 export const store = createStore(
   rootReducer,

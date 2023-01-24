@@ -12,7 +12,7 @@ const ProtectedRoute: FC<TProtectedRouteProps> = ({
   ...rest
 }) => {
   const userInfo = useSelector((state) => state.user.userInfo);
-  const location = useLocation<{ from: { pathname: "/" } }>();
+  const location = useLocation<{ from: { pathname: string } }>();
 
   if (!onlyForAuth && userInfo) {
     const { from } = location.state || { from: { pathname: "/" } };

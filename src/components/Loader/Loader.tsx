@@ -5,7 +5,7 @@ type TLoaderProps = {
   text?: string;
 };
 
-const Loader: FC<TLoaderProps> = ({ text }) => {
+const Loader: FC<TLoaderProps> = ({ text = "Загрузка" }) => {
   return (
     <div className={styles.ring}>
       {text}
@@ -13,7 +13,5 @@ const Loader: FC<TLoaderProps> = ({ text }) => {
     </div>
   );
 };
-
-Loader.defaultProps = { text: "Загрузка" };
 
 export default Loader;
